@@ -32,7 +32,7 @@ key_sizes = {
     'command': (1.3, 1.1),
     'tall': (1, 1.2),
     'space bar': (6, 1),
-    'backspace': (2.5, 1),
+    'backspace': (2, 1),
 }
 rows_to_key_size = {'spacebar_row': 'tall'}
 keys_to_key_size = {

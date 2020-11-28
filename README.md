@@ -10,9 +10,10 @@ python plotter.py
 ```
 
 ### Todo
-- add keyboard padding
-- add bg color
-- finish qwerty
+- [DONE] change margin into padding and put it in the key image
+- [DONE] add keyboard padding
+- [DONE] add bg color
+- [DONE] finish qwerty
 - add azerty
 - add ability to color keys
 - hook into different keyboard listeners

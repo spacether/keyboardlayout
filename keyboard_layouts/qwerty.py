@@ -63,8 +63,16 @@ rows = {
         ('?', '/', '/'),
         ('Shift', '', 'right shift'),
     ],
-    # 'letters_3': {},
-    # 'spacebar_row': {'fn': 'fn',... 'left': '◄', 'down': '▼', 'right': '►'},
+    'spacebar_row': [
+        ('Control', '', 'left control'),
+        ('Win', '', 'left windows'),
+        ('Alt', '', 'left alt'),
+        ('', '', 'space bar'),
+        ('Alt', '', 'right alt'),
+        ('Wind', '', 'right windows'),
+        ('Menu', '', 'menu'),
+        ('Control', '', 'right control'),
+    ],
     # 'uparrow': {'up arrow': '▲'},
 }
 row_locations = {
@@ -72,23 +80,29 @@ row_locations = {
     'letters_1': (0, 1),
     'letters_2': (0, 2),
     'letters_3': (0, 3),
+    'spacebar_row': (0, 4),
 } # in std key size coordinates? where 1, 1 is 1 letter key wide by 1 letter key tall
 key_sizes = {
-    'backspace': (2, 1),
+    'tab': (1.5, 1),
+    'alt': (1.2, 1),
 }
 key_width_percent_remainder_sizes = {
-    'tab': 50,
-    '\\': 50,
-    'return': 50,
-    'caps lock': 50,
-    'left shift': 50,
-    'right shift': 50,
+    'caps lock': 45,
+    'return': 55,
+    'left shift': 46,
+    'right shift': 54,
+    'backspace': 100,
+    'space bar': 100,
 }
-keys_to_key_size = {
+key_to_key_size = {
     'tab': 'tab',
     '\\': 'tab',
-    'space bar': 'space bar',
-    'left command': 'command',
-    'right command': 'command'
+    'left control': 'tab',
+    'right control': 'tab',
+    'left alt': 'alt',
+    'right alt': 'alt',
+    'left windows': 'alt',
+    'right windows': 'alt',
+    'menu': 'alt',
 }
 # if key size is not defined, 1 key x by 1 key y size is assumed

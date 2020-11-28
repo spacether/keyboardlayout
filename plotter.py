@@ -102,8 +102,11 @@ class KeyGroup(pygame.sprite.Group):
 
 
 class KeyboardLayout(pygame.sprite.Group):
-    @staticmethod
+    __letter_key_size_keycoords = (1, 1)
+
+    @classmethod
     def __get_remainder_x(
+        cls,
         xmax: int,
         letter_key_width: int,
         key_margin: int,
@@ -119,15 +122,35 @@ class KeyboardLayout(pygame.sprite.Group):
             for key_name in key_names:
                 if key_name in layout.key_width_percent_remainder_sizes:
                     continue
-                key_xsize_keycoords, _ = (
-                    layout.key_sizes.get(key_name, (1, 1))
-                )
+                key_xsize_keycoords, _ = layout.key_sizes.get(
+                    key_name, cls.__letter_key_size_keycoords)
                 key_width = letter_key_width * key_xsize_keycoords
                 used_width += key_width
             remainder_x = xmax - used_width - (len(key_names) - 1) * key_margin
-            print('remainder returned')
             return remainder_x
         return None
+
+    @classmethod
+    def __get_key_width_height(
+        cls,
+        key_name: str,
+        remainder_x: typing.Optional[int],
+        letter_key_width: int,
+        letter_key_height: int,
+        layout: ModuleType,
+    ):
+        key_xsize_keycoords, key_ysize_keycoords = (
+            layout.key_sizes.get(key_name, cls.__letter_key_size_keycoords)
+        )
+        key_width_percent_remainder = (
+            layout.key_width_percent_remainder_sizes.get(key_name, None)
+        )
+        if key_width_percent_remainder is None:
+            key_width = letter_key_width * key_xsize_keycoords
+        else:
+            key_width = remainder_x*(key_width_percent_remainder/100)
+        key_height = letter_key_height * key_ysize_keycoords
+        return key_width, key_height
 
     def __init__(
         self,
@@ -162,18 +185,13 @@ class KeyboardLayout(pygame.sprite.Group):
             row_y = y + row_y_keycoords * letter_key_height + key_margin*i
             for j, label_info in enumerate(row_keys):
                 key_name = label_info[-1]
-                key_xsize_keycoords, key_ysize_keycoords = (
-                    layout.key_sizes.get(key_name, (1, 1))
+                key_width, key_height = self.__get_key_width_height(
+                    key_name,
+                    remainder_x,
+                    letter_key_width,
+                    letter_key_height,
+                    layout,
                 )
-                key_width_percent_remainder = (
-                    layout.key_width_percent_remainder_sizes.get(key_name, None)
-                )
-                if key_width_percent_remainder is None:
-                    key_width = letter_key_width * key_xsize_keycoords
-                else:
-                    key_width = remainder_x*(key_width_percent_remainder/100)
-                key_height = letter_key_height * key_ysize_keycoords
-                # TODO pass in pygame.Rect
                 key_group = KeyGroup(
                     key_x,
                     row_y,

@@ -74,24 +74,19 @@ row_locations = {
     'letters_3': (0, 3),
 } # in std key size coordinates? where 1, 1 is 1 letter key wide by 1 letter key tall
 key_sizes = {
-    'tab': (1.5, 1),
-    '\\': (1.5, 1),
-    'return': (2.09, 1),
-    'caps lock': (2.09, 1),
-    'shift': (2, 1),
-    'command': (1.3, 1.1),
-    'tall': (1, 1.2),
-    'space bar': (6, 1),
     'backspace': (2, 1),
 }
 key_width_percent_remainder_sizes = {
+    'tab': 50,
+    '\\': 50,
     'return': 50,
     'caps lock': 50,
     'left shift': 50,
     'right shift': 50,
 }
-rows_to_key_size = {'spacebar_row': 'tall'}
 keys_to_key_size = {
+    'tab': 'tab',
+    '\\': 'tab',
     'space bar': 'space bar',
     'left command': 'command',
     'right command': 'command'

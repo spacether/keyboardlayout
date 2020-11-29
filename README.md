@@ -14,6 +14,21 @@ python plotter.py
 - [DONE] add keyboard padding
 - [DONE] add bg color
 - [DONE] finish qwerty
-- add azerty
-- add ability to color keys
+- [DONE] fix height
+- [DONE] Folds row location into rows definition for azerty
+- [DONE] connect enter key on two rows
+- [DONE] add azerty
+- [DONE] add ability to color keys
+- Add margin into txt positioning
+- Move txt location into key definition
+```
+{
+  "name": "q"
+  "txt_info": {
+    "tl/tc/tr": "text",
+    "ml/mc/mr": "text",
+    "bl/bc/br": "text",
+  }
+}
+```
 - hook into different keyboard listeners

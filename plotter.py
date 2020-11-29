@@ -59,6 +59,17 @@ class RectSprite(pygame.sprite.Sprite):
         self.rect = pygame.Rect(r.x, r.y, r.width, r.height)
 
 
+class Key:
+    def __init__(
+        self,
+        bg_sprites: pygame.sprite.Group,
+        txt_sprites: pygame.sprite.Group
+    ):
+        self.bg_sprites = bg_sprites
+        self.txt_sprites = txt_sprites
+
+
+
 class KeyGroup(pygame.sprite.Group):
     def __init__(
         self,
@@ -164,8 +175,8 @@ class KeyboardLayout(pygame.sprite.Group):
         letter_key_width: int,
         layout: ModuleType,
     ):
-        for row_name, row_keys in layout.rows.items():
-            key_names = set(key[-1] for key in row_keys)
+        for row in layout.rows:
+            key_names = set(key[-1] for key in row["keys"])
             if any(
                 key_name in layout.key_width_percent_remainder_sizes for
                 key_name in key_names
@@ -190,21 +201,22 @@ class KeyboardLayout(pygame.sprite.Group):
         letter_key_height: int,
         layout: ModuleType,
     ):
-        used_height = 0
-        for row_name, row_keys in layout.rows.items():
-            row_max_height = 0
-            for _, __, key_name in row_keys:
+        height_max = 0
+        for row in layout.rows:
+            for _, __, key_name in row["keys"]:
                 keysize_name = layout.key_to_key_size.get(key_name, None)
                 _, key_ysize_keycoords = (
                     layout.key_sizes.get(
                         keysize_name, cls.__letter_key_size_keycoords
                     )
                 )
+                _, row_y_keycoords = row["location"]
+                row_y = row_y_keycoords * letter_key_height
                 key_height = letter_key_height * key_ysize_keycoords
-                if key_height > row_max_height:
-                    row_max_height = key_height
-            used_height += row_max_height
-        return used_height
+                key_ymax = row_y + key_height
+                if key_ymax > height_max:
+                    height_max = key_ymax
+        return height_max
 
     def __init__(
         self,
@@ -225,7 +237,7 @@ class KeyboardLayout(pygame.sprite.Group):
             'keyboard_layouts.{}'.format(layout_name),
             fromlist=['']
         )
-        keys = []
+        self._key_name_to_key = {}
 
         x = keyboard_padding
         y = keyboard_padding
@@ -245,15 +257,16 @@ class KeyboardLayout(pygame.sprite.Group):
         if keyboard_color:
             bg_sprite = RectSprite(self.rect, keyboard_color)
             self.add(bg_sprite)
-        for i, (row_name, row_keys) in enumerate(layout.rows.items()):
+        for row in layout.rows:
+            row_keys = row["keys"]
             key_names = set(key[-1] for key in row_keys)
             remainder_x = self.__get_remainder_x(
                 max_width, letter_key_width, key_names, layout)
 
-            row_x_keycoords, row_y_keycoords = layout.row_locations[row_name]
-            key_x = x
+            row_x_keycoords, row_y_keycoords = row["location"]
+            key_x = x + row_x_keycoords * letter_key_width
             row_y = y + row_y_keycoords * letter_key_height
-            for j, label_info in enumerate(row_keys):
+            for label_info in row_keys:
                 key_name = label_info[-1]
                 key_width, key_height = self.__get_key_width_height(
                     key_name,
@@ -276,15 +289,52 @@ class KeyboardLayout(pygame.sprite.Group):
                     txt_ypadding
                 )
                 self.add(key_group.sprites())
+                if key_name not in self._key_name_to_key:
+                    bg_sprites = pygame.sprite.Group(key_group.sprites()[:1])
+                    txt_sprites = pygame.sprite.Group(key_group.sprites()[1:])
+                    key = Key(bg_sprites, txt_sprites)
+                    self._key_name_to_key[key_name] = key
+                else:
+                    txt_sprites = key_group.sprites()[1:]
+                    new_bg_sprite = key_group.sprites()[0]
+                    existing_bg_sprite = key.bg_sprites.sprites()[0]
+                    if existing_bg_sprite.rect.width < new_bg_sprite.rect.width:
+                        used_rect = existing_bg_sprite.rect
+                        used_y = used_rect.bottom
+                    else:
+                        used_rect = new_bg_sprite.rect
+                        used_y = used_rect.top - key_margin
+                    r = pygame.Rect(
+                        used_rect.left,
+                        used_y,
+                        used_rect.width,
+                        key_margin,
+                    )
+                    sticher_sprite = RectSprite(r, key_color)
+                    self.add([sticher_sprite])
+                    key = self._key_name_to_key[key_name]
+                    key.bg_sprites.add([new_bg_sprite, sticher_sprite])
+                    key.txt_sprites.add(txt_sprites)
                 key_x += key_width
-                x_right, y_bot = key_group.sprites()[0].rect.bottomright
+
+    def update_key(
+        self,
+        key_name: str,
+        bg_color: typing.Optional[pygame.Color] = None,
+        font_color: typing.Optional[pygame.Color] = None,
+    ):
+        key = self._key_name_to_key[key_name]
+        if bg_color:
+            for bg_sprite in key.bg_sprites.sprites():
+                bg_sprite.image.fill(bg_color)
+        # todo add font_color change
 
 
 def get_keyboard(keyboard_layout: str):
-    letter_key_width = 60
-    letter_key_height = letter_key_width
+    letter_key_width = 55
+    letter_key_height = 51
     keyboard_padding = 3
-    key_margin = 2
+    key_margin = 10
     key_color = pygame.Color('grey')
     font_color = key_color.__invert__()
 
@@ -307,9 +357,12 @@ def get_keyboard(keyboard_layout: str):
         txt_ypadding,
         keyboard_color=font_color
     )
+    keyboard_layout.update_key("return", bg_color=pygame.Color('red'))
     return keyboard_layout
 
 
 if __name__=="__main__":
-    screen = init_pygame_and_draw_keyboard('qwerty')
+    layout_name = 'azerty'
+    # layout_name = 'qwerty'
+    screen = init_pygame_and_draw_keyboard(layout_name)
     run_until_window_closed()

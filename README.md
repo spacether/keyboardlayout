@@ -21,6 +21,7 @@ python plotter.py
 - [DONE] add ability to color keys
 - [DONE] Add margin into txt positioning
 - [DONE] Add ability to offset keyboard to x,y location
+- [DONE] Add ability to change key text color
 - Move txt location into key definition
 ```
 {

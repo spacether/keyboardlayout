@@ -34,7 +34,10 @@ class TxtSprite(pygame.sprite.Sprite):
         font_color: pygame.Color,
     ):
         super().__init__()
-        self.image = font.render(txt, 1, font_color)
+        self.font_color = font_color
+        self.txt = txt
+        self.font = font
+        self.render_text()
 
         txt_width = self.image.get_width()
         txt_height = self.image.get_height()
@@ -45,6 +48,9 @@ class TxtSprite(pygame.sprite.Sprite):
         else:
             yloc = y - txt_height
         self.rect = pygame.Rect(xloc, yloc, txt_width, txt_height)
+
+    def render_text(self):
+        self.image = self.font.render(self.txt, 1, self.font_color)
 
 
 class RectSprite(pygame.sprite.Sprite):
@@ -336,7 +342,10 @@ class KeyboardLayout(pygame.sprite.Group):
         if bg_color:
             for bg_sprite in key.bg_sprites.sprites():
                 bg_sprite.image.fill(bg_color)
-        # todo add font_color change
+        if font_color:
+            for txt_sprite in key.txt_sprites.sprites():
+                txt_sprite.font_color = font_color
+                txt_sprite.render_text()
 
 
 def get_keyboard(keyboard_layout: str, position: typing.List[int]):
@@ -367,7 +376,11 @@ def get_keyboard(keyboard_layout: str, position: typing.List[int]):
         txt_ypadding,
         keyboard_color=font_color
     )
-    # keyboard_layout.update_key("return", bg_color=pygame.Color('red'))
+    keyboard_layout.update_key(
+        "return",
+        bg_color=pygame.Color('white'),
+        font_color=pygame.Color('red')
+    )
     return keyboard_layout
 
 

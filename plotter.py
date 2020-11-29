@@ -70,6 +70,9 @@ class TxtSprite(pygame.sprite.Sprite):
         elif txt_anchor is TxtAnchor.BOTTOM_CENTER:
             xloc = x - txt_width//2
             yloc = y - txt_height
+        elif txt_anchor is TxtAnchor.MIDDLE_CENTER:
+            xloc = x - txt_width//2
+            yloc = y - txt_height//2
         self.rect = pygame.Rect(xloc, yloc, txt_width, txt_height)
 
     def render_text(self):
@@ -140,6 +143,9 @@ class KeyGroup(pygame.sprite.Group):
             elif txt_anchor is TxtAnchor.BOTTOM_CENTER:
                 xloc = x + width//2
                 yloc = y + height - key_padding - txt_ypadding
+            elif txt_anchor is TxtAnchor.MIDDLE_CENTER:
+                xloc = x + width//2
+                yloc = y + height//2
             txt_sprite = TxtSprite(
                 xloc,
                 yloc,

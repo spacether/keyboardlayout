@@ -1,91 +1,133 @@
 rows = [
     # upper text, lower txt, key_name for key detection
     {
-        "name": 'numbers',
-        "location": (0, 0),
-        "keys": [
+        'name': 'numbers',
+        'location': (0, 0),
+        'keys': [
             {
-                "name": 'code not known',
+                'name': 'code not known',
                 "txt_info": {'bc': '2'},
             },
             {
-                "name": '1',
+                'name': '1',
                 "txt_info": {'tc': '1', 'bc': '&'},
             },
             {
-                "name": '2',
+                'name': '2',
                 "txt_info": {'tl': '2', 'bl': 'é', 'br': '~'},
             },
             {
-                "name": '3',
+                'name': '3',
                 "txt_info": {'tl': '3', 'bl': '"', 'br': '#'},
             },
             {
-                "name": '4',
+                'name': '4',
                 "txt_info": {'tl': '4', 'bl': '\'', 'br': '{'},
             },
             {
-                "name": '5',
+                'name': '5',
                 "txt_info": {'tl': '5', 'bl': '(', 'br': '['},
             },
             {
-                "name": '6',
+                'name': '6',
                 "txt_info": {'tl': '6', 'bl': '-', 'br': '|'},
             },
             {
-                "name": '7',
+                'name': '7',
                 "txt_info": {'tl': '7', 'bl': 'è', 'br': '`'},
             },
             {
-                "name": '8',
+                'name': '8',
                 "txt_info": {'tl': '8', 'bl': '_', 'br': '\\'},
             },
             {
-                "name": '9',
+                'name': '9',
                 "txt_info": {'tl': '9', 'bl': 'ç', 'br': '^'},
             },
             {
-                "name": '0',
+                'name': '0',
                 "txt_info": {'tl': '0', 'bl': 'à', 'br': '@'},
             },
             {
-                "name": '°',
+                'name': '°',
                 "txt_info": {'tl': '°', 'bl': ')', 'br': ']'},
             },
             {
-                "name": '+',
+                'name': '+',
                 "txt_info": {'tl': '+', 'bl': '=', 'br': '}'},
             },
             {
-                "name": 'backspace',
+                'name': 'backspace',
                 "txt_info": {'tl': 'Backspace'},
             },
         ],
     },
+    {
+        'name': 'letters_1',
+        'location': (0, 1),
+        'keys': [
+            {
+                'name': 'tab',
+                'txt_info': {'tl': 'Tab'}
+            },
+            {
+                'name': 'a',
+                'txt_info': {'mc': 'A'}
+            },
+            {
+                'name': 'z',
+                'txt_info': {'mc': 'Z'}
+            },
+            {
+                'name': 'e',
+                'txt_info': {'mc': 'E', 'br': '€'}
+            },
+            {
+                'name': 'r',
+                'txt_info': {'mc': 'R'}
+            },
+            {
+                'name': 't',
+                'txt_info': {'mc': 'T'}
+            },
+            {
+                'name': 'y',
+                'txt_info': {'mc': 'Y'}
+            },
+            {
+                'name': 'u',
+                'txt_info': {'mc': 'U'}
+            },
+            {
+                'name': 'i',
+                'txt_info': {'mc': 'I'}
+            },
+            {
+                'name': 'o',
+                'txt_info': {'mc': 'O'}
+            },
+            {
+                'name': 'p',
+                'txt_info': {'mc': 'P'}
+            },
+            {
+                'name': '^',
+                'txt_info': {'tc': '¨', 'bc': '^'}
+            },
+            {
+                'name': '$',
+                'txt_info': {'tl': '£', 'bl': '$', 'br': '¤'}
+            },
+            {
+                'name': 'return',
+                'txt_info': {'tl': 'Entrée'}
+            },
+        ],
+    },
     # {
-    #     "name": 'letters_1',
-    #     "location": (0, 1),
-    #     "keys": [
-    #         ('Tab', '', 'tab'),
-    #         ('A', '', 'a'),
-    #         ('Z', '', 'z'),
-    #         ('E', '', 'e'),
-    #         ('R', '', 'r'),
-    #         ('T', '', 't'),
-    #         ('Y', '', 'y'),
-    #         ('U', '', 'u'),
-    #         ('I', '', 'i'),
-    #         ('O', '', 'o'),
-    #         ('P', '', 'p'),
-    #         ('¨', '^', '^'),
-    #         ('£', '$ ¤', '$'),
-    #         ('Entrée', '', 'return'),
-    #     ],
-    # },
-    # {
-    #     "name": 'letters_2',
-    #     "location": (0, 2),
-    #     "keys": [
+    #     'name': 'letters_2',
+    #     'location': (0, 2),
+    #     'keys': [
     #         ('Caps Lock', '', 'caps lock'),
     #         ('Q', '', 'q'),
     #         ('S', '', 's'),
@@ -103,9 +145,9 @@ rows = [
     #     ],
     # },
     # {
-    #     "name": 'letters_3',
-    #     "location": (0, 3),
-    #     "keys": [
+    #     'name': 'letters_3',
+    #     'location': (0, 3),
+    #     'keys': [
     #         ('Shift', '', 'left shift'),
     #         ('>', '<', '<'),
     #         ('W', '', 'w'),
@@ -122,9 +164,9 @@ rows = [
     #     ],
     # },
     # {
-    #     "name": 'spacebar_row',
-    #     "location": (0, 4),
-    #     "keys": [
+    #     'name': 'spacebar_row',
+    #     'location': (0, 4),
+    #     'keys': [
     #         ('Ctr', '', 'left control'),
     #         ('Fn', '', 'function'),
     #         ('Win', '', 'left windows'),
@@ -135,18 +177,18 @@ rows = [
     #     ],
     # },
     # {
-    #     "name": 'lower arrows',
-    #     "location": (11.2, 4.6),
-    #     "keys": [
+    #     'name': 'lower arrows',
+    #     'location': (11.2, 4.6),
+    #     'keys': [
     #         ('◄', '', 'left arrow'),
     #         ('▼', '', 'down arrow'),
     #         ('►', '', 'right arrow'),
     #     ]
     # },
     # {
-    #     "name": 'upper arrows',
-    #     "location": (12.3, 4.0),
-    #     "keys": [
+    #     'name': 'upper arrows',
+    #     'location': (12.3, 4.0),
+    #     'keys': [
     #         ('▲', '', 'up arrow'),
     #     ]
     # },

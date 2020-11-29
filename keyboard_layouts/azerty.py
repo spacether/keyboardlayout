@@ -124,26 +124,68 @@ rows = [
             },
         ],
     },
-    # {
-    #     'name': 'letters_2',
-    #     'location': (0, 2),
-    #     'keys': [
-    #         ('Caps Lock', '', 'caps lock'),
-    #         ('Q', '', 'q'),
-    #         ('S', '', 's'),
-    #         ('D', '', 'd'),
-    #         ('F', '', 'f'),
-    #         ('G', '', 'g'),
-    #         ('H', '', 'h'),
-    #         ('J', '', 'j'),
-    #         ('K', '', 'k'),
-    #         ('L', '', 'l'),
-    #         ('M', '', 'm'),
-    #         ('%', 'ù', 'ù'),
-    #         ('μ', "*", "*"),
-    #         ('', '', 'return'),
-    #     ],
-    # },
+    {
+        'name': 'letters_2',
+        'location': (0, 2),
+        'keys': [
+            {
+                'name': 'caps lock',
+                'txt_info': {'tl': 'Caps Lock'}
+            },
+            {
+                'name': 'q',
+                'txt_info': {'mc': 'Q'}
+            },
+            {
+                'name': 's',
+                'txt_info': {'mc': 'S'}
+            },
+            {
+                'name': 'd',
+                'txt_info': {'mc': 'D'}
+            },
+            {
+                'name': 'f',
+                'txt_info': {'mc': 'F'}
+            },
+            {
+                'name': 'g',
+                'txt_info': {'mc': 'G'}
+            },
+            {
+                'name': 'h',
+                'txt_info': {'mc': 'H'}
+            },
+            {
+                'name': 'j',
+                'txt_info': {'mc': 'J'}
+            },
+            {
+                'name': 'k',
+                'txt_info': {'mc': 'K'}
+            },
+            {
+                'name': 'l',
+                'txt_info': {'mc': 'L'}
+            },
+            {
+                'name': 'm',
+                'txt_info': {'mc': 'M'}
+            },
+            {
+                'name': 'ù',
+                'txt_info': {'tc': '%', 'bc': 'ù'}
+            },
+            {
+                'name': '*',
+                'txt_info': {'tc': 'μ', 'bc': '*'}
+            },
+            {
+                'name': 'return',
+                'txt_info': {}
+            },
+        ],
+    },
     # {
     #     'name': 'letters_3',
     #     'location': (0, 3),

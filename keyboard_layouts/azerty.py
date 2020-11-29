@@ -1,6 +1,4 @@
-# tuple of upper txt and lower text
 rows = [
-    # 'functions': {},
     # upper text, lower txt, key_name for key detection
     {
         "name": 'numbers',

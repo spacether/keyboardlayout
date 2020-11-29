@@ -19,7 +19,8 @@ python plotter.py
 - [DONE] connect enter key on two rows
 - [DONE] add azerty
 - [DONE] add ability to color keys
-- Add margin into txt positioning
+- [DONE] Add margin into txt positioning
+- [DONE] Add ability to offset keyboard to x,y location
 - Move txt location into key definition
 ```
 {
@@ -31,4 +32,8 @@ python plotter.py
   }
 }
 ```
+- Move key size into key definition
+- Update qwerty file
+- Change files to yaml
 - hook into different keyboard listeners
+- Simple tests

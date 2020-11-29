@@ -7,7 +7,7 @@ def init_pygame_and_draw_keyboard(keyboard_layout: str):
     pygame.init()
     pygame.display.set_caption("{} keyboard layout".format(keyboard_layout))
 
-    keyboard = get_keyboard(keyboard_layout)
+    keyboard = get_keyboard(keyboard_layout, (0, 0))
 
     screen = pygame.display.set_mode(
         (keyboard.rect.width, keyboard.rect.height))
@@ -97,13 +97,13 @@ class KeyGroup(pygame.sprite.Group):
         for i, label_txt in enumerate(label_pair):
             if not label_txt:
                 continue
-            xloc = x + txt_xpadding
+            xloc = x + key_padding + txt_xpadding
             if i == 0:
                 ytop = True
-                yloc = y + txt_ypadding
+                yloc = y + key_padding + txt_ypadding
             else:
                 ytop = False
-                yloc = y + height - txt_ypadding
+                yloc = y + height - key_padding - txt_ypadding
             txt_sprite = TxtSprite(
                 xloc,
                 yloc,
@@ -247,6 +247,7 @@ class KeyboardLayout(pygame.sprite.Group):
 
     def __init__(
         self,
+        position: typing.Tuple[int],
         layout_name: str,
         keyboard_padding: int,
         letter_key_width: int,
@@ -266,18 +267,19 @@ class KeyboardLayout(pygame.sprite.Group):
         )
         self._key_name_to_key = {}
 
-        x = keyboard_padding
-        y = keyboard_padding
+        x, y = position
+        xanchor = x + keyboard_padding
+        yanchor = y + keyboard_padding
         if key_margin:
-            x += -key_margin//2
-            y += -key_margin//2
+            xanchor += -key_margin//2
+            yanchor += -key_margin//2
         xmax = 0
         ymax = 0
         max_width = self.__max_width(letter_key_width, layout)
         max_height = self.__max_height(letter_key_height, layout)
         self.rect = pygame.Rect(
-            0,
-            0,
+            x,
+            y,
             max_width - key_margin + 2*keyboard_padding,
             max_height - key_margin + 2*keyboard_padding,
         )
@@ -291,8 +293,8 @@ class KeyboardLayout(pygame.sprite.Group):
                 max_width, letter_key_width, key_names, layout)
 
             row_x_keycoords, row_y_keycoords = row["location"]
-            key_x = x + row_x_keycoords * letter_key_width
-            row_y = y + row_y_keycoords * letter_key_height
+            key_x = xanchor + row_x_keycoords * letter_key_width
+            row_y = yanchor + row_y_keycoords * letter_key_height
             for label_info in row_keys:
                 key_name = label_info[-1]
                 key_width, key_height = self.__get_key_width_height(
@@ -337,7 +339,7 @@ class KeyboardLayout(pygame.sprite.Group):
         # todo add font_color change
 
 
-def get_keyboard(keyboard_layout: str):
+def get_keyboard(keyboard_layout: str, position: typing.List[int]):
     letter_key_width = 55
     letter_key_height = 51
     keyboard_padding = 3
@@ -352,6 +354,7 @@ def get_keyboard(keyboard_layout: str):
     txt_ypadding = letter_key_width//10
 
     keyboard_layout = KeyboardLayout(
+        position,
         keyboard_layout,
         keyboard_padding,
         letter_key_width,
@@ -364,7 +367,7 @@ def get_keyboard(keyboard_layout: str):
         txt_ypadding,
         keyboard_color=font_color
     )
-    keyboard_layout.update_key("return", bg_color=pygame.Color('red'))
+    # keyboard_layout.update_key("return", bg_color=pygame.Color('red'))
     return keyboard_layout
 
 

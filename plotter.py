@@ -73,10 +73,7 @@ class Key:
 class KeyGroup(pygame.sprite.Group):
     def __init__(
         self,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
+        r: pygame.Rect,
         key_margin: int,
         color: pygame.Color,
         label_pair: typing.Tuple[str],
@@ -86,6 +83,7 @@ class KeyGroup(pygame.sprite.Group):
         txt_ypadding: int,
     ):
         super().__init__()
+        x, y, width, height = r.x, r.y, r.width, r.height
         key_padding = key_margin//2
         r = pygame.Rect(
             x+key_padding,
@@ -218,6 +216,35 @@ class KeyboardLayout(pygame.sprite.Group):
                     height_max = key_ymax
         return height_max
 
+    def __add_additional_sprites_to_key(
+        self,
+        key_name: str,
+        key_group: KeyGroup,
+        key_margin: int,
+        key_color: pygame.Color,
+    ):
+        txt_sprites = key_group.sprites()[1:]
+        key = self._key_name_to_key[key_name]
+        key.txt_sprites.add(txt_sprites)
+
+        new_bg_sprite = key_group.sprites()[0]
+        existing_bg_sprite = key.bg_sprites.sprites()[0]
+        if existing_bg_sprite.rect.width < new_bg_sprite.rect.width:
+            used_rect = existing_bg_sprite.rect
+            used_y = used_rect.bottom
+        else:
+            used_rect = new_bg_sprite.rect
+            used_y = used_rect.top - key_margin
+        r = pygame.Rect(
+            used_rect.left,
+            used_y,
+            used_rect.width,
+            key_margin,
+        )
+        sticher_sprite = RectSprite(r, key_color)
+        self.add([sticher_sprite])
+        key.bg_sprites.add([new_bg_sprite, sticher_sprite])
+
     def __init__(
         self,
         layout_name: str,
@@ -275,11 +302,9 @@ class KeyboardLayout(pygame.sprite.Group):
                     letter_key_height,
                     layout,
                 )
+                rect = pygame.Rect(key_x, row_y, key_width, key_height)
                 key_group = KeyGroup(
-                    key_x,
-                    row_y,
-                    key_width,
-                    key_height,
+                    rect,
                     key_margin,
                     key_color,
                     label_info[:2],
@@ -289,33 +314,15 @@ class KeyboardLayout(pygame.sprite.Group):
                     txt_ypadding
                 )
                 self.add(key_group.sprites())
+                key_x += key_width
                 if key_name not in self._key_name_to_key:
                     bg_sprites = pygame.sprite.Group(key_group.sprites()[:1])
                     txt_sprites = pygame.sprite.Group(key_group.sprites()[1:])
                     key = Key(bg_sprites, txt_sprites)
                     self._key_name_to_key[key_name] = key
                 else:
-                    txt_sprites = key_group.sprites()[1:]
-                    new_bg_sprite = key_group.sprites()[0]
-                    existing_bg_sprite = key.bg_sprites.sprites()[0]
-                    if existing_bg_sprite.rect.width < new_bg_sprite.rect.width:
-                        used_rect = existing_bg_sprite.rect
-                        used_y = used_rect.bottom
-                    else:
-                        used_rect = new_bg_sprite.rect
-                        used_y = used_rect.top - key_margin
-                    r = pygame.Rect(
-                        used_rect.left,
-                        used_y,
-                        used_rect.width,
-                        key_margin,
-                    )
-                    sticher_sprite = RectSprite(r, key_color)
-                    self.add([sticher_sprite])
-                    key = self._key_name_to_key[key_name]
-                    key.bg_sprites.add([new_bg_sprite, sticher_sprite])
-                    key.txt_sprites.add(txt_sprites)
-                key_x += key_width
+                    self.__add_additional_sprites_to_key(
+                        key_name, key_group, key_margin, key_color)
 
     def update_key(
         self,

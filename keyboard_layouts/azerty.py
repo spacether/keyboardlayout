@@ -186,25 +186,64 @@ rows = [
             },
         ],
     },
-    # {
-    #     'name': 'letters_3',
-    #     'location': (0, 3),
-    #     'keys': [
-    #         ('Shift', '', 'left shift'),
-    #         ('>', '<', '<'),
-    #         ('W', '', 'w'),
-    #         ('X', '', 'x'),
-    #         ('C', '', 'c'),
-    #         ('V', '', 'v'),
-    #         ('B', '', 'b'),
-    #         ('N', '', 'n'),
-    #         ('?', ',', ','),
-    #         ('.', ';', ';'),
-    #         ('/', ':', ':'),
-    #         ('§', '!', '!'),
-    #         ('Shift', '', 'right shift'),
-    #     ],
-    # },
+    {
+        'name': 'letters_3',
+        'location': (0, 3),
+        'keys': [
+            {
+                'name': 'left shift',
+                'txt_info': {'tl': 'Shift'}
+            },
+            {
+                'name': '<',
+                'txt_info': {'tc': '>', 'bc': '<'}
+            },
+            {
+                'name': 'w',
+                'txt_info': {'mc': 'W'}
+            },
+            {
+                'name': 'x',
+                'txt_info': {'mc': 'X'}
+            },
+            {
+                'name': 'c',
+                'txt_info': {'mc': 'C'}
+            },
+            {
+                'name': 'v',
+                'txt_info': {'mc': 'V'}
+            },
+            {
+                'name': 'b',
+                'txt_info': {'mc': 'B'}
+            },
+            {
+                'name': 'n',
+                'txt_info': {'mc': 'N'}
+            },
+            {
+                'name': ',',
+                'txt_info': {'tc': '?', 'bc': ','}
+            },
+            {
+                'name': ';',
+                'txt_info': {'tc': '.', 'bc': ';'}
+            },
+            {
+                'name': ':',
+                'txt_info': {'tc': '/', 'bc': ':'}
+            },
+            {
+                'name': '!',
+                'txt_info': {'tc': '§', 'bc': '!'}
+            },
+            {
+                'name': 'right shift',
+                'txt_info': {'tl': 'Shift'}
+            },
+        ],
+    },
     # {
     #     'name': 'spacebar_row',
     #     'location': (0, 4),

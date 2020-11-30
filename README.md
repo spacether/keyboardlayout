@@ -24,7 +24,9 @@ python plotter.py
 - [DONE] Add ability to change key text color
 - [DONE] Move txt location into key definition
 - [DONE] Move key size into key definition
-- Update qwerty file
+- [DONE] Update qwerty file
+- [DONE] Moves all key size info into qwerty + azerty files
 - Change files to yaml
 - hook into different keyboard listeners
 - Simple tests
+- Package for pypi

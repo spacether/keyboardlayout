@@ -2,6 +2,7 @@ rows = [
     {
         'name': 'numbers',
         'location': (0, 0),
+        'key_size': (1, 1),
         'keys': [
             {
                 'name': 'code not known',
@@ -65,6 +66,7 @@ rows = [
     {
         'name': 'letters_1',
         'location': (0, 1),
+        'key_size': (1, 1),
         'keys': [
             {
                 'name': 'tab',
@@ -128,6 +130,7 @@ rows = [
     {
         'name': 'letters_2',
         'location': (0, 2),
+        'key_size': (1, 1),
         'keys': [
             {
                 'name': 'caps lock',
@@ -192,6 +195,7 @@ rows = [
     {
         'name': 'letters_3',
         'location': (0, 3),
+        'key_size': (1, 1),
         'keys': [
             {
                 'name': 'left shift',

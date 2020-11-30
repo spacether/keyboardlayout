@@ -1,108 +1,292 @@
-# tuple of upper txt and lower text
-rows = {
-    # 'functions': {},
-    # upper text, lower txt, key_name for key detection
-    'numbers': [
-        ('~', '`', '`'),
-        ('!', '1', '1'),
-        ('@', '2', '2'),
-        ('#', '3', '3'),
-        ('$', '4', '4'),
-        ('%', '5', '5'),
-        ('^', '6', '6'),
-        ('&', '7', '7'),
-        ('*', '8', '8'),
-        ('(', '9', '9'),
-        (')', '0', '0'),
-        ('_', '-', '-'),
-        ('+', '=', '='),
-        ('Backspace', '', 'backspace'),
-    ],
-    'letters_1': [
-        ('Tab', '', 'tab'),
-        ('Q', '', 'q'),
-        ('W', '', 'w'),
-        ('E', '', 'e'),
-        ('R', '', 'r'),
-        ('T', '', 't'),
-        ('Y', '', 'y'),
-        ('U', '', 'u'),
-        ('I', '', 'i'),
-        ('O', '', 'o'),
-        ('P', '', 'p'),
-        ('{', '[', '['),
-        ('}', ']', ']'),
-        ('|', '\\', '\\'),
-    ],
-    'letters_2': [
-        ('Caps Lock', '', 'caps lock'),
-        ('A', '', 'a'),
-        ('S', '', 's'),
-        ('D', '', 'd'),
-        ('F', '', 'f'),
-        ('G', '', 'g'),
-        ('H', '', 'h'),
-        ('J', '', 'j'),
-        ('K', '', 'k'),
-        ('L', '', 'l'),
-        (':', ';', ';'),
-        ('"', "'", "'"),
-        ('Enter', '', 'return'),
-    ],
-    'letters_3': [
-        ('Shift', '', 'left shift'),
-        ('Z', '', 'z'),
-        ('X', '', 'x'),
-        ('C', '', 'c'),
-        ('V', '', 'v'),
-        ('B', '', 'b'),
-        ('N', '', 'n'),
-        ('M', '', 'm'),
-        ('<', ',', ','),
-        ('>', '.', '.'),
-        ('?', '/', '/'),
-        ('Shift', '', 'right shift'),
-    ],
-    'spacebar_row': [
-        ('Control', '', 'left control'),
-        ('Win', '', 'left windows'),
-        ('Alt', '', 'left alt'),
-        ('', '', 'space bar'),
-        ('Alt', '', 'right alt'),
-        ('Wind', '', 'right windows'),
-        ('Menu', '', 'menu'),
-        ('Control', '', 'right control'),
-    ],
-    # 'uparrow': {'up arrow': '▲'},
-}
-row_locations = {
-    'numbers': (0, 0),
-    'letters_1': (0, 1),
-    'letters_2': (0, 2),
-    'letters_3': (0, 3),
-    'spacebar_row': (0, 4),
-} # in std key size coordinates? where 1, 1 is 1 letter key wide by 1 letter key tall
-key_sizes = {
-    'tab': (1.5, 1),
-    'alt': (1.2, 1),
-}
-key_width_percent_remainder_sizes = {
-    'caps lock': 45,
-    'return': 55,
-    'left shift': 46,
-    'right shift': 54,
-    'backspace': 100,
-    'space bar': 100,
-}
-key_to_key_size = {
-    'tab': 'tab',
-    '\\': 'tab',
-    'left control': 'tab',
-    'right control': 'tab',
-    'left alt': 'alt',
-    'right alt': 'alt',
-    'left windows': 'alt',
-    'right windows': 'alt',
-    'menu': 'alt',
-}
-# if key size is not defined, 1 key x by 1 key y size is assumed
+rows = [
+    {
+        'name': 'numbers',
+        'location': (0, 0),
+        'key_size': (1, 1),
+        'keys': [
+            {
+                'name': '`',
+                'txt_info': {'tl': '~', 'bl': '`'},
+            },
+            {
+                'name': '1',
+                'txt_info': {'tl': '!', 'bl': '1'},
+            },
+            {
+                'name': '2',
+                'txt_info': {'tl': '@', 'bl': '2'},
+            },
+            {
+                'name': '3',
+                'txt_info': {'tl': '#', 'bl': '3'},
+            },
+            {
+                'name': '4',
+                'txt_info': {'tl': '$', 'bl': '4'},
+            },
+            {
+                'name': '5',
+                'txt_info': {'tl': '%', 'bl': '5'},
+            },
+            {
+                'name': '6',
+                'txt_info': {'tl': '^', 'bl': '6'},
+            },
+            {
+                'name': '7',
+                'txt_info': {'tl': '&', 'bl': '7'},
+            },
+            {
+                'name': '8',
+                'txt_info': {'tl': '*', 'bl': '8'},
+            },
+            {
+                'name': '9',
+                'txt_info': {'tl': '(', 'bl': '9'},
+            },
+            {
+                'name': '0',
+                'txt_info': {'tl': ')', 'bl': '0'},
+            },
+            {
+                'name': '-',
+                'txt_info': {'tl': '_', 'bl': '-'},
+            },
+            {
+                'name': '=',
+                'txt_info': {'tl': '+', 'bl': '='},
+            },
+            {
+                'name': 'backspace',
+                'txt_info': {'tl': 'Backspace'},
+                'size': (2, 1),
+            },
+        ],
+    },
+    {
+        'name': 'letters_1',
+        'location': (0, 1),
+        'key_size': (1, 1),
+        'keys': [
+            {
+                'name': 'tab',
+                'txt_info': {'tl': 'Tab'},
+                'size': (1.5, 1)
+            },
+            {
+                'name': 'q',
+                'txt_info': {'tl': 'Q'}
+            },
+            {
+                'name': 'w',
+                'txt_info': {'tl': 'W'}
+            },
+            {
+                'name': 'e',
+                'txt_info': {'tl': 'E'}
+            },
+            {
+                'name': 'r',
+                'txt_info': {'tl': 'R'}
+            },
+            {
+                'name': 't',
+                'txt_info': {'tl': 'T'}
+            },
+            {
+                'name': 'y',
+                'txt_info': {'tl': 'Y'}
+            },
+            {
+                'name': 'u',
+                'txt_info': {'tl': 'U'}
+            },
+            {
+                'name': 'i',
+                'txt_info': {'tl': 'I'}
+            },
+            {
+                'name': 'o',
+                'txt_info': {'tl': 'O'}
+            },
+            {
+                'name': 'p',
+                'txt_info': {'tl': 'P'}
+            },
+            {
+                'name': '[',
+                'txt_info': {'tl': '{', 'bl': '['}
+            },
+            {
+                'name': ']',
+                'txt_info': {'tl': '}', 'bl': ']'}
+            },
+            {
+                'name': '\\',
+                'txt_info': {'tl': '|', 'bl': '\\'},
+                'size': (1.5, 1)
+            },
+        ],
+    },
+    {
+        'name': 'letters_2',
+        'location': (0, 2),
+        'key_size': (1, 1),
+        'keys': [
+            {
+                'name': 'caps lock',
+                'txt_info': {'tl': 'Caps Lock'},
+                'size': (1.8, 1)
+            },
+            {
+                'name': 'a',
+                'txt_info': {'tl': 'A'}
+            },
+            {
+                'name': 's',
+                'txt_info': {'tl': 'S'}
+            },
+            {
+                'name': 'd',
+                'txt_info': {'tl': 'D'}
+            },
+            {
+                'name': 'f',
+                'txt_info': {'tl': 'F'}
+            },
+            {
+                'name': 'g',
+                'txt_info': {'tl': 'G'}
+            },
+            {
+                'name': 'h',
+                'txt_info': {'tl': 'H'}
+            },
+            {
+                'name': 'j',
+                'txt_info': {'tl': 'J'}
+            },
+            {
+                'name': 'k',
+                'txt_info': {'tl': 'K'}
+            },
+            {
+                'name': 'l',
+                'txt_info': {'tl': 'L'}
+            },
+            {
+                'name': ';',
+                'txt_info': {'tl': ':', 'bl': ';'}
+            },
+            {
+                'name': "'",
+                'txt_info': {'tl': '"', 'bl': "'"}
+            },
+            {
+                'name': 'return',
+                'txt_info': {'tl': 'Enter'},
+                'size': (2.2, 1)
+            },
+        ],
+    },
+    {
+        'name': 'letters_3',
+        'location': (0, 3),
+        'key_size': (1, 1),
+        'keys': [
+            {
+                'name': 'left shift',
+                'txt_info': {'tl': 'Shift'},
+                'size': (2.3, 1)
+            },
+            {
+                'name': 'z',
+                'txt_info': {'tl': 'Z'}
+            },
+            {
+                'name': 'x',
+                'txt_info': {'tl': 'X'}
+            },
+            {
+                'name': 'c',
+                'txt_info': {'tl': 'C'}
+            },
+            {
+                'name': 'v',
+                'txt_info': {'tl': 'V'}
+            },
+            {
+                'name': 'b',
+                'txt_info': {'tl': 'B'}
+            },
+            {
+                'name': 'n',
+                'txt_info': {'tl': 'N'}
+            },
+            {
+                'name': 'm',
+                'txt_info': {'tl': 'M'}
+            },
+            {
+                'name': ',',
+                'txt_info': {'tl': '<', 'bl': ','}
+            },
+            {
+                'name': '.',
+                'txt_info': {'tl': '>', 'bl': '.'}
+            },
+            {
+                'name': '/',
+                'txt_info': {'tl': '?', 'bl': '/'}
+            },
+            {
+                'name': 'right shift',
+                'txt_info': {'tl': 'Shift'},
+                'size': (2.7, 1)
+            },
+        ],
+    },
+    {
+        'name': 'spacebar_row',
+        'location': (0, 4),
+        'key_size': (1.3, 1),
+        'keys': [
+            {
+                'name': 'left control',
+                'txt_info': {'tl': 'Ctrl'},
+                'size': (1.5, 1)
+            },
+            {
+                'name': 'left windows',
+                'txt_info': {'tl': 'Win'}
+            },
+            {
+                'name': 'left alt',
+                'txt_info': {'tl': 'Alt'}
+            },
+            {
+                'name': 'space bar',
+                'txt_info': {},
+                'size': (5.6, 1)
+            },
+            {
+                'name': 'right alt',
+                'txt_info': {'tl': 'Alt'}
+            },
+            {
+                'name': 'right windows',
+                'txt_info': {'tl': 'Win'}
+            },
+            {
+                'name': 'menu',
+                'txt_info': {'tl': 'Menu'},
+                'size': (1.2, 1)
+            },
+            {
+                'name': 'right control',
+                'txt_info': {'tl': 'Ctrl'},
+                'size': (1.5, 1)
+            },
+        ],
+    },
+]

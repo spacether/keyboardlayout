@@ -74,6 +74,8 @@ pip install .
 ```
 
 ### Todo
-- hook into different keyboard listeners
+- Consolidate 2 color parameters into one dict input
+- Dynamically make enum of different layout options
 - Auto produce sample images
 - Simple tests
+- hook into different keyboard listeners

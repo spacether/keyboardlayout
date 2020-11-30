@@ -1,64 +1,64 @@
 rows = [
-    # upper text, lower txt, key_name for key detection
     {
         'name': 'numbers',
         'location': (0, 0),
         'keys': [
             {
                 'name': 'code not known',
-                "txt_info": {'bc': '2'},
+                'txt_info': {'bc': '2'},
             },
             {
                 'name': '1',
-                "txt_info": {'tc': '1', 'bc': '&'},
+                'txt_info': {'tc': '1', 'bc': '&'},
             },
             {
                 'name': '2',
-                "txt_info": {'tl': '2', 'bl': 'é', 'br': '~'},
+                'txt_info': {'tl': '2', 'bl': 'é', 'br': '~'},
             },
             {
                 'name': '3',
-                "txt_info": {'tl': '3', 'bl': '"', 'br': '#'},
+                'txt_info': {'tl': '3', 'bl': '"', 'br': '#'},
             },
             {
                 'name': '4',
-                "txt_info": {'tl': '4', 'bl': '\'', 'br': '{'},
+                'txt_info': {'tl': '4', 'bl': '\'', 'br': '{'},
             },
             {
                 'name': '5',
-                "txt_info": {'tl': '5', 'bl': '(', 'br': '['},
+                'txt_info': {'tl': '5', 'bl': '(', 'br': '['},
             },
             {
                 'name': '6',
-                "txt_info": {'tl': '6', 'bl': '-', 'br': '|'},
+                'txt_info': {'tl': '6', 'bl': '-', 'br': '|'},
             },
             {
                 'name': '7',
-                "txt_info": {'tl': '7', 'bl': 'è', 'br': '`'},
+                'txt_info': {'tl': '7', 'bl': 'è', 'br': '`'},
             },
             {
                 'name': '8',
-                "txt_info": {'tl': '8', 'bl': '_', 'br': '\\'},
+                'txt_info': {'tl': '8', 'bl': '_', 'br': '\\'},
             },
             {
                 'name': '9',
-                "txt_info": {'tl': '9', 'bl': 'ç', 'br': '^'},
+                'txt_info': {'tl': '9', 'bl': 'ç', 'br': '^'},
             },
             {
                 'name': '0',
-                "txt_info": {'tl': '0', 'bl': 'à', 'br': '@'},
+                'txt_info': {'tl': '0', 'bl': 'à', 'br': '@'},
             },
             {
                 'name': '°',
-                "txt_info": {'tl': '°', 'bl': ')', 'br': ']'},
+                'txt_info': {'tl': '°', 'bl': ')', 'br': ']'},
             },
             {
                 'name': '+',
-                "txt_info": {'tl': '+', 'bl': '=', 'br': '}'},
+                'txt_info': {'tl': '+', 'bl': '=', 'br': '}'},
             },
             {
                 'name': 'backspace',
-                "txt_info": {'tl': 'Backspace'},
+                'txt_info': {'tl': 'Backspace'},
+                'size': (1.5, 1),
             },
         ],
     },
@@ -68,7 +68,8 @@ rows = [
         'keys': [
             {
                 'name': 'tab',
-                'txt_info': {'ml': 'Tab'}
+                'txt_info': {'ml': 'Tab'},
+                'size': (1.5, 1)
             },
             {
                 'name': 'a',
@@ -130,7 +131,8 @@ rows = [
         'keys': [
             {
                 'name': 'caps lock',
-                'txt_info': {'ml': 'Caps Lock'}
+                'txt_info': {'ml': 'Caps Lock'},
+                'size': (1.7, 1)
             },
             {
                 'name': 'q',
@@ -182,7 +184,8 @@ rows = [
             },
             {
                 'name': 'return',
-                'txt_info': {}
+                'txt_info': {},
+                'size': (0.8, 1)
             },
         ],
     },
@@ -192,7 +195,8 @@ rows = [
         'keys': [
             {
                 'name': 'left shift',
-                'txt_info': {'ml': 'Shift'}
+                'txt_info': {'ml': 'Shift'},
+                'size': (1.2, 1)
             },
             {
                 'name': '<',
@@ -240,17 +244,20 @@ rows = [
             },
             {
                 'name': 'right shift',
-                'txt_info': {'mr': 'Shift'}
+                'txt_info': {'mr': 'Shift'},
+                'size': (2.3, 1)
             },
         ],
     },
     {
         'name': 'spacebar_row',
         'location': (0, 4),
+        'key_size': (1, 1.2),
         'keys': [
             {
                 'name': 'left control',
-                'txt_info': {'ml': 'Ctrl'}
+                'txt_info': {'ml': 'Ctrl'},
+                'size':(1.2, 1.2)
             },
             {
                 'name': 'function',
@@ -266,7 +273,8 @@ rows = [
             },
             {
                 'name': 'space bar',
-                'txt_info': {}
+                'txt_info': {},
+                'size': (5, 1.2)
             },
             {
                 'name': 'right alt',
@@ -281,6 +289,7 @@ rows = [
     {
         'name': 'lower arrows',
         'location': (11.2, 4.6),
+        'key_size': (1.1, 0.6),
         'keys': [
             {
                 'name': 'left arrow',
@@ -299,6 +308,7 @@ rows = [
     {
         'name': 'upper arrows',
         'location': (12.3, 4.0),
+        'key_size': (1.1, 0.6),
         'keys': [
             {
                 'name': 'up arrow',
@@ -307,37 +317,3 @@ rows = [
         ]
     },
 ]
-key_sizes = {
-    'tab': (1.5, 1),
-    'caps lock': (1.7, 1),
-    'right shift': (2.3, 1),
-    'left shift': (1.2, 1),
-    'space bar': (5, 1.2),
-    'left control': (1.2, 1.2),
-    'alt': (1, 1.2),
-    'arrow': (1.1, 0.6)
-}
-# 14.5 - 11 = 3.5 - 2.3 = 1.2
-key_width_percent_remainder_sizes = {
-    'return': 100,
-}
-key_to_key_size = {
-    'right shift': 'right shift',
-    'left shift': 'left shift',
-    'caps lock': 'caps lock',
-    'backspace': 'tab',
-    'tab': 'tab',
-    '\\': 'tab',
-    'left control': 'left control',
-    'function': 'alt',
-    'left alt': 'alt',
-    'left windows': 'alt',
-    'space bar': 'space bar',
-    'right alt': 'alt',
-    'right control': 'alt',
-    'left arrow': 'arrow',
-    'down arrow': 'arrow',
-    'right arrow': 'arrow',
-    'up arrow': 'arrow',
-}
-# if key size is not defined, 1 key x by 1 key y size is assumed

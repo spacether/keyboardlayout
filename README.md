@@ -23,7 +23,7 @@ python plotter.py
 - [DONE] Add ability to offset keyboard to x,y location
 - [DONE] Add ability to change key text color
 - [DONE] Move txt location into key definition
-- Move key size into key definition
+- [DONE] Move key size into key definition
 - Update qwerty file
 - Change files to yaml
 - hook into different keyboard listeners

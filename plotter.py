@@ -151,79 +151,22 @@ class KeyboardLayout(pygame.sprite.Group):
     __letter_key_size_keycoords = (1, 1)
 
     @classmethod
-    def __get_remainder_x(
-        cls,
-        xmax: int,
-        letter_key_width: int,
-        key_names: typing.List[str],
-        layout: ModuleType
-    ):
-        if (
-            any(key_name in layout.key_width_percent_remainder_sizes
-                for key_name in key_names
-            )
-        ):
-            used_width = 0
-            for key_name in key_names:
-                if key_name in layout.key_width_percent_remainder_sizes:
-                    continue
-                keysize_name = layout.key_to_key_size.get(key_name, None)
-                key_xsize_keycoords, _ = layout.key_sizes.get(
-                    keysize_name, cls.__letter_key_size_keycoords)
-                key_width = letter_key_width * key_xsize_keycoords
-                used_width += key_width
-            remainder_x = xmax - used_width
-            return remainder_x
-        return None
-
-    @classmethod
-    def __get_key_width_height(
-        cls,
-        key_name: str,
-        remainder_x: typing.Optional[int],
-        letter_key_width: int,
-        letter_key_height: int,
-        layout: ModuleType,
-    ):
-        keysize_name = layout.key_to_key_size.get(key_name, None)
-        key_xsize_keycoords, key_ysize_keycoords = (
-            layout.key_sizes.get(keysize_name, cls.__letter_key_size_keycoords)
-        )
-        key_width_percent_remainder = (
-            layout.key_width_percent_remainder_sizes.get(key_name, None)
-        )
-        if key_width_percent_remainder is None:
-            key_width = letter_key_width * key_xsize_keycoords
-        else:
-            key_width = remainder_x*(key_width_percent_remainder/100)
-        key_height = letter_key_height * key_ysize_keycoords
-        return key_width, key_height
-
-    @classmethod
     def __max_width(
         cls,
         letter_key_width: int,
         layout: ModuleType,
     ):
+        max_width = 0
         for row in layout.rows:
-            key_names = set(key['name'] for key in row['keys'])
-            if any(
-                key_name in layout.key_width_percent_remainder_sizes for
-                key_name in key_names
-            ):
-                continue
-            used_width = 0
-            for key_name in key_names:
-                keysize_name = layout.key_to_key_size.get(key_name, None)
-                key_xsize_keycoords, _ = (
-                    layout.key_sizes.get(
-                        keysize_name, cls.__letter_key_size_keycoords
-                    )
-                )
+            row_max_width = 0
+            key_size = row.get('key_size', cls.__letter_key_size_keycoords)
+            for row_key in row['keys']:
+                key_xsize_keycoords, _ = row_key.get('size', key_size)
                 key_width = letter_key_width * key_xsize_keycoords
-                used_width += key_width
-            break
-        return used_width
+                row_max_width += key_width
+            if row_max_width > max_width:
+                max_width = row_max_width
+        return max_width
 
     @classmethod
     def __max_height(
@@ -233,14 +176,9 @@ class KeyboardLayout(pygame.sprite.Group):
     ):
         height_max = 0
         for row in layout.rows:
+            key_size = row.get('key_size', cls.__letter_key_size_keycoords)
             for row_key in row['keys']:
-                key_name = row_key['name']
-                keysize_name = layout.key_to_key_size.get(key_name, None)
-                _, key_ysize_keycoords = (
-                    layout.key_sizes.get(
-                        keysize_name, cls.__letter_key_size_keycoords
-                    )
-                )
+                _, key_ysize_keycoords = row_key.get('size', key_size)
                 _, row_y_keycoords = row["location"]
                 row_y = row_y_keycoords * letter_key_height
                 key_height = letter_key_height * key_ysize_keycoords
@@ -322,20 +260,19 @@ class KeyboardLayout(pygame.sprite.Group):
         for row in layout.rows:
             row_keys = row['keys']
             key_names = set(key['name'] for key in row_keys)
-            remainder_x = self.__get_remainder_x(
-                max_width, letter_key_width, key_names, layout)
 
             row_x_keycoords, row_y_keycoords = row['location']
             key_x = xanchor + row_x_keycoords * letter_key_width
             row_y = yanchor + row_y_keycoords * letter_key_height
+            key_size = row.get('key_size', self.__letter_key_size_keycoords)
             for row_key in row_keys:
                 key_name = row_key['name']
-                key_width, key_height = self.__get_key_width_height(
-                    key_name,
-                    remainder_x,
-                    letter_key_width,
-                    letter_key_height,
-                    layout,
+
+                key_xsize_keycoords, key_ysize_keycoords = (
+                    row_key.get('size', key_size))
+                key_width, key_height = (
+                    letter_key_width*key_xsize_keycoords,
+                    letter_key_height*key_ysize_keycoords
                 )
                 rect = pygame.Rect(key_x, row_y, key_width, key_height)
                 key_group = KeyGroup(

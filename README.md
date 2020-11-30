@@ -22,17 +22,7 @@ python plotter.py
 - [DONE] Add margin into txt positioning
 - [DONE] Add ability to offset keyboard to x,y location
 - [DONE] Add ability to change key text color
-- Move txt location into key definition
-```
-{
-  "name": "q"
-  "txt_info": {
-    "tl/tc/tr": "text",
-    "ml/mc/mr": "text",
-    "bl/bc/br": "text",
-  }
-}
-```
+- [DONE] Move txt location into key definition
 - Move key size into key definition
 - Update qwerty file
 - Change files to yaml

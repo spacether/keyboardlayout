@@ -244,35 +244,68 @@ rows = [
             },
         ],
     },
-    # {
-    #     'name': 'spacebar_row',
-    #     'location': (0, 4),
-    #     'keys': [
-    #         ('Ctr', '', 'left control'),
-    #         ('Fn', '', 'function'),
-    #         ('Win', '', 'left windows'),
-    #         ('Alt', '', 'left alt'),
-    #         ('', '', 'space bar'),
-    #         ('AltGr', '', 'right alt'),
-    #         ('Control', '', 'right control'),
-    #     ],
-    # },
-    # {
-    #     'name': 'lower arrows',
-    #     'location': (11.2, 4.6),
-    #     'keys': [
-    #         ('◄', '', 'left arrow'),
-    #         ('▼', '', 'down arrow'),
-    #         ('►', '', 'right arrow'),
-    #     ]
-    # },
-    # {
-    #     'name': 'upper arrows',
-    #     'location': (12.3, 4.0),
-    #     'keys': [
-    #         ('▲', '', 'up arrow'),
-    #     ]
-    # },
+    {
+        'name': 'spacebar_row',
+        'location': (0, 4),
+        'keys': [
+            {
+                'name': 'left control',
+                'txt_info': {'ml': 'Ctrl'}
+            },
+            {
+                'name': 'function',
+                'txt_info': {'mc': 'Fn'}
+            },
+            {
+                'name': 'left windows',
+                'txt_info': {'mc': 'Win'}
+            },
+            {
+                'name': 'left alt',
+                'txt_info': {'mc': 'Alt'}
+            },
+            {
+                'name': 'space bar',
+                'txt_info': {}
+            },
+            {
+                'name': 'right alt',
+                'txt_info': {'mc': 'AltGr'}
+            },
+            {
+                'name': 'right control',
+                'txt_info': {'mc': 'Ctrl'}
+            },
+        ],
+    },
+    {
+        'name': 'lower arrows',
+        'location': (11.2, 4.6),
+        'keys': [
+            {
+                'name': 'left arrow',
+                'txt_info': {'mc': '◄'}
+            },
+            {
+                'name': 'down arrow',
+                'txt_info': {'mc': '▼'}
+            },
+            {
+                'name': 'right arrow',
+                'txt_info': {'mc': '►'}
+            },
+        ]
+    },
+    {
+        'name': 'upper arrows',
+        'location': (12.3, 4.0),
+        'keys': [
+            {
+                'name': 'up arrow',
+                'txt_info': {'mc': '▲'}
+            },
+        ]
+    },
 ]
 key_sizes = {
     'tab': (1.5, 1),

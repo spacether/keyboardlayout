@@ -9,27 +9,6 @@ import pygame
 
 CURRENT_WORKING_DIR = Path(__file__).parent.absolute()
 
-def init_pygame_and_draw_keyboard(keyboard_layout: str):
-    pygame.init()
-    pygame.display.set_caption("{} keyboard layout".format(keyboard_layout))
-
-    keyboard = get_keyboard(keyboard_layout, (0, 0))
-
-    screen = pygame.display.set_mode(
-        (keyboard.rect.width, keyboard.rect.height))
-    screen.fill(pygame.Color('black'))
-
-    keyboard.draw(screen)
-    pygame.display.update()
-
-def run_until_window_closed():
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-
 class TxtAnchor(Enum):
     TOP_LEFT = 'tl'
     TOP_CENTER = 'tc'
@@ -220,25 +199,26 @@ class KeyboardLayout(pygame.sprite.Group):
 
     def __init__(
         self,
-        position: typing.Tuple[int],
         layout_name: str,
+        position: typing.Tuple[int],
         keyboard_padding: int,
-        letter_key_width: int,
-        letter_key_height: int,
+        letter_key_size: typing.Tuple[int],
         key_margin: int,
         key_color: pygame.Color,
         font_color: pygame.Color,
         font: pygame.font.SysFont,
-        txt_xpadding: int,
-        txt_ypadding: int,
+        txt_padding: typing.Tuple[int],
         keyboard_color: typing.Optional[pygame.Color]=None
     ):
         super().__init__()
         layout_path = os.path.join(
-            CURRENT_WORKING_DIR, 'keyboard_layouts', layout_name+'.yaml')
+            CURRENT_WORKING_DIR, 'layouts', layout_name+'.yaml')
         stream = open(layout_path, 'r')
         layout = yaml.safe_load(stream)
         self._key_name_to_key = {}
+
+        letter_key_width, letter_key_height = letter_key_size
+        txt_xpadding, txt_ypadding = txt_padding
 
         x, y = position
         xanchor = x + keyboard_padding
@@ -314,46 +294,3 @@ class KeyboardLayout(pygame.sprite.Group):
             for txt_sprite in key.txt_sprites.sprites():
                 txt_sprite.font_color = font_color
                 txt_sprite.render_text()
-
-
-def get_keyboard(keyboard_layout: str, position: typing.List[int]):
-    letter_key_width = 60
-    letter_key_height = letter_key_width
-    keyboard_padding = 2
-    key_margin = 10
-    key_color = pygame.Color('grey')
-    font_color = key_color.__invert__()
-
-    font_size = letter_key_width//4
-    font = pygame.font.SysFont('Arial', font_size)
-    font_color = key_color.__invert__()
-    txt_xpadding = letter_key_width//6
-    txt_ypadding = letter_key_width//10
-
-    keyboard_layout = KeyboardLayout(
-        position,
-        keyboard_layout,
-        keyboard_padding,
-        letter_key_width,
-        letter_key_height,
-        key_margin,
-        key_color,
-        font_color,
-        font,
-        txt_xpadding,
-        txt_ypadding,
-        keyboard_color=font_color
-    )
-    # keyboard_layout.update_key(
-    #     "return",
-    #     bg_color=pygame.Color('white'),
-    #     font_color=pygame.Color('red')
-    # )
-    return keyboard_layout
-
-
-if __name__=="__main__":
-    layout_name = 'qwerty'
-    # layout_name = 'azerty_laptop'
-    screen = init_pygame_and_draw_keyboard(layout_name)
-    run_until_window_closed()

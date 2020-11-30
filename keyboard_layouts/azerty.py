@@ -68,7 +68,7 @@ rows = [
         'keys': [
             {
                 'name': 'tab',
-                'txt_info': {'tl': 'Tab'}
+                'txt_info': {'ml': 'Tab'}
             },
             {
                 'name': 'a',
@@ -120,7 +120,7 @@ rows = [
             },
             {
                 'name': 'return',
-                'txt_info': {'tl': 'Entrée'}
+                'txt_info': {'ml': 'Entrée'}
             },
         ],
     },
@@ -130,7 +130,7 @@ rows = [
         'keys': [
             {
                 'name': 'caps lock',
-                'txt_info': {'tl': 'Caps Lock'}
+                'txt_info': {'ml': 'Caps Lock'}
             },
             {
                 'name': 'q',
@@ -192,7 +192,7 @@ rows = [
         'keys': [
             {
                 'name': 'left shift',
-                'txt_info': {'tl': 'Shift'}
+                'txt_info': {'ml': 'Shift'}
             },
             {
                 'name': '<',
@@ -240,7 +240,7 @@ rows = [
             },
             {
                 'name': 'right shift',
-                'txt_info': {'tl': 'Shift'}
+                'txt_info': {'mr': 'Shift'}
             },
         ],
     },

@@ -55,24 +55,19 @@ class TxtSprite(pygame.sprite.Sprite):
         txt_width = self.image.get_width()
         txt_height = self.image.get_height()
 
-        if txt_anchor is TxtAnchor.TOP_LEFT:
-            xloc = x
+        first_word, second_word = txt_anchor.name.split('_')
+        if first_word == 'TOP':
             yloc = y
-        elif txt_anchor is TxtAnchor.BOTTOM_LEFT:
-            xloc = x
-            yloc = y - txt_height
-        elif txt_anchor is TxtAnchor.BOTTOM_RIGHT:
-            xloc = x - txt_width
-            yloc = y - txt_height
-        elif txt_anchor is TxtAnchor.TOP_CENTER:
-            xloc = x - txt_width//2
-            yloc = y
-        elif txt_anchor is TxtAnchor.BOTTOM_CENTER:
-            xloc = x - txt_width//2
-            yloc = y - txt_height
-        elif txt_anchor is TxtAnchor.MIDDLE_CENTER:
-            xloc = x - txt_width//2
+        elif first_word == 'MIDDLE':
             yloc = y - txt_height//2
+        elif first_word == 'BOTTOM':
+            yloc = y - txt_height
+        if second_word == 'LEFT':
+            xloc = x
+        elif second_word == 'CENTER':
+            xloc = x - txt_width//2
+        elif second_word == 'RIGHT':
+            xloc = x - txt_width
         self.rect = pygame.Rect(xloc, yloc, txt_width, txt_height)
 
     def render_text(self):
@@ -128,24 +123,19 @@ class KeyGroup(pygame.sprite.Group):
 
         for txt_anchor, label_txt in txt_info.items():
             txt_anchor = TxtAnchor(txt_anchor)
-            if txt_anchor is TxtAnchor.TOP_LEFT:
-                xloc = x + key_padding + txt_xpadding
+            first_word, second_word = txt_anchor.name.split('_')
+            if first_word == 'TOP':
                 yloc = y + key_padding + txt_ypadding
-            elif txt_anchor is TxtAnchor.BOTTOM_LEFT:
-                xloc = x + key_padding + txt_xpadding
-                yloc = y + height - key_padding - txt_ypadding
-            elif txt_anchor is TxtAnchor.BOTTOM_RIGHT:
-                xloc = x + width - key_padding - txt_xpadding
-                yloc = y + height - key_padding - txt_ypadding
-            elif txt_anchor is TxtAnchor.TOP_CENTER:
-                xloc = x + width//2
-                yloc = y + key_padding + txt_ypadding
-            elif txt_anchor is TxtAnchor.BOTTOM_CENTER:
-                xloc = x + width//2
-                yloc = y + height - key_padding - txt_ypadding
-            elif txt_anchor is TxtAnchor.MIDDLE_CENTER:
-                xloc = x + width//2
+            elif first_word == 'MIDDLE':
                 yloc = y + height//2
+            elif first_word == 'BOTTOM':
+                yloc = y + height - key_padding - txt_ypadding
+            if second_word == 'LEFT':
+                xloc = x + key_padding + txt_xpadding
+            elif second_word == 'CENTER':
+                xloc = x + width//2
+            elif second_word == 'RIGHT':
+                xloc = x + width - key_padding - txt_xpadding
             txt_sprite = TxtSprite(
                 xloc,
                 yloc,

@@ -1,8 +1,13 @@
 import typing
 from types import ModuleType
 from enum import Enum
+from pathlib import Path
+import yaml
+import os
 
 import pygame
+
+CURRENT_WORKING_DIR = Path(__file__).parent.absolute()
 
 def init_pygame_and_draw_keyboard(keyboard_layout: str):
     pygame.init()
@@ -154,8 +159,8 @@ class KeyboardLayout(pygame.sprite.Group):
         layout: ModuleType,
     ):
         max_width = 0
-        key_size = layout.key_size
-        for row in layout.rows:
+        key_size = layout['key_size']
+        for row in layout['rows']:
             row_max_width = 0
             key_size = row.get('key_size', key_size)
             for row_key in row['keys']:
@@ -172,8 +177,8 @@ class KeyboardLayout(pygame.sprite.Group):
         layout: ModuleType,
     ):
         height_max = 0
-        key_size = layout.key_size
-        for row in layout.rows:
+        key_size = layout['key_size']
+        for row in layout['rows']:
             key_size = row.get('key_size', key_size)
             for row_key in row['keys']:
                 _, key_ysize_keycoords = row_key.get('size', key_size)
@@ -229,10 +234,10 @@ class KeyboardLayout(pygame.sprite.Group):
         keyboard_color: typing.Optional[pygame.Color]=None
     ):
         super().__init__()
-        layout = __import__(
-            'keyboard_layouts.{}'.format(layout_name),
-            fromlist=['']
-        )
+        layout_path = os.path.join(
+            CURRENT_WORKING_DIR, 'keyboard_layouts', layout_name+'.yaml')
+        stream = open(layout_path, 'r')
+        layout = yaml.safe_load(stream)
         self._key_name_to_key = {}
 
         x, y = position
@@ -254,8 +259,8 @@ class KeyboardLayout(pygame.sprite.Group):
         if keyboard_color:
             bg_sprite = RectSprite(self.rect, keyboard_color)
             self.add(bg_sprite)
-        key_size = layout.key_size
-        for row in layout.rows:
+        key_size = layout['key_size']
+        for row in layout['rows']:
             row_keys = row['keys']
             key_names = set(key['name'] for key in row_keys)
 
@@ -348,7 +353,7 @@ def get_keyboard(keyboard_layout: str, position: typing.List[int]):
 
 
 if __name__=="__main__":
-    # layout_name = 'qwerty'
-    layout_name = 'azerty_laptop'
+    layout_name = 'qwerty'
+    # layout_name = 'azerty_laptop'
     screen = init_pygame_and_draw_keyboard(layout_name)
     run_until_window_closed()

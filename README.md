@@ -6,6 +6,7 @@ A python library to display different keyboards
 python3 -m venv venv
 source venv/bin/activate
 pip install pygame
+pip install PyYAML
 python plotter.py
 ```
 
@@ -26,7 +27,7 @@ python plotter.py
 - [DONE] Move key size into key definition
 - [DONE] Update qwerty file
 - [DONE] Moves all key size info into qwerty + azerty files
-- Change files to yaml
+- [DONE] Change files to yaml
 - hook into different keyboard listeners
 - Simple tests
 - Package for pypi

@@ -13,10 +13,10 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 
 ## Keyboard Layouts
 qwerty
-![qwerty](/sample_images/qwerty.jpg)
+![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty.jpg)
 
 azerty laptop
-![azerty_laptop](/sample_images/azerty_laptop.jpg)
+![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/azerty_laptop.jpg)
 
 ## Installation
 Make sure that you are using Python3
@@ -26,7 +26,7 @@ pip install keyboardlayout
 
 ## Usage
 ```
-import keyboardlayout
+import keyboardlayout as kl
 import pygame
 
 layout_name = 'qwerty'
@@ -34,23 +34,23 @@ pygame.init()
 
 key_size = 60
 grey = pygame.Color('grey')
-key_info = keyboardlayout.KeyInfo(
+keyboard_info = kl.KeyboardInfo(
+    position=(0, 0),
+    padding=2,
+    color=~grey
+)
+key_info = kl.KeyInfo(
     size=(key_size, key_size),  # width, height
     margin=10,
     color=grey,
     txt_color=~grey,  # invert grey
     txt_font=pygame.font.SysFont('Arial', key_size//4),
-    txt_padding=(key_size//6, key_size//10),
+    txt_padding=(key_size//6, key_size//10)
 )
-keyboard_info = keyboardlayout.KeyboardInfo(
-    position=(0, 0),
-    padding=2,
-    color=~grey
-)
-keyboard_layout = keyboardlayout.KeyboardLayout(
+keyboard_layout = kl.KeyboardLayout(
     layout_name,
     keyboard_info,
-    key_info,
+    key_info
 )
 
 screen = pygame.display.set_mode(

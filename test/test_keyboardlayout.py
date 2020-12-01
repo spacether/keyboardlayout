@@ -2,7 +2,7 @@ import unittest
 import typing
 
 import pygame
-import keyboardlayout
+import keyboardlayout as kl
 
 
 class TestKeyboardLayout(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestKeyboardLayout(unittest.TestCase):
         pygame.init()
         key_size = 60
         grey = pygame.Color('grey')
-        cls.key_info = keyboardlayout.KeyInfo(
+        cls.key_info = kl.KeyInfo(
             size=(key_size, key_size),  # width, height
             margin=10,
             color=grey,
@@ -19,7 +19,7 @@ class TestKeyboardLayout(unittest.TestCase):
             txt_font=pygame.font.SysFont('Arial', key_size//4),
             txt_padding=(key_size//10, key_size//10),
         )
-        cls.keyboard_info = keyboardlayout.KeyboardInfo(
+        cls.keyboard_info = kl.KeyboardInfo(
             position=(0, 0),
             padding=2,
             color=~grey
@@ -32,7 +32,7 @@ class TestKeyboardLayout(unittest.TestCase):
             pygame.display.set_caption(
                 "{} keyboard layout".format(layout_name))
 
-            keyboard = keyboardlayout.KeyboardLayout(
+            keyboard = kl.KeyboardLayout(
                 layout_name,
                 self.keyboard_info,
                 self.key_info,
@@ -52,7 +52,7 @@ class TestKeyboardLayout(unittest.TestCase):
             ValueError,
             "'invalid_layout' is not a valid LayoutName"
         ):
-            keyboard_layout = keyboardlayout.KeyboardLayout(
+            keyboard_layout = kl.KeyboardLayout(
                 'invalid_layout',
                 None,
                 None,
@@ -60,11 +60,11 @@ class TestKeyboardLayout(unittest.TestCase):
 
     def test_layout_num_sprites(self):
         num_sprites_by_layout = {
-            keyboardlayout.LayoutName.QWERTY: 143,
-            keyboardlayout.LayoutName.AZERTY_LAPTOP: 166,
+            kl.LayoutName.QWERTY: 143,
+            kl.LayoutName.AZERTY_LAPTOP: 166,
         }
-        for layout_name in keyboardlayout.LayoutName:
-            keyboard = keyboardlayout.KeyboardLayout(
+        for layout_name in kl.LayoutName:
+            keyboard = kl.KeyboardLayout(
                 layout_name,
                 self.keyboard_info,
                 self.key_info,

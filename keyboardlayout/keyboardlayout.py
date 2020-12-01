@@ -24,23 +24,32 @@ def __generate_keyboard_layout_enum():
 
 LayoutName = __generate_keyboard_layout_enum()
 
-class TxtAnchor(Enum):
-    TOP_LEFT = 'tl'
-    TOP_CENTER = 'tc'
-    TOP_RIGHT = 'tr'
-    MIDDLE_LEFT = 'ml'
-    MIDDLE_CENTER = 'mc'
-    MIDDLE_RIGHT = 'mr'
-    BOTTOM_LEFT = 'bl'
-    BOTTOM_CENTER = 'bc'
-    BOTTOM_RIGHT = 'br'
+class VerticalAnchor(Enum):
+    TOP = 't'
+    MIDDLE = 'm'
+    BOTTOM = 'b'
+
+class HorizontalAnchor(Enum):
+    LEFT = 'l'
+    CENTER = 'c'
+    RIGHT = 'r'
+
+class LayoutYamlConstant:
+    KEY_SIZE = 'key_size'
+    ROWS = 'rows'
+    NAME = 'name'
+    LOCATION = 'location'
+    SIZE = 'size'
+    TXT_INFO = 'txt_info'
+    KEYS = 'keys'
 
 class TxtSprite(pygame.sprite.Sprite):
     def __init__(
         self,
         x: int,
         y: int,
-        txt_anchor: TxtAnchor,
+        horizontal_anchor: HorizontalAnchor,
+        vertical_anchor: VerticalAnchor,
         txt: str,
         font: pygame.font.SysFont,
         font_color: pygame.Color,
@@ -54,18 +63,17 @@ class TxtSprite(pygame.sprite.Sprite):
         txt_width = self.image.get_width()
         txt_height = self.image.get_height()
 
-        first_word, second_word = txt_anchor.name.split('_')
-        if first_word == 'TOP':
+        if vertical_anchor is VerticalAnchor.TOP:
             yloc = y
-        elif first_word == 'MIDDLE':
+        elif vertical_anchor is VerticalAnchor.MIDDLE:
             yloc = y - txt_height//2
-        elif first_word == 'BOTTOM':
+        elif vertical_anchor is VerticalAnchor.BOTTOM:
             yloc = y - txt_height
-        if second_word == 'LEFT':
+        if horizontal_anchor is HorizontalAnchor.LEFT:
             xloc = x
-        elif second_word == 'CENTER':
+        elif horizontal_anchor is HorizontalAnchor.CENTER:
             xloc = x - txt_width//2
-        elif second_word == 'RIGHT':
+        elif horizontal_anchor is HorizontalAnchor.RIGHT:
             xloc = x - txt_width
         self.rect = pygame.Rect(xloc, yloc, txt_width, txt_height)
 
@@ -132,12 +140,13 @@ class KeyboardLayout(pygame.sprite.Group):
         layout: dict,
     ):
         max_width = 0
-        key_size = layout['key_size']
-        for row in layout['rows']:
+        key_size = layout[LayoutYamlConstant.KEY_SIZE]
+        for row in layout[LayoutYamlConstant.ROWS]:
             row_max_width = 0
-            key_size = row.get('key_size', key_size)
-            for row_key in row['keys']:
-                key_xsize_keycoords, _ = row_key.get('size', key_size)
+            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
+            for row_key in row[LayoutYamlConstant.KEYS]:
+                key_xsize_keycoords, _ = row_key.get(
+                    LayoutYamlConstant.SIZE, key_size)
                 key_width = letter_key_width * key_xsize_keycoords
                 row_max_width += key_width
             if row_max_width > max_width:
@@ -150,12 +159,13 @@ class KeyboardLayout(pygame.sprite.Group):
         layout: dict,
     ):
         height_max = 0
-        key_size = layout['key_size']
-        for row in layout['rows']:
-            key_size = row.get('key_size', key_size)
-            for row_key in row['keys']:
-                _, key_ysize_keycoords = row_key.get('size', key_size)
-                _, row_y_keycoords = row["location"]
+        key_size = layout[LayoutYamlConstant.KEY_SIZE]
+        for row in layout[LayoutYamlConstant.ROWS]:
+            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
+            for row_key in row[LayoutYamlConstant.KEYS]:
+                _, key_ysize_keycoords = row_key.get(
+                    LayoutYamlConstant.SIZE, key_size)
+                _, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
                 row_y = row_y_keycoords * letter_key_height
                 key_height = letter_key_height * key_ysize_keycoords
                 key_ymax = row_y + key_height
@@ -203,24 +213,25 @@ class KeyboardLayout(pygame.sprite.Group):
         sprites.append(bg_sprite)
 
         for txt_anchor, label_txt in txt_info.items():
-            txt_anchor = TxtAnchor(txt_anchor)
-            first_word, second_word = txt_anchor.name.split('_')
-            if first_word == 'TOP':
+            vertical_anchor = VerticalAnchor(txt_anchor[:1])
+            horizontal_anchor = HorizontalAnchor(txt_anchor[1:])
+            if vertical_anchor is VerticalAnchor.TOP:
                 yloc = y + key_padding + key_info.txt_padding[1]
-            elif first_word == 'MIDDLE':
+            elif vertical_anchor is VerticalAnchor.MIDDLE:
                 yloc = y + height//2
-            elif first_word == 'BOTTOM':
+            elif vertical_anchor is VerticalAnchor.BOTTOM:
                 yloc = y + height - key_padding - key_info.txt_padding[1]
-            if second_word == 'LEFT':
+            if horizontal_anchor is HorizontalAnchor.LEFT:
                 xloc = x + key_padding + key_info.txt_padding[0]
-            elif second_word == 'CENTER':
+            elif horizontal_anchor is HorizontalAnchor.CENTER:
                 xloc = x + width//2
-            elif second_word == 'RIGHT':
+            elif horizontal_anchor is HorizontalAnchor.RIGHT:
                 xloc = x + width - key_padding - key_info.txt_padding[0]
             txt_sprite = TxtSprite(
                 xloc,
                 yloc,
-                txt_anchor,
+                horizontal_anchor,
+                vertical_anchor,
                 label_txt,
                 key_info.txt_font,
                 key_info.txt_color
@@ -264,18 +275,18 @@ class KeyboardLayout(pygame.sprite.Group):
         if keyboard_info.color:
             bg_sprite = RectSprite(self.rect, keyboard_info.color)
             self.add(bg_sprite)
-        key_size = layout['key_size']
-        for row in layout['rows']:
-            row_keys = row['keys']
-            key_names = set(key['name'] for key in row_keys)
+        key_size = layout[LayoutYamlConstant.KEY_SIZE]
+        for row in layout[LayoutYamlConstant.ROWS]:
+            row_keys = row[LayoutYamlConstant.KEYS]
+            key_names = set(key[LayoutYamlConstant.NAME] for key in row_keys)
 
-            row_x_keycoords, row_y_keycoords = row['location']
+            row_x_keycoords, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
             key_x = xanchor + row_x_keycoords * letter_key_width
             key_y = yanchor + row_y_keycoords * letter_key_height
-            key_size = row.get('key_size', key_size)
+            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
             for row_key in row_keys:
                 key_xsize_keycoords, key_ysize_keycoords = (
-                    row_key.get('size', key_size))
+                    row_key.get(LayoutYamlConstant.SIZE, key_size))
                 key_width, key_height = (
                     letter_key_width*key_xsize_keycoords,
                     letter_key_height*key_ysize_keycoords
@@ -284,11 +295,11 @@ class KeyboardLayout(pygame.sprite.Group):
                 key_sprites = self.__get_key_sprites(
                     rect,
                     key_info,
-                    row_key['txt_info'],
+                    row_key[LayoutYamlConstant.TXT_INFO],
                 )
                 self.add(key_sprites)
                 key_x += key_width
-                key_name = row_key['name']
+                key_name = row_key[LayoutYamlConstant.NAME]
                 key = self._key_name_to_key.get(key_name, None)
                 if key is None:
                     bg_sprites = pygame.sprite.Group(key_sprites[:1])

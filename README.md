@@ -12,7 +12,8 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - modify a specific key with `update_key`
 
 ## What you get
-![qwerty](/sample_images/qwerty.png)
+![qwerty](/sample_images/qwerty.jpg)
+![azerty_laptop](/sample_images/azerty_laptop.jpg)
 
 ## Installation
 Make sure that you are using Python3
@@ -74,6 +75,11 @@ source venv/bin/activate
 pip install -e .
 # to install separately in your virtual environment
 pip install .
+```
+
+## Test
+```
+python setup.py pytest
 ```
 
 ### Todo

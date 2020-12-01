@@ -1,14 +1,7 @@
 import typing
-from types import ModuleType
-from enum import Enum
-from pathlib import Path
-import yaml
-import os
 
 import pygame
 import keyboardlayout
-
-CURRENT_WORKING_DIR = Path(__file__).parent.absolute()
 
 def init_pygame_and_draw_keyboard(layout_name: str):
     pygame.init()
@@ -22,6 +15,8 @@ def init_pygame_and_draw_keyboard(layout_name: str):
 
     keyboard.draw(screen)
     pygame.display.update()
+
+    pygame.image.save(screen, "sample_images/{}.jpeg".format(layout_name))
 
 def run_until_window_closed():
     running = True
@@ -64,8 +59,8 @@ def get_keyboard(
     return keyboard_layout
 
 
-if __name__=="__main__":
-    layout_name = 'qwerty'
-    # layout_name = 'azerty_laptop'
-    screen = init_pygame_and_draw_keyboard(layout_name)
-    run_until_window_closed()
+def test_writes_sample_keyboard_layouts_to_images():
+    layout_names = ['qwerty', 'azerty_laptop']
+    for layout_name in layout_names:
+        screen = init_pygame_and_draw_keyboard(layout_name)
+    # run_until_window_closed()

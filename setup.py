@@ -14,6 +14,8 @@ setup(
     entry_points = {},
     license='see LICENSE.txt',
     keywords = ["keyboard", "qwerty", "layout", "azerty"],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",

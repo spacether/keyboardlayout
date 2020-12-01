@@ -1,5 +1,4 @@
 import typing
-from types import ModuleType
 from enum import Enum
 from pathlib import Path
 import yaml
@@ -114,7 +113,7 @@ class KeyboardLayout(pygame.sprite.Group):
     @staticmethod
     def __max_width(
         letter_key_width: int,
-        layout: ModuleType,
+        layout: dict,
     ):
         max_width = 0
         key_size = layout['key_size']
@@ -132,7 +131,7 @@ class KeyboardLayout(pygame.sprite.Group):
     @staticmethod
     def __max_height(
         letter_key_height: int,
-        layout: ModuleType,
+        layout: dict,
     ):
         height_max = 0
         key_size = layout['key_size']

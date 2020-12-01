@@ -12,7 +12,10 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - modify a specific key with `update_key`
 
 ## What you get
+qwerty
 ![qwerty](/sample_images/qwerty.jpg)
+
+azerty laptop
 ![azerty_laptop](/sample_images/azerty_laptop.jpg)
 
 ## Installation

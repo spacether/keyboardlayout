@@ -80,68 +80,6 @@ class Key:
         self.txt_sprites = txt_sprites
 
 
-
-class KeyGroup(pygame.sprite.Group):
-    def __init__(
-        self,
-        r: pygame.Rect,
-        key_margin: int,
-        color: pygame.Color,
-        txt_info: typing.Dict[str, str],
-        font: pygame.font.SysFont,
-        font_color: pygame.Color,
-        txt_xpadding: int,
-        txt_ypadding: int,
-    ):
-        super().__init__()
-        x, y, width, height = r.x, r.y, r.width, r.height
-        key_padding = key_margin//2
-        r = pygame.Rect(
-            x+key_padding,
-            y+key_padding,
-            width-2*key_padding,
-            height-2*key_padding,
-        )
-        bg_sprite = RectSprite(r, color)
-        self.add(bg_sprite)
-
-        for txt_anchor, label_txt in txt_info.items():
-            txt_anchor = TxtAnchor(txt_anchor)
-            first_word, second_word = txt_anchor.name.split('_')
-            if first_word == 'TOP':
-                yloc = y + key_padding + txt_ypadding
-            elif first_word == 'MIDDLE':
-                yloc = y + height//2
-            elif first_word == 'BOTTOM':
-                yloc = y + height - key_padding - txt_ypadding
-            if second_word == 'LEFT':
-                xloc = x + key_padding + txt_xpadding
-            elif second_word == 'CENTER':
-                xloc = x + width//2
-            elif second_word == 'RIGHT':
-                xloc = x + width - key_padding - txt_xpadding
-            txt_sprite = TxtSprite(
-                xloc,
-                yloc,
-                txt_anchor,
-                label_txt,
-                font,
-                font_color
-            )
-            self.add(txt_sprite)
-
-
-class KeyboardInfo:
-    def __init__(
-        self,
-        position: typing.Tuple[int],
-        padding: int,
-        color: typing.Optional[pygame.Color]=None
-    ):
-        self.position = position
-        self.padding = padding
-        self.color = color
-
 class KeyInfo:
     def __init__(
         self,
@@ -158,6 +96,18 @@ class KeyInfo:
         self.txt_color = txt_color
         self.txt_font = txt_font
         self.txt_padding = txt_padding
+
+
+class KeyboardInfo:
+    def __init__(
+        self,
+        position: typing.Tuple[int],
+        padding: int,
+        color: typing.Optional[pygame.Color]=None
+    ):
+        self.position = position
+        self.padding = padding
+        self.color = color
 
 
 class KeyboardLayout(pygame.sprite.Group):
@@ -201,14 +151,14 @@ class KeyboardLayout(pygame.sprite.Group):
     def __add_additional_sprites_to_key(
         self,
         key: Key,
-        key_group: KeyGroup,
+        key_sprites: typing.List[pygame.sprite.Sprite],
         key_margin: int,
         key_color: pygame.Color,
     ):
-        txt_sprites = key_group.sprites()[1:]
+        txt_sprites = key_sprites[1:]
         key.txt_sprites.add(txt_sprites)
 
-        new_bg_sprite = key_group.sprites()[0]
+        new_bg_sprite = key_sprites[0]
         existing_bg_sprite = key.bg_sprites.sprites()[0]
         if existing_bg_sprite.rect.width < new_bg_sprite.rect.width:
             used_rect = existing_bg_sprite.rect
@@ -225,6 +175,51 @@ class KeyboardLayout(pygame.sprite.Group):
         sticher_sprite = RectSprite(r, key_color)
         self.add([sticher_sprite])
         key.bg_sprites.add([new_bg_sprite, sticher_sprite])
+
+    @staticmethod
+    def __key_sprites(
+        r: pygame.Rect,
+        key_info: KeyInfo,
+        txt_info: typing.Dict[str, str],
+    ):
+        x, y, width, height = r.x, r.y, r.width, r.height
+        key_padding = key_info.margin//2
+        r = pygame.Rect(
+            x+key_padding,
+            y+key_padding,
+            width-2*key_padding,
+            height-2*key_padding,
+        )
+        sprites = []
+        bg_sprite = RectSprite(r, key_info.color)
+        sprites.append(bg_sprite)
+
+        for txt_anchor, label_txt in txt_info.items():
+            txt_anchor = TxtAnchor(txt_anchor)
+            first_word, second_word = txt_anchor.name.split('_')
+            if first_word == 'TOP':
+                yloc = y + key_padding + key_info.txt_padding[1]
+            elif first_word == 'MIDDLE':
+                yloc = y + height//2
+            elif first_word == 'BOTTOM':
+                yloc = y + height - key_padding - key_info.txt_padding[1]
+            if second_word == 'LEFT':
+                xloc = x + key_padding + key_info.txt_padding[0]
+            elif second_word == 'CENTER':
+                xloc = x + width//2
+            elif second_word == 'RIGHT':
+                xloc = x + width - key_padding - key_info.txt_padding[0]
+            txt_sprite = TxtSprite(
+                xloc,
+                yloc,
+                txt_anchor,
+                label_txt,
+                key_info.txt_font,
+                key_info.txt_color
+            )
+            sprites.append(txt_sprite)
+
+        return sprites
 
     def __init__(
         self,
@@ -278,28 +273,23 @@ class KeyboardLayout(pygame.sprite.Group):
                     letter_key_height*key_ysize_keycoords
                 )
                 rect = pygame.Rect(key_x, key_y, key_width, key_height)
-                key_group = KeyGroup(
+                key_sprites = self.__key_sprites(
                     rect,
-                    key_info.margin,
-                    key_info.color,
+                    key_info,
                     row_key['txt_info'],
-                    key_info.txt_font,
-                    key_info.txt_color,
-                    key_info.txt_padding[0],
-                    key_info.txt_padding[1]
                 )
-                self.add(key_group.sprites())
+                self.add(key_sprites)
                 key_x += key_width
                 key_name = row_key['name']
                 key = self._key_name_to_key.get(key_name, None)
                 if key is None:
-                    bg_sprites = pygame.sprite.Group(key_group.sprites()[:1])
-                    txt_sprites = pygame.sprite.Group(key_group.sprites()[1:])
+                    bg_sprites = pygame.sprite.Group(key_sprites[:1])
+                    txt_sprites = pygame.sprite.Group(key_sprites[1:])
                     key = Key(bg_sprites, txt_sprites)
                     self._key_name_to_key[key_name] = key
                 else:
                     self.__add_additional_sprites_to_key(
-                        key, key_group, key_info.margin, key_info.color)
+                        key, key_sprites, key_info.margin, key_info.color)
 
     def update_key(
         self,

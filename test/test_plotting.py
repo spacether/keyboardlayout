@@ -16,7 +16,7 @@ def init_pygame_and_draw_keyboard(layout_name: str):
     keyboard.draw(screen)
     pygame.display.update()
 
-    pygame.image.save(screen, "sample_images/{}.jpeg".format(layout_name))
+    pygame.image.save(screen, "sample_images/{}.jpg".format(layout_name))
 
 def run_until_window_closed():
     running = True

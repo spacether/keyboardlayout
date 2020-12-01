@@ -9,7 +9,7 @@ setup(
     description = 'A python library to display different keyboards',
     author = 'Justin Black',
     packages = find_packages(),
-    include_package_data=True,
+    package_data={'keyboardlayout': ['keyboardlayout/layouts/*.yaml']},
     url = "https://github.com/spacether/keyboardlayout",
     entry_points = {},
     license='see LICENSE.txt',

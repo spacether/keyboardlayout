@@ -11,7 +11,7 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
 - modify a specific key with `update_key`
 
-## What you get
+## Keyboard Layouts
 qwerty
 ![qwerty](/sample_images/qwerty.jpg)
 
@@ -86,7 +86,4 @@ python setup.py pytest
 ```
 
 ### Todo
-- Dynamically make enum of different layout options
-- Auto produce sample images
-- Simple tests
 - hook into different keyboard listeners

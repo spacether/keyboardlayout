@@ -6,7 +6,23 @@ import os
 
 import pygame
 
-CURRENT_WORKING_DIR = Path(__file__).parent.absolute()
+LAYOUTS_DIR = Path(__file__).parent.absolute().joinpath("layouts")
+YAML_EXTENSION = '.yaml'
+
+
+def generate_keyboard_layout_enum():
+    layout_names = []
+    for (_dir_path, _dir_names, file_names) in os.walk(LAYOUTS_DIR):
+        for file_name in file_names:
+            if file_name.endswith(YAML_EXTENSION):
+                layout_names.append(file_name[:-len(YAML_EXTENSION)])
+
+    return Enum(
+        'LayoutName',
+        {layout_name.upper(): layout_name for layout_name in layout_names}
+    )
+
+LayoutName = generate_keyboard_layout_enum()
 
 class TxtAnchor(Enum):
     TOP_LEFT = 'tl'
@@ -228,8 +244,8 @@ class KeyboardLayout(pygame.sprite.Group):
     ):
         super().__init__()
 
-        layout_path = os.path.join(
-            CURRENT_WORKING_DIR, 'layouts', layout_name+'.yaml')
+        layout_name = LayoutName(layout_name)
+        layout_path = LAYOUTS_DIR.joinpath(layout_name.value + YAML_EXTENSION)
         stream = open(layout_path, 'r')
         layout = yaml.safe_load(stream)
         self._key_name_to_key = {}

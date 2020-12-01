@@ -77,7 +77,6 @@ pip install .
 ```
 
 ### Todo
-- Consolidate 2 color parameters into one dict input
 - Dynamically make enum of different layout options
 - Auto produce sample images
 - Simple tests

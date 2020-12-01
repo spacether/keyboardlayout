@@ -1,1 +1,5 @@
-from .keyboardlayout import KeyboardLayout
+from .keyboardlayout import (
+    KeyInfo,
+    KeyboardInfo,
+    KeyboardLayout
+)

@@ -5,14 +5,20 @@ PRs with additional layouts or graphics backends are welcome.
 
 If you need to show your users a graphic that shows a specific keyboard layout or a portion of a keyboard, this is the library for you.
 
+## Features:
+- qwerty + azerty included
+- dynamically generate a pygame sprite group showing a keyboard
+- customize the keyboard with sizes, colors, key margin, padding, font, location, etc
+- modify a specific key with `update_key`
+
+## What you get
+![qwerty](/sample_images/qwerty.png)
+
 ## Installation
 Make sure that you are using Python3
 ```
 pip install keyboardlayout
 ```
-
-## What you get
-![qwerty](/sample_images/qwerty.png)
 
 ## Usage
 ```
@@ -22,28 +28,25 @@ import pygame
 layout_name = 'qwerty'
 pygame.init()
 
-position = (0, 0)
-letter_key_size = (60, 60) # width, height
-keyboard_padding = 2
-key_margin = 10
-key_color = pygame.Color('grey')
-font_color = key_color.__invert__()
-
-font_size = letter_key_size[0]//4
-font = pygame.font.SysFont('Arial', font_size)
-font_color = key_color.__invert__()
-txt_padding = (letter_key_size[0]//6, letter_key_size[0]//10) # x, y
+key_size = 60
+grey = pygame.Color('grey')
+key_info = keyboardlayout.KeyInfo(
+    size=(key_size, key_size),  # width, height
+    margin=10,
+    color=grey,
+    txt_color=~grey,  # invert grey
+    txt_font=pygame.font.SysFont('Arial', key_size//4),
+    txt_padding=(key_size//6, key_size//10),
+)
+keyboard_info = keyboardlayout.KeyboardInfo(
+    position=(0, 0),
+    padding=2,
+    color=~grey
+)
 keyboard_layout = keyboardlayout.KeyboardLayout(
     layout_name,
-    position,
-    keyboard_padding,
-    letter_key_size,
-    key_margin,
-    key_color,
-    font_color,
-    font,
-    txt_padding,
-    keyboard_color=font_color
+    keyboard_info,
+    key_info,
 )
 
 screen = pygame.display.set_mode(

@@ -131,6 +131,35 @@ class KeyGroup(pygame.sprite.Group):
             self.add(txt_sprite)
 
 
+class KeyboardInfo:
+    def __init__(
+        self,
+        position: typing.Tuple[int],
+        padding: int,
+        color: typing.Optional[pygame.Color]=None
+    ):
+        self.position = position
+        self.padding = padding
+        self.color = color
+
+class KeyInfo:
+    def __init__(
+        self,
+        size: typing.Tuple[int],
+        margin: int,
+        color: pygame.Color,
+        txt_color: pygame.Color,
+        txt_font: pygame.font.SysFont,
+        txt_padding: typing.Tuple[int],
+    ):
+        self.size = size
+        self.margin = margin
+        self.color = color
+        self.txt_color = txt_color
+        self.txt_font = txt_font
+        self.txt_padding = txt_padding
+
+
 class KeyboardLayout(pygame.sprite.Group):
     @staticmethod
     def __max_width(
@@ -200,32 +229,25 @@ class KeyboardLayout(pygame.sprite.Group):
     def __init__(
         self,
         layout_name: str,
-        position: typing.Tuple[int],
-        keyboard_padding: int,
-        letter_key_size: typing.Tuple[int],
-        key_margin: int,
-        key_color: pygame.Color,
-        font_color: pygame.Color,
-        font: pygame.font.SysFont,
-        txt_padding: typing.Tuple[int],
-        keyboard_color: typing.Optional[pygame.Color]=None
+        keyboard_info: KeyboardInfo,
+        key_info: KeyInfo,
     ):
         super().__init__()
+
         layout_path = os.path.join(
             CURRENT_WORKING_DIR, 'layouts', layout_name+'.yaml')
         stream = open(layout_path, 'r')
         layout = yaml.safe_load(stream)
         self._key_name_to_key = {}
 
-        letter_key_width, letter_key_height = letter_key_size
-        txt_xpadding, txt_ypadding = txt_padding
+        letter_key_width, letter_key_height = key_info.size
 
-        x, y = position
-        xanchor = x + keyboard_padding
-        yanchor = y + keyboard_padding
-        if key_margin:
-            xanchor += -key_margin//2
-            yanchor += -key_margin//2
+        x, y = keyboard_info.position
+        xanchor = x + keyboard_info.padding
+        yanchor = y + keyboard_info.padding
+        if key_info.margin:
+            xanchor += -key_info.margin//2
+            yanchor += -key_info.margin//2
         xmax = 0
         ymax = 0
         max_width = self.__max_width(letter_key_width, layout)
@@ -233,11 +255,11 @@ class KeyboardLayout(pygame.sprite.Group):
         self.rect = pygame.Rect(
             x,
             y,
-            max_width - key_margin + 2*keyboard_padding,
-            max_height - key_margin + 2*keyboard_padding,
+            max_width - key_info.margin + 2*keyboard_info.padding,
+            max_height - key_info.margin + 2*keyboard_info.padding,
         )
-        if keyboard_color:
-            bg_sprite = RectSprite(self.rect, keyboard_color)
+        if keyboard_info.color:
+            bg_sprite = RectSprite(self.rect, keyboard_info.color)
             self.add(bg_sprite)
         key_size = layout['key_size']
         for row in layout['rows']:
@@ -246,30 +268,29 @@ class KeyboardLayout(pygame.sprite.Group):
 
             row_x_keycoords, row_y_keycoords = row['location']
             key_x = xanchor + row_x_keycoords * letter_key_width
-            row_y = yanchor + row_y_keycoords * letter_key_height
+            key_y = yanchor + row_y_keycoords * letter_key_height
             key_size = row.get('key_size', key_size)
             for row_key in row_keys:
-                key_name = row_key['name']
-
                 key_xsize_keycoords, key_ysize_keycoords = (
                     row_key.get('size', key_size))
                 key_width, key_height = (
                     letter_key_width*key_xsize_keycoords,
                     letter_key_height*key_ysize_keycoords
                 )
-                rect = pygame.Rect(key_x, row_y, key_width, key_height)
+                rect = pygame.Rect(key_x, key_y, key_width, key_height)
                 key_group = KeyGroup(
                     rect,
-                    key_margin,
-                    key_color,
+                    key_info.margin,
+                    key_info.color,
                     row_key['txt_info'],
-                    font,
-                    font_color,
-                    txt_xpadding,
-                    txt_ypadding
+                    key_info.txt_font,
+                    key_info.txt_color,
+                    key_info.txt_padding[0],
+                    key_info.txt_padding[1]
                 )
                 self.add(key_group.sprites())
                 key_x += key_width
+                key_name = row_key['name']
                 key = self._key_name_to_key.get(key_name, None)
                 if key is None:
                     bg_sprites = pygame.sprite.Group(key_group.sprites()[:1])
@@ -278,7 +299,7 @@ class KeyboardLayout(pygame.sprite.Group):
                     self._key_name_to_key[key_name] = key
                 else:
                     self.__add_additional_sprites_to_key(
-                        key, key_group, key_margin, key_color)
+                        key, key_group, key_info.margin, key_info.color)
 
     def update_key(
         self,

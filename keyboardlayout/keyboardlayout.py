@@ -10,7 +10,7 @@ LAYOUTS_DIR = Path(__file__).parent.absolute().joinpath("layouts")
 YAML_EXTENSION = '.yaml'
 
 
-def generate_keyboard_layout_enum():
+def __generate_keyboard_layout_enum():
     layout_names = []
     for (_dir_path, _dir_names, file_names) in os.walk(LAYOUTS_DIR):
         for file_name in file_names:
@@ -22,7 +22,7 @@ def generate_keyboard_layout_enum():
         {layout_name.upper(): layout_name for layout_name in layout_names}
     )
 
-LayoutName = generate_keyboard_layout_enum()
+LayoutName = __generate_keyboard_layout_enum()
 
 class TxtAnchor(Enum):
     TOP_LEFT = 'tl'
@@ -163,36 +163,29 @@ class KeyboardLayout(pygame.sprite.Group):
                     height_max = key_ymax
         return height_max
 
-    def __add_additional_sprites_to_key(
+    def __make_stitcher_sprite(
         self,
-        key: Key,
-        key_sprites: typing.List[pygame.sprite.Sprite],
-        key_margin: int,
-        key_color: pygame.Color,
+        existing_bg_sprite: pygame.sprite.Sprite,
+        new_bg_sprite: pygame.sprite.Sprite,
+        key_info: KeyInfo,
     ):
-        txt_sprites = key_sprites[1:]
-        key.txt_sprites.add(txt_sprites)
-
-        new_bg_sprite = key_sprites[0]
-        existing_bg_sprite = key.bg_sprites.sprites()[0]
         if existing_bg_sprite.rect.width < new_bg_sprite.rect.width:
             used_rect = existing_bg_sprite.rect
             used_y = used_rect.bottom
         else:
             used_rect = new_bg_sprite.rect
-            used_y = used_rect.top - key_margin
+            used_y = used_rect.top - key_info.margin
         r = pygame.Rect(
             used_rect.left,
             used_y,
             used_rect.width,
-            key_margin,
+            key_info.margin,
         )
-        sticher_sprite = RectSprite(r, key_color)
-        self.add([sticher_sprite])
-        key.bg_sprites.add([new_bg_sprite, sticher_sprite])
+        sticher_sprite = RectSprite(r, key_info.color)
+        return sticher_sprite
 
     @staticmethod
-    def __key_sprites(
+    def __get_key_sprites(
         r: pygame.Rect,
         key_info: KeyInfo,
         txt_info: typing.Dict[str, str],
@@ -288,7 +281,7 @@ class KeyboardLayout(pygame.sprite.Group):
                     letter_key_height*key_ysize_keycoords
                 )
                 rect = pygame.Rect(key_x, key_y, key_width, key_height)
-                key_sprites = self.__key_sprites(
+                key_sprites = self.__get_key_sprites(
                     rect,
                     key_info,
                     row_key['txt_info'],
@@ -303,8 +296,13 @@ class KeyboardLayout(pygame.sprite.Group):
                     key = Key(bg_sprites, txt_sprites)
                     self._key_name_to_key[key_name] = key
                 else:
-                    self.__add_additional_sprites_to_key(
-                        key, key_sprites, key_info.margin, key_info.color)
+                    new_bg_sprite = key_sprites[0]
+                    key.txt_sprites.add(key_sprites[1:])
+                    sticher_sprite = self.__make_stitcher_sprite(
+                        key.bg_sprites.sprites()[0], new_bg_sprite, key_info)
+                    self.add([sticher_sprite])
+                    key.bg_sprites.add([new_bg_sprite, sticher_sprite])
+
 
     def update_key(
         self,

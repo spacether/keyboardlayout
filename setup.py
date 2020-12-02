@@ -16,6 +16,14 @@ setup(
     keywords = ["keyboard", "qwerty", "layout", "azerty"],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
+    extras_require={
+        'dev': [
+            'sphinx',
+            'pytest',
+            'pytest-pep8',
+            'pytest-cov'
+        ]
+    },
     classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",

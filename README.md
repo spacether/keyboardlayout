@@ -75,17 +75,20 @@ pygame.quit()
 
 ## Local Installation
 ```
+# make and activate virtual env
 python3 -m venv venv
 source venv/bin/activate
+
 # if you want to edit the program and have the library use your edits
-pip install -e .
+make develop
+
 # to install separately in your virtual environment
-pip install .
+make install
 ```
 
 ## Test
 ```
-python setup.py pytest
+make test
 ```
 
 ### Todo

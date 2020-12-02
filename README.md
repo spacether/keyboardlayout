@@ -95,4 +95,7 @@ make test
 ```
 
 ### Todo
+- make version number connect to one data source in
+  - installation
+  - docs
 - hook into different keyboard listeners

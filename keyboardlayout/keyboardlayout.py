@@ -89,7 +89,7 @@ class TxtSprite(pygame.sprite.Sprite):
 
 
 class RectSprite(pygame.sprite.Sprite):
-    """A sprite that contains filled rectangle"""
+    """A sprite that contains a filled rectangle"""
     def __init__(
         self,
         r: pygame.Rect,

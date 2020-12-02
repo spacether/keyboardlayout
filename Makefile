@@ -14,3 +14,4 @@ test:
 
 docs:
 	sphinx-build -b html sphinx docs
+	touch docs/.nojekyll

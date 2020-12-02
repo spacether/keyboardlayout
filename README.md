@@ -13,7 +13,7 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 
 ## Examples
 qwerty colored
-![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty_pretty.jpg)
+![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty_colored.jpg)
 
 qwerty
 ![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty.jpg)

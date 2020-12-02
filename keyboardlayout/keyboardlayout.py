@@ -17,24 +17,30 @@ def __generate_keyboard_layout_enum():
             if file_name.endswith(YAML_EXTENSION):
                 layout_names.append(file_name[:-len(YAML_EXTENSION)])
 
-    return Enum(
+    layout_name_enum = Enum(
         'LayoutName',
         {layout_name.upper(): layout_name for layout_name in layout_names}
     )
+    layout_name_enum.__doc__ = (
+        "An enum that holds the allowed layout names")
+    return layout_name_enum
 
 LayoutName = __generate_keyboard_layout_enum()
 
 class VerticalAnchor(Enum):
+    """Enums used to set vertical text location"""
     TOP = 't'
     MIDDLE = 'm'
     BOTTOM = 'b'
 
 class HorizontalAnchor(Enum):
+    """Enums used to set horizontal text location"""
     LEFT = 'l'
     CENTER = 'c'
     RIGHT = 'r'
 
 class LayoutYamlConstant:
+    """Constants used to acces data in keyboard layout yaml files"""
     KEY_SIZE = 'key_size'
     ROWS = 'rows'
     NAME = 'name'
@@ -44,6 +50,7 @@ class LayoutYamlConstant:
     KEYS = 'keys'
 
 class TxtSprite(pygame.sprite.Sprite):
+    """A sprite that contains text"""
     def __init__(
         self,
         x: int,
@@ -82,6 +89,7 @@ class TxtSprite(pygame.sprite.Sprite):
 
 
 class RectSprite(pygame.sprite.Sprite):
+    """A sprite that contains filled rectangle"""
     def __init__(
         self,
         r: pygame.Rect,
@@ -94,6 +102,10 @@ class RectSprite(pygame.sprite.Sprite):
 
 
 class Key:
+    """
+    Contains a key's background sprites and text sprites.
+    This class allows us to change the key color and text color.
+    """
     def __init__(
         self,
         bg_sprites: pygame.sprite.Group,
@@ -104,6 +116,7 @@ class Key:
 
 
 class KeyInfo:
+    """The needed key inputs for KeyboardLayout"""
     def __init__(
         self,
         size: typing.Tuple[int],
@@ -122,6 +135,7 @@ class KeyInfo:
 
 
 class KeyboardInfo:
+    """The needed keyboard inputs for KeyboardLayout"""
     def __init__(
         self,
         position: typing.Tuple[int],
@@ -134,6 +148,10 @@ class KeyboardInfo:
 
 
 class KeyboardLayout(pygame.sprite.Group):
+    """
+    The class that stores the keyboard layout.
+    This is the class that developers will use.
+    """
     @staticmethod
     def __max_width(
         letter_key_width: int,
@@ -321,6 +339,7 @@ class KeyboardLayout(pygame.sprite.Group):
         bg_color: typing.Optional[pygame.Color] = None,
         font_color: typing.Optional[pygame.Color] = None,
     ):
+        """Update the new bg_color and font_color for key_name"""
         key = self._key_name_to_key[key_name]
         if bg_color:
             for bg_sprite in key.bg_sprites.sprites():

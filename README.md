@@ -98,4 +98,5 @@ make test
 - make version number connect to one data source in
   - installation
   - docs
+- different license?
 - hook into different keyboard listeners

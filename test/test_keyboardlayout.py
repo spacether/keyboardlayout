@@ -87,6 +87,7 @@ class TestKeyboardLayout(unittest.TestCase):
 
     def test_colored_example(self):
         color_pairs = [
+            ('lightgoldenrod', 'orangered'),
             ('pink', 'deeppink'),
             ('cornflowerblue', 'darkblue'),
         ]

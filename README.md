@@ -12,13 +12,13 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - modify a specific key with `update_key`
 
 ## Examples
-qwerty colored
+#### qwerty with colors
 ![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty_colored.jpg)
 
-qwerty
+#### qwerty
 ![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty.jpg)
 
-azerty laptop
+#### azerty laptop
 ![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/azerty_laptop.jpg)
 
 ## Installation

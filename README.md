@@ -13,13 +13,13 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 
 ## Examples
 #### qwerty with colors
-![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty_colored.jpg)
+![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/qwerty_colored.jpg)
 
 #### qwerty
-![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty.jpg)
+![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/qwerty.jpg)
 
 #### azerty laptop
-![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/azerty_laptop.jpg)
+![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/azerty_laptop.jpg)
 
 ## Installation
 Make sure that you are using Python3

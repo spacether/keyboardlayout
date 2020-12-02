@@ -11,6 +11,9 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
 - modify a specific key with `update_key`
 
+## Documentation
+https://spacether.github.io/keyboardlayout/
+
 ## Examples
 #### qwerty with colors
 ![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/qwerty_colored.jpg)

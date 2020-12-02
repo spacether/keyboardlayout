@@ -11,7 +11,10 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
 - modify a specific key with `update_key`
 
-## Keyboard Layouts
+## Examples
+qwerty colored
+![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty_pretty.jpg)
+
 qwerty
 ![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/main/sample_images/qwerty.jpg)
 

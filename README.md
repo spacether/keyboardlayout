@@ -95,8 +95,9 @@ make test
 ```
 
 ### Todo
+- hook into different keyboard listeners
+- add overrides to set specific key colors
 - make version number connect to one data source in
   - installation
   - docs
 - different license?
-- hook into different keyboard listeners

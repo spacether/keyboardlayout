@@ -59,10 +59,10 @@ class TxtSprite(pygame.sprite.Sprite):
         vertical_anchor: VerticalAnchor,
         txt: str,
         font: pygame.font.SysFont,
-        font_color: pygame.Color,
+        txt_color: pygame.Color,
     ):
         super().__init__()
-        self.font_color = font_color
+        self.txt_color = txt_color
         self.txt = txt
         self.font = font
         self.render_text()
@@ -85,7 +85,7 @@ class TxtSprite(pygame.sprite.Sprite):
         self.rect = pygame.Rect(xloc, yloc, txt_width, txt_height)
 
     def render_text(self):
-        self.image = self.font.render(self.txt, 1, self.font_color)
+        self.image = self.font.render(self.txt, 1, self.txt_color)
 
 
 class RectSprite(pygame.sprite.Sprite):
@@ -337,14 +337,14 @@ class KeyboardLayout(pygame.sprite.Group):
         self,
         key_name: str,
         bg_color: typing.Optional[pygame.Color] = None,
-        font_color: typing.Optional[pygame.Color] = None,
+        txt_color: typing.Optional[pygame.Color] = None,
     ):
         """Update the new bg_color and font_color for key_name"""
         key = self._key_name_to_key[key_name]
         if bg_color:
             for bg_sprite in key.bg_sprites.sprites():
                 bg_sprite.image.fill(bg_color)
-        if font_color:
+        if txt_color:
             for txt_sprite in key.txt_sprites.sprites():
-                txt_sprite.font_color = font_color
+                txt_sprite.txt_color = txt_color
                 txt_sprite.render_text()

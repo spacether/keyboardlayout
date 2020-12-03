@@ -246,7 +246,7 @@ rows:
   - 1
   - 1.2
   keys:
-  - name: left control
+  - name: left ctrl
     txt_info:
       ml: Ctrl
     size:
@@ -261,7 +261,7 @@ rows:
   - name: left alt
     txt_info:
       mc: Alt
-  - name: space bar
+  - name: space
     txt_info: {}
     size:
     - 5
@@ -269,7 +269,7 @@ rows:
   - name: right alt
     txt_info:
       mc: AltGr
-  - name: right control
+  - name: right ctrl
     txt_info:
       mc: Ctrl
 - name: lower arrows
@@ -280,13 +280,13 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: left arrow
+  - name: left
     txt_info:
       mc: ◄
-  - name: down arrow
+  - name: down
     txt_info:
       mc: ▼
-  - name: right arrow
+  - name: right
     txt_info:
       mc: ►
 - name: upper arrows
@@ -297,6 +297,6 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: up arrow
+  - name: up
     txt_info:
       mc: ▲

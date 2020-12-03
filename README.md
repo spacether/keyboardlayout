@@ -16,13 +16,13 @@ https://spacether.github.io/keyboardlayout/
 
 ## Examples
 #### qwerty with colors
-![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/qwerty_colored.jpg)
+![qwerty colored](https://raw.githubusercontent.com/spacether/keyboardlayout/master/samples/images/qwerty_colored.jpg)
 
 #### qwerty
-![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/qwerty.jpg)
+![qwerty](https://raw.githubusercontent.com/spacether/keyboardlayout/master/samples/images/qwerty.jpg)
 
 #### azerty laptop
-![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/master/sample_images/azerty_laptop.jpg)
+![azerty_laptop](https://raw.githubusercontent.com/spacether/keyboardlayout/master/samples/images/azerty_laptop.jpg)
 
 ## Installation
 Make sure that you are using Python3

@@ -6,6 +6,8 @@ import keyboardlayout as kl
 
 
 class TestKeyboardLayout(unittest.TestCase):
+    sample_images_folder = "samples/images/"
+
     @classmethod
     def setUpClass(cls):
         pygame.init()
@@ -54,7 +56,7 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard.draw(screen)
             pygame.display.update()
             pygame.image.save(
-                screen, "sample_images/{}.jpg".format(layout_name))
+                screen, self.sample_images_folder + "{}.jpg".format(layout_name))
 
 
     def test_invalid_layout_name_raise_exception(self):
@@ -127,7 +129,7 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard.draw(screen)
         pygame.display.update()
         pygame.image.save(
-            screen, "sample_images/{}_colored.jpg".format(layout_name))
+            screen, self.sample_images_folder + "{}_colored.jpg".format(layout_name))
 
 
 if __name__ == '__main__':

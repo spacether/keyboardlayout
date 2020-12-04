@@ -13,5 +13,6 @@ test:
 	python setup.py pytest
 
 docs:
+	rm -rf docs
 	sphinx-build -b html sphinx docs
 	touch docs/.nojekyll

@@ -15,7 +15,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to keyboardlayout’s documentation!" href="index.html" />
+    <link rel="prev" title="Welcome to the documentation for keyboardlayout 1.0.0!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -91,7 +91,7 @@ This class allows us to change the key color and text color.</p>
 This is the class that developers will use.</p>
 <dl class="py method">
 <dt id="keyboardlayout.keyboardlayout.KeyboardLayout.update_key">
-<code class="sig-name descname">update_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bg_color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pygame.Color<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">font_color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pygame.Color<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#KeyboardLayout.update_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyboardLayout.update_key" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bg_color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pygame.Color<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">txt_color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pygame.Color<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#KeyboardLayout.update_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyboardLayout.update_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the new bg_color and font_color for key_name</p>
 </dd></dl>
 
@@ -102,16 +102,6 @@ This is the class that developers will use.</p>
 <em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">LayoutName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#keyboardlayout.keyboardlayout.LayoutName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
 <p>An enum that holds the allowed layout names</p>
-<dl class="py attribute">
-<dt id="keyboardlayout.keyboardlayout.LayoutName.AZERTY_LAPTOP">
-<code class="sig-name descname">AZERTY_LAPTOP</code><em class="property"> = 'azerty_laptop'</em><a class="headerlink" href="#keyboardlayout.keyboardlayout.LayoutName.AZERTY_LAPTOP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="keyboardlayout.keyboardlayout.LayoutName.QWERTY">
-<code class="sig-name descname">QWERTY</code><em class="property"> = 'qwerty'</em><a class="headerlink" href="#keyboardlayout.keyboardlayout.LayoutName.QWERTY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -165,7 +155,7 @@ This is the class that developers will use.</p>
 
 <dl class="py class">
 <dt id="keyboardlayout.keyboardlayout.TxtSprite">
-<em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">TxtSprite</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">horizontal_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.HorizontalAnchor" title="keyboardlayout.keyboardlayout.HorizontalAnchor">keyboardlayout.keyboardlayout.HorizontalAnchor</a></span></em>, <em class="sig-param"><span class="n">vertical_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.VerticalAnchor" title="keyboardlayout.keyboardlayout.VerticalAnchor">keyboardlayout.keyboardlayout.VerticalAnchor</a></span></em>, <em class="sig-param"><span class="n">txt</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">font</span><span class="p">:</span> <span class="n">pygame.sysfont.SysFont</span></em>, <em class="sig-param"><span class="n">font_color</span><span class="p">:</span> <span class="n">pygame.Color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#TxtSprite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.TxtSprite" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">TxtSprite</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">horizontal_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.HorizontalAnchor" title="keyboardlayout.keyboardlayout.HorizontalAnchor">keyboardlayout.keyboardlayout.HorizontalAnchor</a></span></em>, <em class="sig-param"><span class="n">vertical_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.VerticalAnchor" title="keyboardlayout.keyboardlayout.VerticalAnchor">keyboardlayout.keyboardlayout.VerticalAnchor</a></span></em>, <em class="sig-param"><span class="n">txt</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">font</span><span class="p">:</span> <span class="n">pygame.sysfont.SysFont</span></em>, <em class="sig-param"><span class="n">txt_color</span><span class="p">:</span> <span class="n">pygame.Color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#TxtSprite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.TxtSprite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.sprite.Sprite</span></code></p>
 <p>A sprite that contains text</p>
 <dl class="py method">
@@ -234,7 +224,7 @@ This is the class that developers will use.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to keyboardlayout’s documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to the documentation for keyboardlayout 1.0.0!</a></li>
   </ul></li>
 </ul>
 </div>

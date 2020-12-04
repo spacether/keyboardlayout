@@ -93,10 +93,10 @@
         <span class="n">vertical_anchor</span><span class="p">:</span> <span class="n">VerticalAnchor</span><span class="p">,</span>
         <span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">font</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">,</span>
-        <span class="n">font_color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
+        <span class="n">txt_color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">font_color</span> <span class="o">=</span> <span class="n">font_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">font</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">render_text</span><span class="p">()</span>
@@ -119,7 +119,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="n">xloc</span><span class="p">,</span> <span class="n">yloc</span><span class="p">,</span> <span class="n">txt_width</span><span class="p">,</span> <span class="n">txt_height</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TxtSprite.render_text"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.TxtSprite.render_text">[docs]</a>    <span class="k">def</span> <span class="nf">render_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_color</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">txt_color</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="RectSprite"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.RectSprite">[docs]</a><span class="k">class</span> <span class="nc">RectSprite</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
@@ -371,16 +371,16 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">key_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">bg_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">font_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">txt_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the new bg_color and font_color for key_name&quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">bg_color</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">bg_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
                 <span class="n">bg_sprite</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">bg_color</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">font_color</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">txt_color</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">txt_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">txt_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
-                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">font_color</span> <span class="o">=</span> <span class="n">font_color</span>
+                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span>
                 <span class="n">txt_sprite</span><span class="o">.</span><span class="n">render_text</span><span class="p">()</span></div></div>
 </pre></div>
 

@@ -1,11 +1,14 @@
-
 from setuptools import setup, find_packages
+
+version = {}
+with open("keyboardlayout/version.py") as fp:
+    exec(fp.read(), version)
 
 setup(
     name = 'keyboardlayout',
     install_requires = ['PyYAML >= 5.3.1', 'pygame >= 2.0.0'],
     python_requires='>=3',
-    version = '1.0.0',
+    version = version['__version__'],
     description = 'A python library to display different keyboards',
     author = 'Justin Black',
     packages = find_packages(),
@@ -20,8 +23,6 @@ setup(
         'dev': [
             'sphinx',
             'pytest',
-            'pytest-pep8',
-            'pytest-cov'
         ]
     },
     classifiers = [

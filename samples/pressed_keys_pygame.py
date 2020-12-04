@@ -41,9 +41,8 @@ def run_until_user_closes_window(
             elif event.key == pygame.K_ESCAPE:
                 playing = False
                 break
-            print(event)
+
             key_name = pygame.key.name(event.key)
-            print(key_name)
             if key_name not in keyboard._key_name_to_key:
                 continue
 

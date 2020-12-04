@@ -16,16 +16,17 @@
 
 
 # -- Project information -----------------------------------------------------
+import keyboardlayout
 
 project = 'keyboardlayout'
 copyright = '2020, Justin Black'
 author = 'Justin Black'
 
 # The short X.Y version
-version = '1.0.0'
+version = keyboardlayout.__version__
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = keyboardlayout.__version__
 
 
 # -- General configuration ---------------------------------------------------

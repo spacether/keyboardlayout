@@ -4,3 +4,4 @@ from .keyboardlayout import (
     KeyboardLayout,
     LayoutName,
 )
+from .version import __version__

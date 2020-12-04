@@ -1,8 +1,13 @@
 from setuptools import setup, find_packages
+from os import path
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 version = {}
-with open("keyboardlayout/version.py") as fp:
-    exec(fp.read(), version)
+with open(path.join(this_directory, "keyboardlayout/version.py")) as f:
+    exec(f.read(), version)
 
 setup(
     name = 'keyboardlayout',
@@ -35,5 +40,6 @@ setup(
         'Topic :: Games/Entertainment :: Simulation',
         'Development Status :: 5 - Production/Stable',
     ],
-    long_description = 'A python library to display different keyboards'
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 )

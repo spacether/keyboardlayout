@@ -14,8 +14,6 @@ setup(
     packages = find_packages(),
     package_data={'keyboardlayout': ['keyboardlayout/layouts/*.yaml']},
     url = "https://github.com/spacether/keyboardlayout",
-    entry_points = {},
-    license='see LICENSE.txt',
     keywords = ["keyboard", "qwerty", "layout", "azerty"],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
@@ -26,15 +24,16 @@ setup(
         ]
     },
     classifiers = [
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Intended Audience :: End Users/Desktop",
-        "Intended Audience :: Education",
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Intended Audience :: End Users/Desktop',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Operating System :: MacOS',
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Multimedia :: Graphics',
         'Topic :: Games/Entertainment :: Simulation',
+        'Development Status :: 5 - Production/Stable',
     ],
     long_description = 'A python library to display different keyboards'
 )

@@ -96,5 +96,3 @@ make test
 
 ### Todo
 - add overrides to set specific key colors
-- update tags?
-- different license?

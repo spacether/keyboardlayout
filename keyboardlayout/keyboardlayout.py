@@ -115,6 +115,16 @@ class Key:
         self.txt_sprites = txt_sprites
 
 
+class KeyColorInfo:
+    def __init__(
+        self,
+        color: pygame.Color,
+        txt_color:typing.Optional[pygame.Color] = None,
+    ):
+        self.color = color
+        self.txt_color = txt_color
+
+
 class KeyInfo:
     """The needed key inputs for KeyboardLayout"""
     def __init__(
@@ -149,8 +159,17 @@ class KeyboardInfo:
 
 class KeyboardLayout(pygame.sprite.Group):
     """
-    The class that stores the keyboard layout.
-    This is the class that developers will use.
+    Makes a sprite group that stores a keyboard layout image
+
+    Args:
+        layout_name: must be a string in the LayoutName enum
+        keyboard_info: the settings for the keyboard
+        key_info: the settings for the keys
+        overrides: Optional; a dict that lets one override key color settings
+
+    Attributes:
+        _key_name_to_key (dict): a dict that goes from
+            key_name (str) to Key class instances
     """
     @staticmethod
     def __max_width(
@@ -263,6 +282,7 @@ class KeyboardLayout(pygame.sprite.Group):
         layout_name: str,
         keyboard_info: KeyboardInfo,
         key_info: KeyInfo,
+        overrides: typing.Optional[typing.Dict[str, KeyColorInfo]] = None
     ):
         super().__init__()
 
@@ -336,15 +356,14 @@ class KeyboardLayout(pygame.sprite.Group):
     def update_key(
         self,
         key_name: str,
-        bg_color: typing.Optional[pygame.Color] = None,
-        txt_color: typing.Optional[pygame.Color] = None,
+        key_color_info: KeyColorInfo,
     ):
-        """Update the new bg_color and font_color for key_name"""
+        """Update the color and txt_color for key_name"""
         key = self._key_name_to_key[key_name]
-        if bg_color:
+        if key_color_info.color:
             for bg_sprite in key.bg_sprites.sprites():
-                bg_sprite.image.fill(bg_color)
-        if txt_color:
+                bg_sprite.image.fill(key_color_info.color)
+        if key_color_info.txt_color:
             for txt_sprite in key.txt_sprites.sprites():
-                txt_sprite.txt_color = txt_color
+                txt_sprite.txt_color = key_color_info.txt_color
                 txt_sprite.render_text()

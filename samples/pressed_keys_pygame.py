@@ -2,9 +2,16 @@ import keyboardlayout as kl
 import pygame
 
 grey = pygame.Color('grey')
-red = pygame.Color('red')
 dark_grey = ~pygame.Color('grey')
-white = pygame.Color('white')
+
+released_color_info = kl.KeyColorInfo(
+    color=grey,
+    txt_color=dark_grey
+)
+pressed_color_info = kl.KeyColorInfo(
+    color=pygame.Color('red'),
+    txt_color=pygame.Color('white')
+)
 
 def get_keyboard(layout_name: str) -> kl.KeyboardLayout:
     key_size = 60
@@ -47,10 +54,10 @@ def run_until_user_closes_window(
                 continue
 
             if event.type == pygame.KEYDOWN:
-                keyboard.update_key(key_name, bg_color=red, txt_color=white)
+                keyboard.update_key(key_name, pressed_color_info)
             elif event.type == pygame.KEYUP:
                 keyboard.update_key(
-                    key_name, bg_color=grey, txt_color=dark_grey)
+                    key_name, released_color_info)
             keyboard.draw(screen)
             pygame.display.update()
 

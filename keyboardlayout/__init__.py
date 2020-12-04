@@ -1,5 +1,6 @@
 from .keyboardlayout import (
     KeyInfo,
+    KeyColorInfo,
     KeyboardInfo,
     KeyboardLayout,
     LayoutName,

@@ -149,6 +149,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">txt_sprites</span> <span class="o">=</span> <span class="n">txt_sprites</span></div>
 
 
+<div class="viewcode-block" id="KeyColorInfo"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyColorInfo">[docs]</a><span class="k">class</span> <span class="nc">KeyColorInfo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
+        <span class="n">txt_color</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span></div>
+
+
 <div class="viewcode-block" id="KeyInfo"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyInfo">[docs]</a><span class="k">class</span> <span class="nc">KeyInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;The needed key inputs for KeyboardLayout&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -183,8 +193,17 @@
 
 <div class="viewcode-block" id="KeyboardLayout"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyboardLayout">[docs]</a><span class="k">class</span> <span class="nc">KeyboardLayout</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The class that stores the keyboard layout.</span>
-<span class="sd">    This is the class that developers will use.</span>
+<span class="sd">    Makes a sprite group that stores a keyboard layout image</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        layout_name: must be a string in the LayoutName enum</span>
+<span class="sd">        keyboard_info: the settings for the keyboard</span>
+<span class="sd">        key_info: the settings for the keys</span>
+<span class="sd">        overrides: Optional; a dict that lets one override key color settings</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _key_name_to_key (dict): a dict that goes from</span>
+<span class="sd">            key_name (str) to Key class instances</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__max_width</span><span class="p">(</span>
@@ -297,6 +316,7 @@
         <span class="n">layout_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">keyboard_info</span><span class="p">:</span> <span class="n">KeyboardInfo</span><span class="p">,</span>
         <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
+        <span class="n">overrides</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">KeyColorInfo</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -370,17 +390,16 @@
 <div class="viewcode-block" id="KeyboardLayout.update_key"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyboardLayout.update_key">[docs]</a>    <span class="k">def</span> <span class="nf">update_key</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">key_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">bg_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">txt_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">key_color_info</span><span class="p">:</span> <span class="n">KeyColorInfo</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update the new bg_color and font_color for key_name&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Update the color and txt_color for key_name&quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">bg_color</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">bg_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
-                <span class="n">bg_sprite</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">bg_color</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">txt_color</span><span class="p">:</span>
+                <span class="n">bg_sprite</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">key_color_info</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">txt_color</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">txt_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">txt_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
-                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span>
+                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">txt_color</span>
                 <span class="n">txt_sprite</span><span class="o">.</span><span class="n">render_text</span><span class="p">()</span></div></div>
 </pre></div>
 

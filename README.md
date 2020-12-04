@@ -9,7 +9,7 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - qwerty + azerty included
 - dynamically generate a pygame sprite group showing a keyboard
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
-- modify a specific key with `update_key`
+- update a specific key with `update_key`
 
 ## Documentation
 https://spacether.github.io/keyboardlayout/
@@ -29,6 +29,10 @@ Make sure that you are using Python3
 ```
 pip install keyboardlayout
 ```
+
+## Samples
+- [qwerty](https://github.com/spacether/keyboardlayout/tree/master/samples/qwerty.py)
+- [pressed keys with pygame](https://github.com/spacether/keyboardlayout/tree/master/samples/pressed_keys_pygame.py)
 
 ## Usage
 ```
@@ -95,4 +99,5 @@ make test
 ```
 
 ### Todo
-- add overrides to set specific key colors
+- use overrides in code
+- add override sample image

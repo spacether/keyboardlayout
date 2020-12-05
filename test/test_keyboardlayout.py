@@ -1,5 +1,6 @@
 import unittest
 import typing
+from collections import namedtuple
 
 import pygame
 import keyboardlayout as kl
@@ -18,10 +19,10 @@ class TestKeyboardLayout(unittest.TestCase):
 
     @staticmethod
     def get_infos():
-        key_size = 60
         grey = pygame.Color('grey')
+        key_size = 60
+        letter_key_size = (key_size, key_size) # width, height
         key_info = kl.KeyInfo(
-            size=(key_size, key_size),  # width, height
             margin=10,
             color=grey,
             txt_color=~grey,  # invert grey
@@ -33,12 +34,12 @@ class TestKeyboardLayout(unittest.TestCase):
             padding=2,
             color=~grey
         )
-        return keyboard_info, key_info
+        return keyboard_info, letter_key_size, key_info
 
 
     def test_writes_sample_keyboard_layouts_to_images(self):
         layout_names = ['qwerty', 'azerty_laptop']
-        keyboard_info, key_info = self.get_infos()
+        keyboard_info, letter_key_size, key_info = self.get_infos()
         for layout_name in layout_names:
             pygame.display.set_caption(
                 "{} keyboard layout".format(layout_name))
@@ -46,6 +47,7 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard = kl.KeyboardLayout(
                 layout_name,
                 keyboard_info,
+                letter_key_size,
                 key_info,
             )
 
@@ -68,6 +70,7 @@ class TestKeyboardLayout(unittest.TestCase):
                 'invalid_layout',
                 None,
                 None,
+                None,
             )
 
     def test_layout_num_sprites(self):
@@ -75,11 +78,12 @@ class TestKeyboardLayout(unittest.TestCase):
             kl.LayoutName.QWERTY: 143,
             kl.LayoutName.AZERTY_LAPTOP: 166,
         }
-        keyboard_info, key_info = self.get_infos()
+        keyboard_info, letter_key_size, key_info = self.get_infos()
         for layout_name in kl.LayoutName:
             keyboard = kl.KeyboardLayout(
                 layout_name,
                 keyboard_info,
+                letter_key_size,
                 key_info,
             )
             self.assertEqual(
@@ -88,19 +92,23 @@ class TestKeyboardLayout(unittest.TestCase):
             )
 
     def test_colored_example(self):
-        color_pairs = [
-            ('lightgoldenrod', 'orangered'),
-            ('pink', 'deeppink'),
-            ('cornflowerblue', 'darkblue'),
+        TestCase = namedtuple('TestCase', 'key_color other_color overrides')
+        test_cases = [
+            TestCase(key_color='lightgoldenrod', other_color='orangered', overrides=None),
+            TestCase(key_color='pink', other_color='deeppink', overrides=None),
+            TestCase(key_color='cornflowerblue', other_color='darkblue', overrides=None),
         ]
         keyboards = []
         layout_name = 'qwerty'
         key_size = 32
+        letter_key_size = (key_size, key_size)  # width, height
         y = 0
-        for color_pair in color_pairs:
-            key_color, other_color = [pygame.Color(c) for c in color_pair]
+        for test_case in test_cases:
+            key_color, other_color = [
+                pygame.Color(c)
+                for c in (test_case.key_color, test_case.other_color)
+            ]
             key_info = kl.KeyInfo(
-                size=(key_size, key_size),  # width, height
                 margin=2,
                 color=key_color,
                 txt_color=other_color,  # invert grey
@@ -116,6 +124,7 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard = kl.KeyboardLayout(
                 layout_name,
                 keyboard_info,
+                letter_key_size,
                 key_info,
             )
             keyboards.append(keyboard)

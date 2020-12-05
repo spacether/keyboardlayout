@@ -149,28 +149,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">txt_sprites</span> <span class="o">=</span> <span class="n">txt_sprites</span></div>
 
 
-<div class="viewcode-block" id="KeyColorInfo"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyColorInfo">[docs]</a><span class="k">class</span> <span class="nc">KeyColorInfo</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
-        <span class="n">txt_color</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span></div>
-
-
 <div class="viewcode-block" id="KeyInfo"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyInfo">[docs]</a><span class="k">class</span> <span class="nc">KeyInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;The needed key inputs for KeyboardLayout&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">margin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
         <span class="n">txt_color</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Color</span><span class="p">,</span>
         <span class="n">txt_font</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">,</span>
         <span class="n">txt_padding</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="n">margin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">txt_color</span>
@@ -198,8 +186,9 @@
 <span class="sd">    Args:</span>
 <span class="sd">        layout_name: must be a string in the LayoutName enum</span>
 <span class="sd">        keyboard_info: the settings for the keyboard</span>
+<span class="sd">        letter_key_size: the horizontal and vertical size in px of letter keys</span>
 <span class="sd">        key_info: the settings for the keys</span>
-<span class="sd">        overrides: Optional; a dict that lets one override key color settings</span>
+<span class="sd">        overrides: Optional; a dict that lets one override key settings</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        _key_name_to_key (dict): a dict that goes from</span>
@@ -265,11 +254,12 @@
         <span class="n">sticher_sprite</span> <span class="o">=</span> <span class="n">RectSprite</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key_info</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sticher_sprite</span>
 
-    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__get_key_sprites</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
         <span class="n">r</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">,</span>
-        <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
         <span class="n">txt_info</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Key</span><span class="p">],</span>
+        <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">height</span>
         <span class="n">key_padding</span> <span class="o">=</span> <span class="n">key_info</span><span class="o">.</span><span class="n">margin</span><span class="o">//</span><span class="mi">2</span>
@@ -279,10 +269,16 @@
             <span class="n">width</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">key_padding</span><span class="p">,</span>
             <span class="n">height</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">key_padding</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">sprites</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">bg_sprites</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">bg_sprite</span> <span class="o">=</span> <span class="n">RectSprite</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key_info</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
-        <span class="n">sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bg_sprite</span><span class="p">)</span>
+        <span class="n">bg_sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bg_sprite</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">sticher_sprite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_stitcher_sprite</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bg_sprite</span><span class="p">,</span> <span class="n">key_info</span><span class="p">)</span>
+            <span class="n">bg_sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sticher_sprite</span><span class="p">)</span>
+
+        <span class="n">txt_sprites</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">txt_anchor</span><span class="p">,</span> <span class="n">label_txt</span> <span class="ow">in</span> <span class="n">txt_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">vertical_anchor</span> <span class="o">=</span> <span class="n">VerticalAnchor</span><span class="p">(</span><span class="n">txt_anchor</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">horizontal_anchor</span> <span class="o">=</span> <span class="n">HorizontalAnchor</span><span class="p">(</span><span class="n">txt_anchor</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -307,16 +303,17 @@
                 <span class="n">key_info</span><span class="o">.</span><span class="n">txt_font</span><span class="p">,</span>
                 <span class="n">key_info</span><span class="o">.</span><span class="n">txt_color</span>
             <span class="p">)</span>
-            <span class="n">sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">txt_sprite</span><span class="p">)</span>
+            <span class="n">txt_sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">txt_sprite</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sprites</span>
+        <span class="k">return</span> <span class="n">bg_sprites</span><span class="p">,</span> <span class="n">txt_sprites</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">layout_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">keyboard_info</span><span class="p">:</span> <span class="n">KeyboardInfo</span><span class="p">,</span>
+        <span class="n">letter_key_size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
-        <span class="n">overrides</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">KeyColorInfo</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">overrides</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">KeyInfo</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -326,7 +323,7 @@
         <span class="n">layout</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">letter_key_width</span><span class="p">,</span> <span class="n">letter_key_height</span> <span class="o">=</span> <span class="n">key_info</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">letter_key_width</span><span class="p">,</span> <span class="n">letter_key_height</span> <span class="o">=</span> <span class="n">letter_key_size</span>
 
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">position</span>
         <span class="n">xanchor</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">padding</span>
@@ -364,43 +361,43 @@
                     <span class="n">letter_key_height</span><span class="o">*</span><span class="n">key_ysize_keycoords</span>
                 <span class="p">)</span>
                 <span class="n">rect</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="n">key_x</span><span class="p">,</span> <span class="n">key_y</span><span class="p">,</span> <span class="n">key_width</span><span class="p">,</span> <span class="n">key_height</span><span class="p">)</span>
-                <span class="n">key_sprites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_key_sprites</span><span class="p">(</span>
-                    <span class="n">rect</span><span class="p">,</span>
-                    <span class="n">key_info</span><span class="p">,</span>
-                    <span class="n">row_key</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">TXT_INFO</span><span class="p">],</span>
-                <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key_sprites</span><span class="p">)</span>
-                <span class="n">key_x</span> <span class="o">+=</span> <span class="n">key_width</span>
                 <span class="n">key_name</span> <span class="o">=</span> <span class="n">row_key</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">NAME</span><span class="p">]</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">used_key_info</span> <span class="o">=</span> <span class="n">key_info</span>
+                <span class="k">if</span> <span class="n">overrides</span><span class="p">:</span>
+                    <span class="n">used_key_info</span> <span class="o">=</span> <span class="n">overrides</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_name</span><span class="p">,</span> <span class="n">used_key_info</span><span class="p">)</span>
+                <span class="n">bg_sprites</span><span class="p">,</span> <span class="n">txt_sprites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_key_sprites</span><span class="p">(</span>
+                    <span class="n">rect</span><span class="p">,</span>
+                    <span class="n">row_key</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">TXT_INFO</span><span class="p">],</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">used_key_info</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">bg_sprites</span><span class="p">,</span> <span class="o">*</span><span class="n">txt_sprites</span><span class="p">)</span>
+                <span class="n">key_x</span> <span class="o">+=</span> <span class="n">key_width</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">bg_sprites</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">key_sprites</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
-                    <span class="n">txt_sprites</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">key_sprites</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                    <span class="n">bg_sprites</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">bg_sprites</span><span class="p">)</span>
+                    <span class="n">txt_sprites</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">txt_sprites</span><span class="p">)</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">bg_sprites</span><span class="p">,</span> <span class="n">txt_sprites</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">new_bg_sprite</span> <span class="o">=</span> <span class="n">key_sprites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">key</span><span class="o">.</span><span class="n">txt_sprites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key_sprites</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-                    <span class="n">sticher_sprite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_stitcher_sprite</span><span class="p">(</span>
-                        <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_bg_sprite</span><span class="p">,</span> <span class="n">key_info</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="n">sticher_sprite</span><span class="p">])</span>
-                    <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="n">new_bg_sprite</span><span class="p">,</span> <span class="n">sticher_sprite</span><span class="p">])</span>
+                    <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bg_sprites</span><span class="p">)</span>
+                    <span class="n">key</span><span class="o">.</span><span class="n">txt_sprites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">txt_sprites</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="KeyboardLayout.update_key"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.keyboardlayout.KeyboardLayout.update_key">[docs]</a>    <span class="k">def</span> <span class="nf">update_key</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">key_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">key_color_info</span><span class="p">:</span> <span class="n">KeyColorInfo</span><span class="p">,</span>
+        <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the color and txt_color for key_name&quot;&quot;&quot;</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">bg_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">bg_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
-                <span class="n">bg_sprite</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">key_color_info</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">txt_color</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">txt_sprite</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">txt_sprites</span><span class="o">.</span><span class="n">sprites</span><span class="p">():</span>
-                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">txt_color</span> <span class="o">=</span> <span class="n">key_color_info</span><span class="o">.</span><span class="n">txt_color</span>
-                <span class="n">txt_sprite</span><span class="o">.</span><span class="n">render_text</span><span class="p">()</span></div></div>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_name_to_key</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span></div></div>
+        <span class="c1"># if key_color_info.color:</span>
+        <span class="c1">#     for bg_sprite in key.bg_sprites.sprites():</span>
+        <span class="c1">#         bg_sprite.image.fill(key_color_info.color)</span>
+        <span class="c1"># if key_color_info.txt_color:</span>
+        <span class="c1">#     for txt_sprite in key.txt_sprites.sprites():</span>
+        <span class="c1">#         txt_sprite.txt_color = key_color_info.txt_color</span>
+        <span class="c1">#         txt_sprite.render_text()</span>
 </pre></div>
 
           </div>

@@ -100,6 +100,5 @@ make test
 ```
 
 ### Todo
-- use overrides in code
 - only draw sprites of the correct size, remove stitcher sprite
-- add override sample image
+- update pressed_keys to swap in the newly generated keys

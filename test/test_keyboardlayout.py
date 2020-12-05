@@ -92,33 +92,103 @@ class TestKeyboardLayout(unittest.TestCase):
             )
 
     def test_colored_example(self):
-        TestCase = namedtuple('TestCase', 'key_color other_color overrides')
+        TestCase = namedtuple(
+            'TestCase', 'key_color keyboard_color overrides txt_color')
+        key_size = 32
+        margin = 2
+        first_letter = kl.KeyInfo(
+            margin=0,
+            color=pygame.Color('cyan'),
+            txt_color=pygame.Color('black'),
+            txt_font=pygame.font.SysFont('Arial', key_size//4),
+            txt_padding=(key_size//10, key_size//10),
+        )
+        second_letter = kl.KeyInfo(
+            margin=0,
+            color=pygame.Color('magenta'),
+            txt_color=pygame.Color('black'),
+            txt_font=pygame.font.SysFont('Arial', key_size//4),
+            txt_padding=(key_size//10, key_size//10),
+        )
+        third_letter = kl.KeyInfo(
+            margin=0,
+            color=pygame.Color('yellow'),
+            txt_color=pygame.Color('black'),
+            txt_font=pygame.font.SysFont('Arial', key_size//4),
+            txt_padding=(key_size//10, key_size//10),
+        )
+        third_letter_small = kl.KeyInfo(
+            margin=14,
+            color=pygame.Color('yellow'),
+            txt_color=pygame.Color('black'),
+            txt_font=pygame.font.SysFont('Arial', key_size//4),
+            txt_padding=(key_size//10, key_size//10),
+        )
+        overrides = {
+            # spells HI!
+            # H
+            "q": first_letter,
+            'a': first_letter,
+            'z': first_letter,
+            's': first_letter,
+            'e': first_letter,
+            'd': first_letter,
+            'c': first_letter,
+            # I
+            't': second_letter,
+            'y': second_letter,
+            'u': second_letter,
+            'h': second_letter,
+            'b': second_letter,
+            'n': second_letter,
+            'm': second_letter,
+            # !
+            'o': third_letter,
+            'l': third_letter,
+            '.': third_letter_small,
+        }
         test_cases = [
-            TestCase(key_color='lightgoldenrod', other_color='orangered', overrides=None),
-            TestCase(key_color='pink', other_color='deeppink', overrides=None),
-            TestCase(key_color='cornflowerblue', other_color='darkblue', overrides=None),
+            TestCase(
+                key_color='lightgoldenrod',
+                keyboard_color='orangered',
+                txt_color='orangered',
+                overrides=None
+            ),
+            TestCase(
+                key_color='pink',
+                keyboard_color='deeppink',
+                txt_color='deeppink',
+                overrides=None
+            ),
+            TestCase(
+                key_color='cornflowerblue',
+                keyboard_color='darkblue',
+                txt_color='darkblue',
+                overrides=None
+            ),
+            TestCase(
+                key_color='black',
+                keyboard_color='grey20',
+                txt_color='grey80',
+                overrides=overrides
+            ),
         ]
         keyboards = []
         layout_name = 'qwerty'
-        key_size = 32
         letter_key_size = (key_size, key_size)  # width, height
         y = 0
         for test_case in test_cases:
-            key_color, other_color = [
-                pygame.Color(c)
-                for c in (test_case.key_color, test_case.other_color)
-            ]
             key_info = kl.KeyInfo(
-                margin=2,
-                color=key_color,
-                txt_color=other_color,  # invert grey
+                margin=margin,
+                color=pygame.Color(test_case.key_color),
+                txt_color=pygame.Color(test_case.txt_color),
                 txt_font=pygame.font.SysFont('Arial', key_size//4),
                 txt_padding=(key_size//10, key_size//10),
             )
             keyboard_info = kl.KeyboardInfo(
                 position=(0, y),
                 padding=2,
-                color=other_color
+                color=pygame.Color(test_case.keyboard_color)
             )
 
             keyboard = kl.KeyboardLayout(
@@ -126,6 +196,7 @@ class TestKeyboardLayout(unittest.TestCase):
                 keyboard_info,
                 letter_key_size,
                 key_info,
+                test_case.overrides
             )
             keyboards.append(keyboard)
             y += keyboard.rect.height
@@ -138,7 +209,9 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard.draw(screen)
         pygame.display.update()
         pygame.image.save(
-            screen, self.sample_images_folder + "{}_colored.jpg".format(layout_name))
+            screen,
+            self.sample_images_folder + "{}_colored.jpg".format(layout_name)
+        )
 
 
 if __name__ == '__main__':

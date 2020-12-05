@@ -152,8 +152,9 @@ class KeyboardLayout(pygame.sprite.Group):
     Args:
         layout_name: must be a string in the LayoutName enum
         keyboard_info: the settings for the keyboard
+        letter_key_size: the horizontal and vertical size in px of letter keys
         key_info: the settings for the keys
-        overrides: Optional; a dict that lets one override key color settings
+        overrides: Optional; a dict that lets one override key settings
 
     Attributes:
         _key_name_to_key (dict): a dict that goes from

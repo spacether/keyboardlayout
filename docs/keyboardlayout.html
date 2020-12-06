@@ -62,14 +62,6 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="keyboardlayout.keyboardlayout.Key">
-<em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">Key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bg_sprites</span><span class="p">:</span> <span class="n">pygame.sprite.Group</span></em>, <em class="sig-param"><span class="n">txt_sprites</span><span class="p">:</span> <span class="n">pygame.sprite.Group</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.Key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Contains a key’s background sprites and text sprites.
-This class allows us to change the key color and text color.</p>
-</dd></dl>
-
-<dl class="py class">
 <dt id="keyboardlayout.keyboardlayout.KeyInfo">
 <em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">KeyInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">margin</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">pygame.Color</span></em>, <em class="sig-param"><span class="n">txt_color</span><span class="p">:</span> <span class="n">pygame.Color</span></em>, <em class="sig-param"><span class="n">txt_font</span><span class="p">:</span> <span class="n">pygame.sysfont.SysFont</span></em>, <em class="sig-param"><span class="n">txt_padding</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#KeyInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -100,10 +92,10 @@ This class allows us to change the key color and text color.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="keyboardlayout.keyboardlayout.KeyboardLayout._key_name_to_key">
-<code class="sig-name descname">_key_name_to_key</code><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyboardLayout._key_name_to_key" title="Permalink to this definition">¶</a></dt>
+<dt id="keyboardlayout.keyboardlayout.KeyboardLayout._key_name_to_sprite_group">
+<code class="sig-name descname">_key_name_to_sprite_group</code><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyboardLayout._key_name_to_sprite_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>a dict that goes from
-key_name (str) to Key class instances</p>
+key_name (str) to pygame.sprite.Group instances</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>
@@ -114,7 +106,7 @@ key_name (str) to Key class instances</p>
 <dl class="py method">
 <dt id="keyboardlayout.keyboardlayout.KeyboardLayout.update_key">
 <code class="sig-name descname">update_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">key_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.KeyInfo" title="keyboardlayout.keyboardlayout.KeyInfo">keyboardlayout.keyboardlayout.KeyInfo</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#KeyboardLayout.update_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.KeyboardLayout.update_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the color and txt_color for key_name</p>
+<dd><p>Update key_name’s image using key_info</p>
 </dd></dl>
 
 </dd></dl>
@@ -190,11 +182,6 @@ key_name (str) to Key class instances</p>
 <em class="property">class </em><code class="sig-prename descclassname">keyboardlayout.keyboardlayout.</code><code class="sig-name descname">TxtSprite</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">horizontal_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.HorizontalAnchor" title="keyboardlayout.keyboardlayout.HorizontalAnchor">keyboardlayout.keyboardlayout.HorizontalAnchor</a></span></em>, <em class="sig-param"><span class="n">vertical_anchor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#keyboardlayout.keyboardlayout.VerticalAnchor" title="keyboardlayout.keyboardlayout.VerticalAnchor">keyboardlayout.keyboardlayout.VerticalAnchor</a></span></em>, <em class="sig-param"><span class="n">txt</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">font</span><span class="p">:</span> <span class="n">pygame.sysfont.SysFont</span></em>, <em class="sig-param"><span class="n">txt_color</span><span class="p">:</span> <span class="n">pygame.Color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#TxtSprite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.TxtSprite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pygame.sprite.Sprite</span></code></p>
 <p>A sprite that contains text</p>
-<dl class="py method">
-<dt id="keyboardlayout.keyboardlayout.TxtSprite.render_text">
-<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/keyboardlayout/keyboardlayout.html#TxtSprite.render_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keyboardlayout.keyboardlayout.TxtSprite.render_text" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">

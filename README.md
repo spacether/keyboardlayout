@@ -100,5 +100,4 @@ make test
 ```
 
 ### Todo
-- only draw sprites of the correct size, remove stitcher sprite
-- update pressed_keys to swap in the newly generated keys
+- collapse 3 loops into one to add_bg_rect_and_set_info_dicts

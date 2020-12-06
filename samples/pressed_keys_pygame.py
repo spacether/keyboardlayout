@@ -4,41 +4,48 @@ import pygame
 grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
 
-released_color_info = kl.KeyColorInfo(
-    color=grey,
-    txt_color=dark_grey
-)
-pressed_color_info = kl.KeyColorInfo(
-    color=pygame.Color('red'),
-    txt_color=pygame.Color('white')
-)
-
-def get_keyboard(layout_name: str) -> kl.KeyboardLayout:
-    key_size = 60
+def get_keyboard(layout_name: str, key_size: int) -> kl.KeyboardLayout:
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
         color=~grey
     )
     key_info = kl.KeyInfo(
-        size=(key_size, key_size),  # width, height
         margin=10,
         color=grey,
         txt_color=dark_grey,
         txt_font=pygame.font.SysFont('Arial', key_size//4),
         txt_padding=(key_size//6, key_size//10)
     )
+    letter_key_size = (key_size, key_size)  # width, height
     keyboard_layout = kl.KeyboardLayout(
         layout_name,
         keyboard_info,
+        letter_key_size,
         key_info
     )
     return keyboard_layout
 
 def run_until_user_closes_window(
     screen: pygame.Surface,
-    keyboard: kl.KeyboardLayout
+    keyboard: kl.KeyboardLayout,
+    key_size: int
 ):
+    released_key_info = kl.KeyInfo(
+        margin=10,
+        color=grey,
+        txt_color=dark_grey,
+        txt_font=pygame.font.SysFont('Arial', key_size//4),
+        txt_padding=(key_size//6, key_size//10)
+    )
+    pressed_key_info = kl.KeyInfo(
+        margin=20,
+        color=pygame.Color('red'),
+        txt_color=pygame.Color('white'),
+        txt_font=pygame.font.SysFont('Arial', key_size//4),
+        txt_padding=(key_size//6, key_size//10)
+    )
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -50,14 +57,14 @@ def run_until_user_closes_window(
                 break
 
             key_name = pygame.key.name(event.key)
-            if key_name not in keyboard._key_name_to_key:
+            if key_name not in keyboard._key_name_to_sprite_group:
                 continue
 
             if event.type == pygame.KEYDOWN:
-                keyboard.update_key(key_name, pressed_color_info)
+                keyboard.update_key(key_name, pressed_key_info)
             elif event.type == pygame.KEYUP:
                 keyboard.update_key(
-                    key_name, released_color_info)
+                    key_name, released_key_info)
             keyboard.draw(screen)
             pygame.display.update()
 
@@ -70,7 +77,8 @@ def keyboard_example(layout_name: str):
     pygame.event.set_blocked(None)
     pygame.event.set_allowed([pygame.KEYDOWN, pygame.KEYUP, pygame.QUIT])
 
-    keyboard = get_keyboard(layout_name)
+    key_size = 60
+    keyboard = get_keyboard(layout_name, key_size)
 
     screen = pygame.display.set_mode(
         (keyboard.rect.width, keyboard.rect.height))
@@ -78,7 +86,7 @@ def keyboard_example(layout_name: str):
 
     keyboard.draw(screen)
     pygame.display.update()
-    run_until_user_closes_window(screen, keyboard)
+    run_until_user_closes_window(screen, keyboard, key_size)
 
 if __name__ == "__main__":
     keyboard_example('qwerty')

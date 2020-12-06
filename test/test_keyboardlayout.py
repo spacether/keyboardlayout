@@ -76,7 +76,7 @@ class TestKeyboardLayout(unittest.TestCase):
     def test_layout_num_sprites(self):
         num_sprites_by_layout = {
             kl.LayoutName.QWERTY: 143,
-            kl.LayoutName.AZERTY_LAPTOP: 166,
+            kl.LayoutName.AZERTY_LAPTOP: 165,
         }
         keyboard_info, letter_key_size, key_info = self.get_infos()
         for layout_name in kl.LayoutName:

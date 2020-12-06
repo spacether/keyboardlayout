@@ -4,18 +4,15 @@ import pygame
 grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
 
-def get_keyboard(layout_name: str, key_size: int) -> kl.KeyboardLayout:
+def get_keyboard(
+    layout_name: str,
+    key_size: int,
+    key_info: kl.KeyInfo
+) -> kl.KeyboardLayout:
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
         color=~grey
-    )
-    key_info = kl.KeyInfo(
-        margin=10,
-        color=grey,
-        txt_color=dark_grey,
-        txt_font=pygame.font.SysFont('Arial', key_size//4),
-        txt_padding=(key_size//6, key_size//10)
     )
     letter_key_size = (key_size, key_size)  # width, height
     keyboard_layout = kl.KeyboardLayout(
@@ -29,15 +26,9 @@ def get_keyboard(layout_name: str, key_size: int) -> kl.KeyboardLayout:
 def run_until_user_closes_window(
     screen: pygame.Surface,
     keyboard: kl.KeyboardLayout,
-    key_size: int
+    key_size: int,
+    released_key_info: kl.KeyInfo,
 ):
-    released_key_info = kl.KeyInfo(
-        margin=10,
-        color=grey,
-        txt_color=dark_grey,
-        txt_font=pygame.font.SysFont('Arial', key_size//4),
-        txt_padding=(key_size//6, key_size//10)
-    )
     pressed_key_info = kl.KeyInfo(
         margin=20,
         color=pygame.Color('red'),
@@ -78,7 +69,14 @@ def keyboard_example(layout_name: str):
     pygame.event.set_allowed([pygame.KEYDOWN, pygame.KEYUP, pygame.QUIT])
 
     key_size = 60
-    keyboard = get_keyboard(layout_name, key_size)
+    key_info = kl.KeyInfo(
+        margin=10,
+        color=grey,
+        txt_color=dark_grey,
+        txt_font=pygame.font.SysFont('Arial', key_size//4),
+        txt_padding=(key_size//6, key_size//10)
+    )
+    keyboard = get_keyboard(layout_name, key_size, key_info)
 
     screen = pygame.display.set_mode(
         (keyboard.rect.width, keyboard.rect.height))
@@ -86,7 +84,7 @@ def keyboard_example(layout_name: str):
 
     keyboard.draw(screen)
     pygame.display.update()
-    run_until_user_closes_window(screen, keyboard, key_size)
+    run_until_user_closes_window(screen, keyboard, key_size, key_info)
 
 if __name__ == "__main__":
     keyboard_example('qwerty')

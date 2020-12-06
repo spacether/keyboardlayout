@@ -98,6 +98,3 @@ make install
 ```
 make test
 ```
-
-### Todo
-- collapse 3 loops into one to add_bg_rect_and_set_info_dicts

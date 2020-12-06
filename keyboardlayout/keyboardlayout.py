@@ -141,44 +141,60 @@ class KeyboardLayout(pygame.sprite.Group):
         _key_name_to_sprite_group (dict): a dict that goes from
             key_name (str) to pygame.sprite.Group instances
     """
-    @staticmethod
-    def __max_width(
-        letter_key_width: int,
+    def __get_max_size_and_set_info_dicts(
+        self,
         layout: dict,
+        keyboard_info: KeyboardInfo,
+        letter_key_size: typing.Tuple[int],
+        key_info: KeyInfo,
     ):
+        letter_key_width, letter_key_height = letter_key_size
         max_width = 0
+        max_height = 0
         key_size = layout[LayoutYamlConstant.KEY_SIZE]
-        for row in layout[LayoutYamlConstant.ROWS]:
+        self.__rect_by_key_name_and_loc = defaultdict(dict)
+        self.__txt_info_by_loc = {}
+        xanchor = keyboard_info.position[0] + keyboard_info.padding
+        yanchor = keyboard_info.position[1] + keyboard_info.padding
+        if key_info.margin:
+            xanchor += -key_info.margin//2
+            yanchor += -key_info.margin//2
+
+        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
             row_max_width = 0
+            row_x_keycoords, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
+            key_x = xanchor + row_x_keycoords * letter_key_width
+            key_y = yanchor + row_y_keycoords * letter_key_height
             key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
-            for row_key in row[LayoutYamlConstant.KEYS]:
-                key_xsize_keycoords, _ = row_key.get(
+
+            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
+                key_xsize_keycoords, key_ysize_keycoords = row_key.get(
                     LayoutYamlConstant.SIZE, key_size)
-                key_width = letter_key_width * key_xsize_keycoords
+
+                key_width, key_height = (
+                    letter_key_width*key_xsize_keycoords,
+                    letter_key_height*key_ysize_keycoords
+                )
+
                 row_max_width += key_width
+
+                row_y = row_y_keycoords * letter_key_height
+                key_ymax = row_y + key_height
+                if key_ymax > max_height:
+                    max_height = key_ymax
+
+                rect = pygame.Rect(key_x, key_y, key_width, key_height)
+                key_name = row_key[LayoutYamlConstant.NAME]
+                loc = (row_ind, row_key_ind)
+                self.__rect_by_key_name_and_loc[key_name][loc] = rect
+                self.__txt_info_by_loc[loc] = (
+                    row_key[LayoutYamlConstant.TXT_INFO])
+                key_x += key_width
+
             if row_max_width > max_width:
                 max_width = row_max_width
-        return max_width
 
-    @staticmethod
-    def __max_height(
-        letter_key_height: int,
-        layout: dict,
-    ):
-        height_max = 0
-        key_size = layout[LayoutYamlConstant.KEY_SIZE]
-        for row in layout[LayoutYamlConstant.ROWS]:
-            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
-            for row_key in row[LayoutYamlConstant.KEYS]:
-                _, key_ysize_keycoords = row_key.get(
-                    LayoutYamlConstant.SIZE, key_size)
-                _, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
-                row_y = row_y_keycoords * letter_key_height
-                key_height = letter_key_height * key_ysize_keycoords
-                key_ymax = row_y + key_height
-                if key_ymax > height_max:
-                    height_max = key_ymax
-        return height_max
+        return max_width, max_height
 
     def __get_key_sprites(
         self,
@@ -268,15 +284,12 @@ class KeyboardLayout(pygame.sprite.Group):
         letter_key_width, letter_key_height = letter_key_size
 
         x, y = keyboard_info.position
-        xanchor = x + keyboard_info.padding
-        yanchor = y + keyboard_info.padding
-        if key_info.margin:
-            xanchor += -key_info.margin//2
-            yanchor += -key_info.margin//2
-        xmax = 0
-        ymax = 0
-        max_width = self.__max_width(letter_key_width, layout)
-        max_height = self.__max_height(letter_key_height, layout)
+        max_width, max_height = self.__get_max_size_and_set_info_dicts(
+            layout,
+            keyboard_info,
+            letter_key_size,
+            key_info
+        )
         self.rect = pygame.Rect(
             x,
             y,
@@ -286,29 +299,6 @@ class KeyboardLayout(pygame.sprite.Group):
         if keyboard_info.color:
             bg_sprite = RectSprite(self.rect, keyboard_info.color)
             self.add(bg_sprite)
-
-        self.__rect_by_key_name_and_loc = defaultdict(dict)
-        self.__txt_info_by_loc = {}
-        key_size = layout[LayoutYamlConstant.KEY_SIZE]
-        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
-            row_x_keycoords, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
-            key_x = xanchor + row_x_keycoords * letter_key_width
-            key_y = yanchor + row_y_keycoords * letter_key_height
-            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
-            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
-                key_xsize_keycoords, key_ysize_keycoords = (
-                    row_key.get(LayoutYamlConstant.SIZE, key_size))
-                key_width, key_height = (
-                    letter_key_width*key_xsize_keycoords,
-                    letter_key_height*key_ysize_keycoords
-                )
-                rect = pygame.Rect(key_x, key_y, key_width, key_height)
-                key_name = row_key[LayoutYamlConstant.NAME]
-                loc = (row_ind, row_key_ind)
-                self.__rect_by_key_name_and_loc[key_name][loc] = rect
-                self.__txt_info_by_loc[loc] = (
-                    row_key[LayoutYamlConstant.TXT_INFO])
-                key_x += key_width
 
         for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
             for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
@@ -331,7 +321,7 @@ class KeyboardLayout(pygame.sprite.Group):
         key_name: str,
         key_info: KeyInfo,
     ):
-        """Update the color and txt_color for key_name"""
+        """Update key_name's image using key_info"""
         key_sprite_group = self._key_name_to_sprite_group[key_name]
         self.remove(key_sprite_group.sprites())
         key_sprite_group.empty()

@@ -21,7 +21,7 @@ dist:
 	python3 setup.py sdist bdist_wheel
 	rm -rf build
 
-make testpypi:
+testpypi:
 	@read -p "Publish to testpypi? " -n 1 -r; \
 	if [[ $$REPLY =~ ^[Nn] ]]; \
 	then \
@@ -30,7 +30,7 @@ make testpypi:
 	make docs dist
 	python -m twine upload --repository testpypi dist/*
 
-make pypi:
+pypi:
 	@read -p "Publish to pypi? " -n 1 -r; \
 	if [[ $$REPLY =~ ^[Nn] ]]; \
 	then \

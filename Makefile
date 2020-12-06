@@ -30,7 +30,7 @@ make testpypi:
 	make docs dist
 	python -m twine upload --repository testpypi dist/*
 
-make pypi: docs dist
+make pypi:
 	@read -p "Publish to pypi? " -n 1 -r; \
 	if [[ $$REPLY =~ ^[Nn] ]]; \
 	then \

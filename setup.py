@@ -26,6 +26,9 @@ setup(
         'dev': [
             'sphinx',
             'pytest',
+            'setuptools',
+            'wheel',
+            'twine',
         ]
     },
     classifiers = [

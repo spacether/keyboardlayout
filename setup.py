@@ -1,23 +1,23 @@
 from setuptools import setup, find_packages
-from os import path
+import pathlib
 
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+this_directory = pathlib.Path(__file__).parent
+with open(this_directory / 'README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 version = {}
-with open(path.join(this_directory, "keyboardlayout/version.py")) as f:
+with open(this_directory.joinpath('keyboardlayout', 'version.py')) as f:
     exec(f.read(), version)
 
 setup(
     name = 'keyboardlayout',
     install_requires = ['PyYAML >= 5.3.1', 'pygame >= 2.0.0'],
-    python_requires='>=3',
+    python_requires='>=3.7',
     version = version['__version__'],
     description = 'A python library to display different keyboards',
     author = 'Justin Black',
     packages = find_packages(),
-    package_data={'keyboardlayout': ['keyboardlayout/layouts/*.yaml']},
+    package_data={'keyboardlayout': ['layouts/*.yaml']},
     url = "https://github.com/spacether/keyboardlayout",
     keywords = ["keyboard", "qwerty", "layout", "azerty"],
     setup_requires=['pytest-runner'],

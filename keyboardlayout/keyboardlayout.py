@@ -4,19 +4,19 @@ from pathlib import Path
 import yaml
 import os
 from collections import defaultdict
+from importlib import resources
 
 import pygame
 
-LAYOUTS_DIR = Path(__file__).parent.absolute().joinpath("layouts")
+from . import layouts
 YAML_EXTENSION = '.yaml'
 
 
 def __generate_keyboard_layout_enum():
     layout_names = []
-    for (_dir_path, _dir_names, file_names) in os.walk(LAYOUTS_DIR):
-        for file_name in file_names:
-            if file_name.endswith(YAML_EXTENSION):
-                layout_names.append(file_name[:-len(YAML_EXTENSION)])
+    for file_name in resources.contents(layouts):
+        if file_name.endswith(YAML_EXTENSION):
+            layout_names.append(file_name[:-len(YAML_EXTENSION)])
 
     layout_name_enum = Enum(
         'LayoutName',
@@ -276,9 +276,10 @@ class KeyboardLayout(pygame.sprite.Group):
         super().__init__()
 
         layout_name = LayoutName(layout_name)
-        layout_path = LAYOUTS_DIR.joinpath(layout_name.value + YAML_EXTENSION)
-        stream = open(layout_path, 'r')
+        layout_file_name = layout_name.value + YAML_EXTENSION
+        stream = resources.read_text(layouts, layout_file_name)
         layout = yaml.safe_load(stream)
+
         self._key_name_to_sprite_group = defaultdict(pygame.sprite.Group)
 
         letter_key_width, letter_key_height = letter_key_size

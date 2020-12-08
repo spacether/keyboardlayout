@@ -1,5 +1,6 @@
 import keyboardlayout as kl
 import pygame
+import argparse
 
 grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
@@ -48,6 +49,7 @@ def run_until_user_closes_window(
                 break
 
             key_name = pygame.key.name(event.key)
+            print(event.key, key_name, event.scancode)
             if key_name not in keyboard._key_name_to_sprite_group:
                 continue
 
@@ -87,4 +89,13 @@ def keyboard_example(layout_name: str):
     run_until_user_closes_window(screen, keyboard, key_size, key_info)
 
 if __name__ == "__main__":
-    keyboard_example('qwerty')
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'layout_name',
+        nargs='?',
+        type=str,
+        default='qwerty',
+        help='the layout_name to use'
+    )
+    args = parser.parse_args()
+    keyboard_example(args.layout_name)

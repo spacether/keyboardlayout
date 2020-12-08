@@ -56,7 +56,7 @@ key_info = kl.KeyInfo(
     txt_font=pygame.font.SysFont('Arial', key_size//4),
     txt_padding=(key_size//6, key_size//10)
 )
-letter_key_size = (key_size, key_size),  # width, height
+letter_key_size = (key_size, key_size)  # width, height
 keyboard_layout = kl.KeyboardLayout(
     layout_name,
     keyboard_info,

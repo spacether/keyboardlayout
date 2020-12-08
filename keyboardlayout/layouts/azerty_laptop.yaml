@@ -59,12 +59,12 @@ rows:
       tl: '0'
       bl: à
       br: '@'
-  - name: °
+  - name: )
     txt_info:
       tl: °
       bl: )
       br: ']'
-  - name: +
+  - name: '='
     txt_info:
       tl: +
       bl: '='

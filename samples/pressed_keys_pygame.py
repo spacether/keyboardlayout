@@ -49,7 +49,7 @@ def run_until_user_closes_window(
                 break
 
             key_name = pygame.key.name(event.key)
-            print(event.key, key_name, event.scancode)
+            print(event.__dict__, 'key_name = ' + key_name)
             if key_name not in keyboard._key_name_to_sprite_group:
                 continue
 

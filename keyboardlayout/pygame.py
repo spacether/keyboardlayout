@@ -88,7 +88,7 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
 
         """
         If there are multiple rects for a key
-        Check if this is the mind width one. If so then make the height taller
+        Check if this is the min width one. If so then make the height taller
         """
         y_delta = 0
         height_delta = 0

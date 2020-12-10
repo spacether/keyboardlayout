@@ -32,15 +32,16 @@
           <div class="body" role="main">
             
   <h1>Source code for keyboardlayout.common</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Union</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
 
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
@@ -90,24 +91,6 @@
     <span class="n">KEYS</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span></div>
 
 
-<div class="viewcode-block" id="Rect"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.common.Rect">[docs]</a><span class="k">class</span> <span class="nc">Rect</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This class is internally used by keyboardlayout with tkinter to store</span>
-<span class="sd">    rectangles</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        x: the left x position in pixels</span>
-<span class="sd">        y: the top y position in pixels</span>
-<span class="sd">        width: the width in pixels</span>
-<span class="sd">        height: the height in pixels</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span></div>
-
-
 <div class="viewcode-block" id="KeyInfo"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.common.KeyInfo">[docs]</a><span class="k">class</span> <span class="nc">KeyInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The needed key inputs for KeyboardLayout</span>
@@ -154,6 +137,131 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span></div>
+
+
+<div class="viewcode-block" id="Rect"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.common.Rect">[docs]</a><span class="k">class</span> <span class="nc">Rect</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is internally used by keyboardlayout to store</span>
+<span class="sd">    rectangles</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x: the left x position in pixels</span>
+<span class="sd">        y: the top y position in pixels</span>
+<span class="sd">        width: the width in pixels</span>
+<span class="sd">        height: the height in pixels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span></div>
+
+
+<div class="viewcode-block" id="TxtBase"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.common.TxtBase">[docs]</a><span class="k">class</span> <span class="nc">TxtBase</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_position</span><span class="p">(</span>
+        <span class="n">horizontal_anchor</span><span class="p">:</span> <span class="n">HorizontalAnchor</span><span class="p">,</span>
+        <span class="n">vertical_anchor</span><span class="p">:</span> <span class="n">VerticalAnchor</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">txt_width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">txt_height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">TOP</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">elif</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">MIDDLE</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">txt_height</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">txt_height</span>
+        <span class="k">if</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">LEFT</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">elif</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">CENTER</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">txt_width</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">txt_width</span>
+        <span class="k">return</span> <span class="n">xloc</span><span class="p">,</span> <span class="n">yloc</span></div>
+
+
+<div class="viewcode-block" id="KeyboardLayoutBase"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.common.KeyboardLayoutBase">[docs]</a><span class="k">class</span> <span class="nc">KeyboardLayoutBase</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_txt_pos_info</span><span class="p">(</span>
+        <span class="n">txt_anchor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
+        <span class="n">r</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">,</span> <span class="n">Rect</span><span class="p">]</span>
+    <span class="p">):</span>
+        <span class="n">key_padding</span> <span class="o">=</span> <span class="n">key_info</span><span class="o">.</span><span class="n">margin</span><span class="o">//</span><span class="mi">2</span>
+        <span class="n">vertical_anchor</span> <span class="o">=</span> <span class="n">VerticalAnchor</span><span class="p">(</span><span class="n">txt_anchor</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">horizontal_anchor</span> <span class="o">=</span> <span class="n">HorizontalAnchor</span><span class="p">(</span><span class="n">txt_anchor</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">if</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">TOP</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">key_padding</span> <span class="o">+</span> <span class="n">key_info</span><span class="o">.</span><span class="n">txt_padding</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">MIDDLE</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">height</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">vertical_anchor</span> <span class="ow">is</span> <span class="n">VerticalAnchor</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">:</span>
+            <span class="n">yloc</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">key_padding</span> <span class="o">-</span> <span class="n">key_info</span><span class="o">.</span><span class="n">txt_padding</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">LEFT</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">key_padding</span> <span class="o">+</span> <span class="n">key_info</span><span class="o">.</span><span class="n">txt_padding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">CENTER</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">width</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">horizontal_anchor</span> <span class="ow">is</span> <span class="n">HorizontalAnchor</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">:</span>
+            <span class="n">xloc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">key_padding</span> <span class="o">-</span> <span class="n">key_info</span><span class="o">.</span><span class="n">txt_padding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">horizontal_anchor</span><span class="p">,</span> <span class="n">vertical_anchor</span><span class="p">,</span> <span class="n">xloc</span><span class="p">,</span> <span class="n">yloc</span>
+
+    <span class="k">def</span> <span class="nf">_get_max_size_and_set_info_dicts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">layout</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">keyboard_info</span><span class="p">:</span> <span class="n">KeyboardInfo</span><span class="p">,</span>
+        <span class="n">letter_key_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">key_info</span><span class="p">:</span> <span class="n">KeyInfo</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">letter_key_width</span><span class="p">,</span> <span class="n">letter_key_height</span> <span class="o">=</span> <span class="n">letter_key_size</span>
+        <span class="n">max_width</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_height</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">key_size</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">KEY_SIZE</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rect_by_key_name_and_loc</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_info_by_loc</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">xanchor</span> <span class="o">=</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">padding</span>
+        <span class="n">yanchor</span> <span class="o">=</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">keyboard_info</span><span class="o">.</span><span class="n">padding</span>
+        <span class="k">if</span> <span class="n">key_info</span><span class="o">.</span><span class="n">margin</span><span class="p">:</span>
+            <span class="n">xanchor</span> <span class="o">+=</span> <span class="o">-</span><span class="n">key_info</span><span class="o">.</span><span class="n">margin</span><span class="o">//</span><span class="mi">2</span>
+            <span class="n">yanchor</span> <span class="o">+=</span> <span class="o">-</span><span class="n">key_info</span><span class="o">.</span><span class="n">margin</span><span class="o">//</span><span class="mi">2</span>
+
+        <span class="k">for</span> <span class="n">row_ind</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layout</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">ROWS</span><span class="p">]):</span>
+            <span class="n">row_max_width</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">row_x_keycoords</span><span class="p">,</span> <span class="n">row_y_keycoords</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">LOCATION</span><span class="p">]</span>
+            <span class="n">key_x</span> <span class="o">=</span> <span class="n">xanchor</span> <span class="o">+</span> <span class="n">row_x_keycoords</span> <span class="o">*</span> <span class="n">letter_key_width</span>
+            <span class="n">key_y</span> <span class="o">=</span> <span class="n">yanchor</span> <span class="o">+</span> <span class="n">row_y_keycoords</span> <span class="o">*</span> <span class="n">letter_key_height</span>
+            <span class="n">key_size</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">KEY_SIZE</span><span class="p">,</span> <span class="n">key_size</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">row_key_ind</span><span class="p">,</span> <span class="n">row_key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">KEYS</span><span class="p">]):</span>
+                <span class="n">key_xsize_keycoords</span><span class="p">,</span> <span class="n">key_ysize_keycoords</span> <span class="o">=</span> <span class="n">row_key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">key_size</span><span class="p">)</span>
+
+                <span class="n">key_width</span><span class="p">,</span> <span class="n">key_height</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">letter_key_width</span><span class="o">*</span><span class="n">key_xsize_keycoords</span><span class="p">,</span>
+                    <span class="n">letter_key_height</span><span class="o">*</span><span class="n">key_ysize_keycoords</span>
+                <span class="p">)</span>
+
+                <span class="n">row_max_width</span> <span class="o">+=</span> <span class="n">key_width</span>
+
+                <span class="n">row_y</span> <span class="o">=</span> <span class="n">row_y_keycoords</span> <span class="o">*</span> <span class="n">letter_key_height</span>
+                <span class="n">key_ymax</span> <span class="o">=</span> <span class="n">row_y</span> <span class="o">+</span> <span class="n">key_height</span>
+                <span class="k">if</span> <span class="n">key_ymax</span> <span class="o">&gt;</span> <span class="n">max_height</span><span class="p">:</span>
+                    <span class="n">max_height</span> <span class="o">=</span> <span class="n">key_ymax</span>
+
+                <span class="n">rect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">key_x</span><span class="p">,</span> <span class="n">key_y</span><span class="p">,</span> <span class="n">key_width</span><span class="p">,</span> <span class="n">key_height</span><span class="p">)</span>
+                <span class="n">key_name</span> <span class="o">=</span> <span class="n">row_key</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">NAME</span><span class="p">]</span>
+                <span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">row_key_ind</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rect_by_key_name_and_loc</span><span class="p">[</span><span class="n">key_name</span><span class="p">][</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">rect</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_txt_info_by_loc</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">row_key</span><span class="p">[</span><span class="n">LayoutYamlConstant</span><span class="o">.</span><span class="n">TXT_INFO</span><span class="p">])</span>
+                <span class="n">key_x</span> <span class="o">+=</span> <span class="n">key_width</span>
+
+            <span class="k">if</span> <span class="n">row_max_width</span> <span class="o">&gt;</span> <span class="n">max_width</span><span class="p">:</span>
+                <span class="n">max_width</span> <span class="o">=</span> <span class="n">row_max_width</span>
+
+        <span class="k">return</span> <span class="n">max_width</span><span class="p">,</span> <span class="n">max_height</span></div>
 </pre></div>
 
           </div>

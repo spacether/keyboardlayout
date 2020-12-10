@@ -1,12 +1,13 @@
+from collections import defaultdict
+from enum import Enum
+from importlib import resources
+import os
+from pathlib import Path
 from typing import (
     Tuple,
     Optional,
     Union
 )
-from enum import Enum
-from pathlib import Path
-import os
-from importlib import resources
 
 import pygame
 import yaml
@@ -56,24 +57,6 @@ class LayoutYamlConstant:
     KEYS = 'keys'
 
 
-class Rect:
-    """
-    This class is internally used by keyboardlayout with tkinter to store
-    rectangles
-
-    Args:
-        x: the left x position in pixels
-        y: the top y position in pixels
-        width: the width in pixels
-        height: the height in pixels
-    """
-    def __init__(self, x: int, y: int, width: int, height: int):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-
-
 class KeyInfo:
     """
     The needed key inputs for KeyboardLayout
@@ -120,3 +103,128 @@ class KeyboardInfo:
         self.position = position
         self.padding = padding
         self.color = color
+
+
+class Rect:
+    """
+    This class is internally used by keyboardlayout to store
+    rectangles
+
+    Args:
+        x: the left x position in pixels
+        y: the top y position in pixels
+        width: the width in pixels
+        height: the height in pixels
+    """
+    def __init__(self, x: int, y: int, width: int, height: int):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+
+class TxtBase:
+    @staticmethod
+    def _get_position(
+        horizontal_anchor: HorizontalAnchor,
+        vertical_anchor: VerticalAnchor,
+        x: int,
+        y: int,
+        txt_width: int,
+        txt_height: int
+    ):
+        if vertical_anchor is VerticalAnchor.TOP:
+            yloc = y
+        elif vertical_anchor is VerticalAnchor.MIDDLE:
+            yloc = y - txt_height//2
+        elif vertical_anchor is VerticalAnchor.BOTTOM:
+            yloc = y - txt_height
+        if horizontal_anchor is HorizontalAnchor.LEFT:
+            xloc = x
+        elif horizontal_anchor is HorizontalAnchor.CENTER:
+            xloc = x - txt_width//2
+        elif horizontal_anchor is HorizontalAnchor.RIGHT:
+            xloc = x - txt_width
+        return xloc, yloc
+
+
+class KeyboardLayoutBase:
+    @staticmethod
+    def _get_txt_pos_info(
+        txt_anchor: str,
+        x: int,
+        y: int,
+        key_info: KeyInfo,
+        r: Union[pygame.Rect, Rect]
+    ):
+        key_padding = key_info.margin//2
+        vertical_anchor = VerticalAnchor(txt_anchor[:1])
+        horizontal_anchor = HorizontalAnchor(txt_anchor[1:])
+        if vertical_anchor is VerticalAnchor.TOP:
+            yloc = y + key_padding + key_info.txt_padding[1]
+        elif vertical_anchor is VerticalAnchor.MIDDLE:
+            yloc = y + r.height//2
+        elif vertical_anchor is VerticalAnchor.BOTTOM:
+            yloc = y + r.height - key_padding - key_info.txt_padding[1]
+        if horizontal_anchor is HorizontalAnchor.LEFT:
+            xloc = x + key_padding + key_info.txt_padding[0]
+        elif horizontal_anchor is HorizontalAnchor.CENTER:
+            xloc = x + r.width//2
+        elif horizontal_anchor is HorizontalAnchor.RIGHT:
+            xloc = x + r.width - key_padding - key_info.txt_padding[0]
+        return horizontal_anchor, vertical_anchor, xloc, yloc
+
+    def _get_max_size_and_set_info_dicts(
+        self,
+        layout: dict,
+        keyboard_info: KeyboardInfo,
+        letter_key_size: Tuple[int],
+        key_info: KeyInfo,
+    ):
+        letter_key_width, letter_key_height = letter_key_size
+        max_width = 0
+        max_height = 0
+        key_size = layout[LayoutYamlConstant.KEY_SIZE]
+        self._rect_by_key_name_and_loc = defaultdict(dict)
+        self._txt_info_by_loc = {}
+        xanchor = keyboard_info.position[0] + keyboard_info.padding
+        yanchor = keyboard_info.position[1] + keyboard_info.padding
+        if key_info.margin:
+            xanchor += -key_info.margin//2
+            yanchor += -key_info.margin//2
+
+        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
+            row_max_width = 0
+            row_x_keycoords, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
+            key_x = xanchor + row_x_keycoords * letter_key_width
+            key_y = yanchor + row_y_keycoords * letter_key_height
+            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
+
+            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
+                key_xsize_keycoords, key_ysize_keycoords = row_key.get(
+                    LayoutYamlConstant.SIZE, key_size)
+
+                key_width, key_height = (
+                    letter_key_width*key_xsize_keycoords,
+                    letter_key_height*key_ysize_keycoords
+                )
+
+                row_max_width += key_width
+
+                row_y = row_y_keycoords * letter_key_height
+                key_ymax = row_y + key_height
+                if key_ymax > max_height:
+                    max_height = key_ymax
+
+                rect = Rect(key_x, key_y, key_width, key_height)
+                key_name = row_key[LayoutYamlConstant.NAME]
+                loc = (row_ind, row_key_ind)
+                self._rect_by_key_name_and_loc[key_name][loc] = rect
+                self._txt_info_by_loc[loc] = (
+                    row_key[LayoutYamlConstant.TXT_INFO])
+                key_x += key_width
+
+            if row_max_width > max_width:
+                max_width = row_max_width
+
+        return max_width, max_height

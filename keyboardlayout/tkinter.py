@@ -1,9 +1,13 @@
 import tkinter as tk
 import tkinter.font as tkf
-from keyboardlayout import HorizontalAnchor, VerticalAnchor
+from keyboardlayout.common import (
+    TxtBase,
+    HorizontalAnchor,
+    VerticalAnchor
+)
 
 
-class TkTxt(tk.Label):
+class TkTxt(TxtBase, tk.Label):
     """Contains text"""
     def __init__(
         self,
@@ -28,19 +32,14 @@ class TkTxt(tk.Label):
 
         txt_width = font.measure(txt)
         txt_height = font.metrics("linespace")
-
-        if vertical_anchor is VerticalAnchor.TOP:
-            yloc = y
-        elif vertical_anchor is VerticalAnchor.MIDDLE:
-            yloc = y - txt_height//2
-        elif vertical_anchor is VerticalAnchor.BOTTOM:
-            yloc = y - txt_height
-        if horizontal_anchor is HorizontalAnchor.LEFT:
-            xloc = x
-        elif horizontal_anchor is HorizontalAnchor.CENTER:
-            xloc = x - txt_width//2
-        elif horizontal_anchor is HorizontalAnchor.RIGHT:
-            xloc = x - txt_width
+        xloc, yloc = self._get_position(
+            horizontal_anchor,
+            vertical_anchor,
+            x,
+            y,
+            txt_width,
+            txt_height
+        )
         self.place(x=xloc, y=yloc)
 
 
@@ -62,6 +61,7 @@ class TkRect(tk.Frame):
         self.place(x=r.x, y=r.y)
 
 window = tk.Tk()
+# window.geometry("200x200") 
 window.resizable(False, False)
 
 
@@ -70,7 +70,7 @@ keyboard_bg = TkRect(
     Rect(0, 0, 150, 150),
     'grey'
 )
-keyboard_bg.pack()
+# keyboard_bg.pack()
 
 size = 10
 font = tkf.Font(family='Arial', size=size)

@@ -1,7 +1,11 @@
-from .keyboardlayout import (
+from .common import (
     KeyInfo,
     KeyboardInfo,
-    KeyboardLayout,
     LayoutName,
+    VerticalAnchor,
+    HorizontalAnchor,
+)
+from .pygame import (
+    KeyboardLayout
 )
 from .version import __version__

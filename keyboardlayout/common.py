@@ -1,4 +1,8 @@
-import typing
+from typing import (
+    Tuple,
+    Optional,
+    Union
+)
 from enum import Enum
 from pathlib import Path
 import os
@@ -10,6 +14,8 @@ import yaml
 from . import layouts
 YAML_EXTENSION = '.yaml'
 
+class TkinterColor(str):
+    pass
 
 def __generate_keyboard_layout_enum():
     layout_names = []
@@ -51,6 +57,16 @@ class LayoutYamlConstant:
 
 
 class Rect:
+    """
+    This class is internally used by keyboardlayout with tkinter to store
+    rectangles
+
+    Args:
+        x: the left x position in pixels
+        y: the top y position in pixels
+        width: the width in pixels
+        height: the height in pixels
+    """
     def __init__(self, x: int, y: int, width: int, height: int):
         self.x = x
         self.y = y
@@ -59,14 +75,25 @@ class Rect:
 
 
 class KeyInfo:
-    """The needed key inputs for KeyboardLayout"""
+    """
+    The needed key inputs for KeyboardLayout
+
+    Args:
+        margin: the gap between keys in pixels.
+            this should be an even number
+        color: the key background color
+        txt_color: the color used for key text
+        txt_font: the font used to write key text
+        txt_padding: x, y padding in pixes
+            from the edges of the key background rectangle
+    """
     def __init__(
         self,
         margin: int,
-        color: pygame.Color,
-        txt_color: pygame.Color,
+        color: Union[pygame.Color, TkinterColor],
+        txt_color: Union[pygame.Color, TkinterColor],
         txt_font: pygame.font.SysFont,
-        txt_padding: typing.Tuple[int],
+        txt_padding: Tuple[int, int],
     ):
         self.margin = margin
         self.color = color
@@ -76,12 +103,19 @@ class KeyInfo:
 
 
 class KeyboardInfo:
-    """The needed keyboard inputs for KeyboardLayout"""
+    """
+    The needed keyboard inputs for KeyboardLayout
+
+    Args:
+        position: x, y top left position in pixels
+        padding: the padding used on all sides in pixels
+        color: the background color to use
+    """
     def __init__(
         self,
-        position: typing.Tuple[int],
+        position: Tuple[int, int],
         padding: int,
-        color: typing.Optional[pygame.Color]=None
+        color: Optional[Union[pygame.Color, TkinterColor]]=None
     ):
         self.position = position
         self.padding = padding

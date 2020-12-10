@@ -6,7 +6,7 @@ grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
 
 def get_keyboard(
-    layout_name: str,
+    layout_name: kl.LayoutName,
     key_size: int,
     key_info: kl.KeyInfo
 ) -> kl.KeyboardLayout:
@@ -64,7 +64,7 @@ def run_until_user_closes_window(
     pygame.display.quit()
     pygame.quit()
 
-def keyboard_example(layout_name: str):
+def keyboard_example(layout_name: kl.LayoutName):
     pygame.init()
     # block events that we don't want
     pygame.event.set_blocked(None)
@@ -93,8 +93,8 @@ if __name__ == "__main__":
     parser.add_argument(
         'layout_name',
         nargs='?',
-        type=str,
-        default='qwerty',
+        type=kl.LayoutName,
+        default=kl.LayoutName.QWERTY,
         help='the layout_name to use'
     )
     args = parser.parse_args()

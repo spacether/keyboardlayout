@@ -205,7 +205,7 @@ class KeyboardLayout(pygame.sprite.Group):
 
     def __init__(
         self,
-        layout_name: str,
+        layout_name: LayoutName,
         keyboard_info: KeyboardInfo,
         letter_key_size: typing.Tuple[int],
         key_info: KeyInfo,
@@ -213,7 +213,9 @@ class KeyboardLayout(pygame.sprite.Group):
     ):
         super().__init__()
 
-        layout_name = LayoutName(layout_name)
+        if not isinstance(layout_name, LayoutName):
+            raise ValueError(
+                'Invalid input type, layout_name must be type LayoutName')
         layout_file_name = layout_name.value + YAML_EXTENSION
         stream = resources.read_text(layouts, layout_file_name)
         layout = yaml.safe_load(stream)

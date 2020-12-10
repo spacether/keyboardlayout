@@ -1,4 +1,4 @@
-.PHONY: test  dist
+.PHONY: test  dist docs
 
 develop:
 	pip3 install -e .[dev]

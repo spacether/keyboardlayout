@@ -4,10 +4,18 @@ keyboardlayout package
 Submodules
 ----------
 
-keyboardlayout.keyboardlayout module
+keyboardlayout.common module
 ------------------------------------
 
-.. automodule:: keyboardlayout.keyboardlayout
+.. automodule:: keyboardlayout.common
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+keyboardlayout.pygame module
+------------------------------------
+
+.. automodule:: keyboardlayout.pygame
    :members:
    :undoc-members:
    :show-inheritance:

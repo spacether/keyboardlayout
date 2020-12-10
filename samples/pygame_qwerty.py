@@ -1,7 +1,7 @@
 import keyboardlayout as kl
 import pygame
 
-def get_keyboard(layout_name: str) -> kl.KeyboardLayout:
+def get_keyboard(layout_name: kl.LayoutName) -> kl.KeyboardLayout:
     key_size = 60
     grey = pygame.Color('grey')
     keyboard_info = kl.KeyboardInfo(
@@ -35,7 +35,7 @@ def run_until_user_closes_window():
 
     pygame.quit()
 
-def keyboard_example(layout_name: str):
+def keyboard_example(layout_name: kl.LayoutName):
     pygame.init()
     keyboard = get_keyboard(layout_name)
 
@@ -48,4 +48,4 @@ def keyboard_example(layout_name: str):
     run_until_user_closes_window()
 
 if __name__ == "__main__":
-    keyboard_example('qwerty')
+    keyboard_example(kl.LayoutName.QWERTY)

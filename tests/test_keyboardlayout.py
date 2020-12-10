@@ -36,9 +36,8 @@ class TestKeyboardLayout(unittest.TestCase):
         )
         return keyboard_info, letter_key_size, key_info
 
-
     def test_writes_sample_keyboard_layouts_to_images(self):
-        layout_names = ['qwerty', 'azerty_laptop']
+        layout_names = [kl.LayoutName.QWERTY, kl.LayoutName.AZERTY_LAPTOP]
         keyboard_info, letter_key_size, key_info = self.get_infos()
         for layout_name in layout_names:
             pygame.display.set_caption(
@@ -58,13 +57,14 @@ class TestKeyboardLayout(unittest.TestCase):
             keyboard.draw(screen)
             pygame.display.update()
             pygame.image.save(
-                screen, self.sample_images_folder + "{}.jpg".format(layout_name))
-
+                screen,
+                self.sample_images_folder + "{}.jpg".format(layout_name.value)
+            )
 
     def test_invalid_layout_name_raise_exception(self):
         with self.assertRaisesRegex(
             ValueError,
-            "'invalid_layout' is not a valid LayoutName"
+            "Invalid input type, layout_name must be type LayoutName"
         ):
             keyboard_layout = kl.KeyboardLayout(
                 'invalid_layout',
@@ -174,9 +174,9 @@ class TestKeyboardLayout(unittest.TestCase):
             ),
         ]
         keyboards = []
-        layout_name = 'qwerty'
         letter_key_size = (key_size, key_size)  # width, height
         y = 0
+        layout_name = kl.LayoutName.QWERTY
         for test_case in test_cases:
             key_info = kl.KeyInfo(
                 margin=margin,
@@ -210,7 +210,8 @@ class TestKeyboardLayout(unittest.TestCase):
         pygame.display.update()
         pygame.image.save(
             screen,
-            self.sample_images_folder + "{}_colored.jpg".format(layout_name)
+            self.sample_images_folder + "{}_colored.jpg".format(
+                layout_name.value)
         )
 
 

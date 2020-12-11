@@ -62,9 +62,10 @@ class PgRect(pygame.sprite.Sprite):
 
 class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
     """
-    Makes a sprite group that stores a keyboard layout image
+    Makes a frame that stores a keyboard layout
 
     Args:
+        master: the root frame
         layout_name: must be a string in the LayoutName enum
         keyboard_info: the settings for the keyboard
         letter_key_size: the horizontal and vertical size in px of letter keys
@@ -114,7 +115,6 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         bg_sprite = PgRect(r, key_info.color)
         key_sprites.append(bg_sprite)
 
-        txt_sprites = []
         txt_info = self._txt_info_by_loc[loc]
         for txt_anchor, label_txt in txt_info.items():
             txt_pos_info = self._get_txt_pos_info(

@@ -1,10 +1,24 @@
+from collections import defaultdict
+from importlib import resources
+import typing
+
 import tkinter as tk
 import tkinter.font as tkf
+import yaml
+
 from keyboardlayout.common import (
+    KeyboardInfo,
+    LayoutName,
+    KeyInfo,
+    Rect,
     TxtBase,
     HorizontalAnchor,
-    VerticalAnchor
+    VerticalAnchor,
+    KeyboardLayoutBase,
+    YAML_EXTENSION,
+    LayoutYamlConstant
 )
+from keyboardlayout import layouts
 
 
 class TkTxt(TxtBase, tk.Label):
@@ -23,7 +37,6 @@ class TkTxt(TxtBase, tk.Label):
         super().__init__(
             master=master,
             text=txt,
-            bg="red",
             font=font,
             padx=0,
             pady=0,
@@ -41,6 +54,7 @@ class TkTxt(TxtBase, tk.Label):
             txt_height
         )
         self.place(x=xloc, y=yloc)
+        # self.pack()
 
 
 class TkRect(tk.Frame):
@@ -59,41 +73,157 @@ class TkRect(tk.Frame):
             width=r.width
         )
         self.place(x=r.x, y=r.y)
-
-window = tk.Tk()
-# window.geometry("200x200") 
-window.resizable(False, False)
+        self.pack()
 
 
-keyboard_bg = TkRect(
-    window,
-    Rect(0, 0, 150, 150),
-    'grey'
-)
-# keyboard_bg.pack()
+class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
+    """
+    Makes a sprite group that stores a keyboard layout image
 
-size = 10
-font = tkf.Font(family='Arial', size=size)
-txt = "I'm at (0, 0)"
-label1 = TkTxt(
-    keyboard_bg,
-    0,
-    0,
-    HorizontalAnchor.LEFT,
-    VerticalAnchor.TOP,
-    txt,
-    font,
-    'black'
-)
-r = Rect(25, 25, 20, 10)
-rect = TkRect(
-    keyboard_bg,
-    r,
-    'blue'
-)
-# label1 = tk.Label(master=frame, text=text, bg="red", font=font, padx=0, pady=0)
+    Args:
+        layout_name: must be a string in the LayoutName enum
+        keyboard_info: the settings for the keyboard
+        letter_key_size: the horizontal and vertical size in px of letter keys
+        key_info: the settings for the keys
+        overrides: Optional; a dict that lets one override key settings
 
-label2 = tk.Label(master=keyboard_bg, text="I'm at (50, 50)", bg="yellow")
-label2.place(x=50, y=50)
+    Attributes:
+        _key_name_to_sprite_group (dict): a dict that goes from
+            key_name (str) to pygame.sprite.Group instances
+    """
+    def __get_key_widgets(
+        self,
+        key_name: str,
+        loc: typing.Tuple[int],
+        key_info: KeyInfo,
+    ):
+        key_loc_to_rect = self._rect_by_key_name_and_loc[key_name]
+        rect = key_loc_to_rect[loc]
+        x, y, width, height = rect.x, rect.y, rect.width, rect.height
+        key_padding = key_info.margin//2
 
-window.mainloop()
+        """
+        If there are multiple rects for a key
+        Check if this is the min width one. If so then make the height taller
+        """
+        y_delta = 0
+        height_delta = 0
+        if len(key_loc_to_rect) == 2:
+            locs = list(set(key_loc_to_rect))
+            other_loc = locs[not locs.index(loc)]
+            other_r = key_loc_to_rect[other_loc]
+            if rect.width < other_r.width:
+                below_other = rect.y > other_r.y
+                if below_other:
+                    y_delta = -key_info.margin
+                    height_delta = key_info.margin
+                else:
+                    height_delta = key_info.margin
+
+        r = Rect(
+            x+key_padding,
+            y+key_padding + y_delta,
+            width-2*key_padding,
+            height-2*key_padding + height_delta,
+        )
+        key_widgets = []
+        bg_frame = TkRect(self, r, key_info.color)
+        key_widgets.append(bg_frame)
+
+        txt_info = self._txt_info_by_loc[loc]
+        for txt_anchor, label_txt in txt_info.items():
+            txt_pos_info = self._get_txt_pos_info(
+                txt_anchor, x, y, key_info, rect)
+            horizontal_anchor, vertical_anchor, xloc, yloc = txt_pos_info
+            txt_label = TkTxt(
+                self.master,
+                xloc,
+                yloc,
+                horizontal_anchor,
+                vertical_anchor,
+                label_txt,
+                key_info.txt_font,
+                key_info.txt_color
+            )
+            key_widgets.append(txt_label)
+
+        return key_widgets
+
+    def __init__(
+        self,
+        master: tk.Frame,
+        layout_name: LayoutName,
+        keyboard_info: KeyboardInfo,
+        letter_key_size: typing.Tuple[int],
+        key_info: KeyInfo,
+        overrides: typing.Optional[typing.Dict[str, KeyInfo]] = None
+    ):
+        super().__init__(
+            master=master,
+            padx=0,
+            pady=0,
+        )
+
+        if not isinstance(layout_name, LayoutName):
+            raise ValueError(
+                'Invalid input type, layout_name must be type LayoutName')
+        layout_file_name = layout_name.value + YAML_EXTENSION
+        stream = resources.read_text(layouts, layout_file_name)
+        layout = yaml.safe_load(stream)
+
+        self._key_name_to_widget_list = defaultdict(list)
+
+        letter_key_width, letter_key_height = letter_key_size
+
+        x, y = keyboard_info.position
+        max_width, max_height = self._get_max_size_and_set_info_dicts(
+            layout,
+            keyboard_info,
+            letter_key_size,
+            key_info
+        )
+        self.rect = Rect(
+            x,
+            y,
+            max_width - key_info.margin + 2*keyboard_info.padding,
+            max_height - key_info.margin + 2*keyboard_info.padding,
+        )
+        self.widgets = []
+        if keyboard_info.color:
+            bg_frame = TkRect(master, self.rect, keyboard_info.color)
+            self.widgets.append(bg_frame)
+
+        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
+            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
+                key_name = row_key[LayoutYamlConstant.NAME]
+                used_key_info = key_info
+                if overrides:
+                    used_key_info = overrides.get(key_name, used_key_info)
+                loc = (row_ind, row_key_ind)
+                key_widgets = self.__get_key_widgets(
+                    key_name,
+                    loc,
+                    used_key_info,
+                )
+                self.widgets.extend(key_widgets)
+                self._key_name_to_widget_list[key_name].extend(key_widgets)
+
+
+    def update_key(
+        self,
+        key_name: str,
+        key_info: KeyInfo,
+    ):
+        """Update key_name's image using key_info"""
+        key_widget_list = self._key_name_to_widget_list[key_name]
+        self.widgets.remove(key_widget_list)
+        key_sprite_group.clear()
+        for loc in self._rect_by_key_name_and_loc[key_name]:
+            key_widgets = self.__get_key_widgets(
+                self,
+                key_name,
+                loc,
+                key_info,
+            )
+            self.widgets.extend(key_widgets)
+            key_sprite_group.extend(key_sprites)

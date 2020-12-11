@@ -5,7 +5,4 @@ from .common import (
     VerticalAnchor,
     HorizontalAnchor,
 )
-from .pygame import (
-    KeyboardLayout
-)
 from .version import __version__

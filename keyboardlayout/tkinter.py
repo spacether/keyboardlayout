@@ -42,7 +42,7 @@ class TkTxt(TxtBase, tk.Label):
             padx=0,
             pady=0,
             fg=txt_color,
-            # bg=color,
+            bg=color,
         )
 
         txt_width = font.measure(txt)
@@ -56,7 +56,6 @@ class TkTxt(TxtBase, tk.Label):
             txt_height
         )
         self.place(x=xloc, y=yloc)
-        # self.pack()
 
 
 class TkRect(tk.Frame):
@@ -80,7 +79,10 @@ class TkRect(tk.Frame):
         self.place(x=r.x, y=r.y)
 
 class TkButton(tk.Frame):
-    """Contains a button"""
+    """
+    Contains a button image, button class not used because its background
+    cannot be colored on mac
+    """
     def __init__(
         self,
         master: Union[tk.Frame, tk.Tk],
@@ -96,25 +98,7 @@ class TkButton(tk.Frame):
             padx=0,
             pady=0,
         )
-        self.pack(fill=tk.BOTH)
         self.place(x=r.x, y=r.y)
-        # self.pack()
-        image = tk.PhotoImage(width=int(r.width), height=int(r.height))
-        self.button = tk.Button(
-            self,
-            bg=color,
-            image=image,
-            padx=0,
-            pady=0,
-            # height=-int(r.height),
-            # width=-int(r.width),
-            # padx=0,
-            # pady=0,
-        )
-        self.button.pack(expand=True, fill=tk.BOTH)
-        # button.pack(expand=True, fill=tk.BOTH)
-        # self.pack()
-        # self.place(x=r.x, y=r.y, width=int(r.width), height=int(r.height))
 
 
 class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
@@ -177,9 +161,9 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
                 txt_anchor, x, y, key_info, rect)
             horizontal_anchor, vertical_anchor, xloc, yloc = txt_pos_info
             txt_label = TkTxt(
-                bg_frame.button,
-                xloc-x,
-                yloc-y,
+                self,
+                xloc,
+                yloc,
                 horizontal_anchor,
                 vertical_anchor,
                 label_txt,
@@ -250,6 +234,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
                 )
                 self.widgets.extend(key_widgets)
                 self._key_name_to_widget_list[key_name].extend(key_widgets)
+        self.pack()
 
 
     def update_key(
@@ -259,14 +244,15 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
     ):
         """Update key_name's image using key_info"""
         key_widget_list = self._key_name_to_widget_list[key_name]
-        self.widgets.remove(key_widget_list)
-        key_sprite_group.clear()
+        print(key_widget_list)
+        for key_widget in key_widget_list:
+            self.widgets.remove(key_widget)
+        key_widget_list.clear()
         for loc in self._rect_by_key_name_and_loc[key_name]:
             key_widgets = self.__get_key_widgets(
-                self,
                 key_name,
                 loc,
                 key_info,
             )
             self.widgets.extend(key_widgets)
-            key_sprite_group.extend(key_sprites)
+            key_widget_list.extend(key_widgets)

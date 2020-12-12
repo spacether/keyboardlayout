@@ -1,13 +1,15 @@
 # keyboardlayout
 A python library to display different keyboards.
-The keyboard layouts are created with pygame sprites.
+Works with pygame or tkinter
 PRs with additional layouts or graphics backends are welcome.
 
 If you need to show your users a graphic that shows a specific keyboard layout or a portion of a keyboard, this is the library for you.
 
 ## Features:
 - qwerty + azerty included
-- dynamically generate a pygame sprite group showing a keyboard
+- graphics backends: pygame + tkinter
+- pygame: dynamically generate a sprite group showing a keyboard
+- tkinter: dynamically generate a frmae containing frames and labels
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
 - update a specific key with `update_key`
 
@@ -31,10 +33,13 @@ pip install keyboardlayout
 ```
 
 ## Samples
-- [qwerty](https://github.com/spacether/keyboardlayout/tree/master/samples/qwerty.py)
-- [pressed keys with pygame](https://github.com/spacether/keyboardlayout/tree/master/samples/pressed_keys_pygame.py)
+- [pygame, qwerty](https://github.com/spacether/keyboardlayout/tree/master/samples/pygame_qwerty.py)
+- [pygame, pressed keys](https://github.com/spacether/keyboardlayout/tree/master/samples/pygame_pressed_keys.py)
+- [tkinter, qwerty](https://github.com/spacether/keyboardlayout/tree/master/samples/tkinter_qwerty.py)
+- [tkinter, pressed keys](https://github.com/spacether/keyboardlayout/tree/master/samples/tkinter_pressed_keys.py)
 
 ## Usage
+### pygame example
 ```
 import keyboardlayout as kl
 import pygame
@@ -98,3 +103,8 @@ make install
 ```
 make test
 ```
+
+## TODO
+- change key for key_info in yaml file to keysym_number values
+- get pygame pressed keys working
+- get tkinter pressed keys working

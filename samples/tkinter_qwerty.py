@@ -3,7 +3,7 @@ import tkinter.font as tkf
 import keyboardlayout as kl
 import keyboardlayout.tkinter as klt
 
-def get_keyboard(window: tk.Frame, layout_name: kl.LayoutName) -> klt.KeyboardLayout:
+def get_keyboard(window: tk.Tk, layout_name: kl.LayoutName) -> klt.KeyboardLayout:
     key_size = 60
     grey = '#bebebe'
     dark_grey = '#414141'
@@ -29,29 +29,11 @@ def get_keyboard(window: tk.Frame, layout_name: kl.LayoutName) -> klt.KeyboardLa
     )
     return keyboard_layout
 
-def run_until_user_closes_window():
-    window.mainloop()
-    # running = True
-    # while running:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             pygame.display.quit()
-    #             running = False
-    #
-    # pygame.quit()
-
 def keyboard_example(layout_name: kl.LayoutName):
     window = tk.Tk()
     window.resizable(False, False)
 
     keyboard = get_keyboard(window, layout_name)
-    keyboard.pack(expand=0)
-
-    # screen = pygame.display.set_mode(
-    #     (keyboard.rect.width, keyboard.rect.height))
-    # screen.fill(pygame.Color('black'))
-    # keyboard.draw(screen)
-    # pygame.display.update()
     window.mainloop()
 
 if __name__ == "__main__":

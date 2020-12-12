@@ -1,6 +1,6 @@
 from collections import defaultdict
 from importlib import resources
-import typing
+from typing import Tuple, Union, Optional, Dict
 
 import tkinter as tk
 import tkinter.font as tkf
@@ -25,7 +25,7 @@ class TkTxt(TxtBase, tk.Label):
     """Contains text"""
     def __init__(
         self,
-        master: tk.Frame,
+        master: Union[tk.Frame, tk.Tk],
         x: int,
         y: int,
         horizontal_anchor: HorizontalAnchor,
@@ -33,6 +33,7 @@ class TkTxt(TxtBase, tk.Label):
         txt: str,
         font: tkf.Font,
         txt_color: str,
+        color: str,
     ):
         super().__init__(
             master=master,
@@ -40,7 +41,8 @@ class TkTxt(TxtBase, tk.Label):
             font=font,
             padx=0,
             pady=0,
-            fg=txt_color
+            fg=txt_color,
+            # bg=color,
         )
 
         txt_width = font.measure(txt)
@@ -61,7 +63,7 @@ class TkRect(tk.Frame):
     """Contains a filled rectangle"""
     def __init__(
         self,
-        master: tk.Frame,
+        master: Union[tk.Frame, tk.Tk],
         r: Rect,
         color: str,
     ):
@@ -70,10 +72,49 @@ class TkRect(tk.Frame):
             bd=0,
             bg=color,
             height=r.height,
-            width=r.width
+            width=r.width,
+            padx=0,
+            pady=0,
         )
+        # self.pack()
         self.place(x=r.x, y=r.y)
-        self.pack()
+
+class TkButton(tk.Frame):
+    """Contains a button"""
+    def __init__(
+        self,
+        master: Union[tk.Frame, tk.Tk],
+        r: Rect,
+        color: str,
+    ):
+        super().__init__(
+            master,
+            bd=0,
+            bg=color,
+            height=int(r.height),
+            width=int(r.width),
+            padx=0,
+            pady=0,
+        )
+        self.pack(fill=tk.BOTH)
+        self.place(x=r.x, y=r.y)
+        # self.pack()
+        image = tk.PhotoImage(width=int(r.width), height=int(r.height))
+        self.button = tk.Button(
+            self,
+            bg=color,
+            image=image,
+            padx=0,
+            pady=0,
+            # height=-int(r.height),
+            # width=-int(r.width),
+            # padx=0,
+            # pady=0,
+        )
+        self.button.pack(expand=True, fill=tk.BOTH)
+        # button.pack(expand=True, fill=tk.BOTH)
+        # self.pack()
+        # self.place(x=r.x, y=r.y, width=int(r.width), height=int(r.height))
 
 
 class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
@@ -94,7 +135,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
     def __get_key_widgets(
         self,
         key_name: str,
-        loc: typing.Tuple[int],
+        loc: Tuple[int],
         key_info: KeyInfo,
     ):
         key_loc_to_rect = self._rect_by_key_name_and_loc[key_name]
@@ -127,7 +168,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             height-2*key_padding + height_delta,
         )
         key_widgets = []
-        bg_frame = TkRect(self, r, key_info.color)
+        bg_frame = TkButton(self, r, key_info.color)
         key_widgets.append(bg_frame)
 
         txt_info = self._txt_info_by_loc[loc]
@@ -136,14 +177,15 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
                 txt_anchor, x, y, key_info, rect)
             horizontal_anchor, vertical_anchor, xloc, yloc = txt_pos_info
             txt_label = TkTxt(
-                self.master,
-                xloc,
-                yloc,
+                bg_frame.button,
+                xloc-x,
+                yloc-y,
                 horizontal_anchor,
                 vertical_anchor,
                 label_txt,
                 key_info.txt_font,
-                key_info.txt_color
+                key_info.txt_color,
+                key_info.color,
             )
             key_widgets.append(txt_label)
 
@@ -151,19 +193,13 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
 
     def __init__(
         self,
-        master: tk.Frame,
+        master: Union[tk.Frame, tk.Tk],
         layout_name: LayoutName,
         keyboard_info: KeyboardInfo,
-        letter_key_size: typing.Tuple[int],
+        letter_key_size: Tuple[int],
         key_info: KeyInfo,
-        overrides: typing.Optional[typing.Dict[str, KeyInfo]] = None
+        overrides: Optional[Dict[str, KeyInfo]] = None
     ):
-        super().__init__(
-            master=master,
-            padx=0,
-            pady=0,
-        )
-
         if not isinstance(layout_name, LayoutName):
             raise ValueError(
                 'Invalid input type, layout_name must be type LayoutName')
@@ -182,6 +218,13 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             letter_key_size,
             key_info
         )
+        super().__init__(
+            master=master,
+            padx=0,
+            pady=0,
+            width=max_width,
+            height=max_height
+        )
         self.rect = Rect(
             x,
             y,
@@ -190,7 +233,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
         )
         self.widgets = []
         if keyboard_info.color:
-            bg_frame = TkRect(master, self.rect, keyboard_info.color)
+            bg_frame = TkRect(self, self.rect, keyboard_info.color)
             self.widgets.append(bg_frame)
 
         for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):

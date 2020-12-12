@@ -5,16 +5,17 @@ import keyboardlayout.tkinter as klt
 
 def get_keyboard(window: tk.Frame, layout_name: kl.LayoutName) -> klt.KeyboardLayout:
     key_size = 60
-    grey = 'grey'
+    grey = '#bebebe'
+    dark_grey = '#414141'
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
-        color='dark grey'
+        color=dark_grey
     )
     key_info = kl.KeyInfo(
         margin=10,
         color=grey,
-        txt_color='dark grey',
+        txt_color=dark_grey,
         txt_font=tkf.Font(family='Arial', size=key_size//4),
         txt_padding=(key_size//6, key_size//10)
     )
@@ -44,7 +45,7 @@ def keyboard_example(layout_name: kl.LayoutName):
     window.resizable(False, False)
 
     keyboard = get_keyboard(window, layout_name)
-    # keyboard.pack()
+    keyboard.pack(expand=0)
 
     # screen = pygame.display.set_mode(
     #     (keyboard.rect.width, keyboard.rect.height))

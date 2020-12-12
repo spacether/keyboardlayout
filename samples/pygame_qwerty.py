@@ -1,9 +1,12 @@
 import keyboardlayout as kl
+import keyboardlayout.pygame as klp
 import pygame
 
-def get_keyboard(layout_name: kl.LayoutName) -> kl.KeyboardLayout:
+def get_keyboard(layout_name: kl.LayoutName) -> klp.KeyboardLayout:
     key_size = 60
     grey = pygame.Color('grey')
+    print('#{:02x}{:02x}{:02x}'.format(*grey))
+    print('#{:02x}{:02x}{:02x}'.format(*~grey))
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
@@ -17,7 +20,7 @@ def get_keyboard(layout_name: kl.LayoutName) -> kl.KeyboardLayout:
         txt_padding=(key_size//6, key_size//10)
     )
     letter_key_size = (key_size, key_size)  # width, height
-    keyboard_layout = kl.KeyboardLayout(
+    keyboard_layout = klp.KeyboardLayout(
         layout_name,
         keyboard_info,
         letter_key_size,

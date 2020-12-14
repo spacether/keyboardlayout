@@ -7,7 +7,7 @@ rows:
   - 0
   - 0
   keys:
-  - name: code not known
+  - name: '<'
     txt_info:
       bc: '2'
   - name: '1'
@@ -255,7 +255,7 @@ rows:
   - name: function
     txt_info:
       mc: Fn
-  - name: left windows
+  - name: left meta
     txt_info:
       mc: Win
   - name: left alt
@@ -280,13 +280,13 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: left
+  - name: left arrow
     txt_info:
       mc: ◄
-  - name: down
+  - name: down arrow
     txt_info:
       mc: ▼
-  - name: right
+  - name: right arrow
     txt_info:
       mc: ►
 - name: upper arrows
@@ -297,6 +297,6 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: up
+  - name: up arrow
     txt_info:
       mc: ▲

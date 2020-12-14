@@ -9,10 +9,10 @@ from typing import (
     Union
 )
 
-import pygame
 import yaml
 
 from . import layouts
+from .key import Key
 YAML_EXTENSION = '.yaml'
 
 class TkinterColor(str):
@@ -73,9 +73,9 @@ class KeyInfo:
     def __init__(
         self,
         margin: int,
-        color: Union[pygame.Color, TkinterColor],
-        txt_color: Union[pygame.Color, TkinterColor],
-        txt_font: pygame.font.SysFont,
+        color: Union['pygame.Color', TkinterColor],
+        txt_color: Union['pygame.Color', TkinterColor],
+        txt_font: Union['pygame.font.SysFont', 'tkinter.font.Font'],
         txt_padding: Tuple[int, int],
     ):
         self.margin = margin
@@ -98,7 +98,7 @@ class KeyboardInfo:
         self,
         position: Tuple[int, int],
         padding: int,
-        color: Optional[Union[pygame.Color, TkinterColor]]=None
+        color: Optional[Union['pygame.Color', TkinterColor]]=None
     ):
         self.position = position
         self.padding = padding
@@ -155,7 +155,7 @@ class KeyboardLayoutBase:
         x: int,
         y: int,
         key_info: KeyInfo,
-        r: Union[pygame.Rect, Rect]
+        r: Union['pygame.Rect', Rect]
     ):
         key_padding = key_info.margin//2
         vertical_anchor = VerticalAnchor(txt_anchor[:1])
@@ -185,7 +185,7 @@ class KeyboardLayoutBase:
         max_width = 0
         max_height = 0
         key_size = layout[LayoutYamlConstant.KEY_SIZE]
-        self._rect_by_key_name_and_loc = defaultdict(dict)
+        self._rect_by_key_and_loc = defaultdict(dict)
         self._txt_info_by_loc = {}
         xanchor = keyboard_info.position[0] + keyboard_info.padding
         yanchor = keyboard_info.position[1] + keyboard_info.padding
@@ -218,8 +218,9 @@ class KeyboardLayoutBase:
 
                 rect = Rect(key_x, key_y, key_width, key_height)
                 key_name = row_key[LayoutYamlConstant.NAME]
+                key = Key(key_name)
                 loc = (row_ind, row_key_ind)
-                self._rect_by_key_name_and_loc[key_name][loc] = rect
+                self._rect_by_key_and_loc[key][loc] = rect
                 self._txt_info_by_loc[loc] = (
                     row_key[LayoutYamlConstant.TXT_INFO])
                 key_x += key_width

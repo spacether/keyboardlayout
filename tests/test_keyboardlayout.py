@@ -4,6 +4,7 @@ from collections import namedtuple
 
 import pygame
 import keyboardlayout as kl
+import keyboardlayout.pygame as klp
 
 
 class TestKeyboardLayout(unittest.TestCase):
@@ -43,7 +44,7 @@ class TestKeyboardLayout(unittest.TestCase):
             pygame.display.set_caption(
                 "{} keyboard layout".format(layout_name))
 
-            keyboard = kl.KeyboardLayout(
+            keyboard = klp.KeyboardLayout(
                 layout_name,
                 keyboard_info,
                 letter_key_size,
@@ -66,7 +67,7 @@ class TestKeyboardLayout(unittest.TestCase):
             ValueError,
             "Invalid input type, layout_name must be type LayoutName"
         ):
-            keyboard_layout = kl.KeyboardLayout(
+            keyboard_layout = klp.KeyboardLayout(
                 'invalid_layout',
                 None,
                 None,
@@ -80,7 +81,7 @@ class TestKeyboardLayout(unittest.TestCase):
         }
         keyboard_info, letter_key_size, key_info = self.get_infos()
         for layout_name in kl.LayoutName:
-            keyboard = kl.KeyboardLayout(
+            keyboard = klp.KeyboardLayout(
                 layout_name,
                 keyboard_info,
                 letter_key_size,
@@ -191,7 +192,7 @@ class TestKeyboardLayout(unittest.TestCase):
                 color=pygame.Color(test_case.keyboard_color)
             )
 
-            keyboard = kl.KeyboardLayout(
+            keyboard = klp.KeyboardLayout(
                 layout_name,
                 keyboard_info,
                 letter_key_size,

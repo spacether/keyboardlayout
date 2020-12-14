@@ -163,10 +163,10 @@ rows:
     txt_info:
       tl: ':'
       bl: ;
-  - name: ''''
+  - name: "'"
     txt_info:
       tl: '"'
-      bl: ''''
+      bl: "'"
   - name: return
     txt_info:
       tl: Enter
@@ -254,7 +254,7 @@ rows:
   - name: right meta
     txt_info:
       tl: Win
-  - name: compose
+  - name: context menu
     txt_info:
       tl: Menu
     size:

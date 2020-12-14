@@ -68,11 +68,11 @@ class Key(Enum):
     K_SPACE = 'space'
     K_RIGHT_ALT = 'right alt'
     K_RIGHT_META = 'right meta'
-    K_COMPOSE = 'compose'  # windows key
+    K_CONTEXT_MENU = 'context menu'  # windows key
     K_RIGHT_CONTROL = 'right ctrl'
     K_CARET = '^'
     K_DOLLAR = '$'
-    K_UGRAVE = 'ù'
+    K_U_GRAVE = 'ù'
     K_ASTERISK = '*'
     K_COLON = ':'
     K_EXCLAMATION = '!'
@@ -81,3 +81,9 @@ class Key(Enum):
     K_RIGHT_ARROW = 'right arrow'
     K_UP_ARROW = 'up arrow'
     K_DOWN_ARROW = 'down arrow'
+    K_AMPERSAND = '&'
+    K_E_ACUTE = 'é'
+    K_E_GRAVE = 'è'
+    K_UNDERSCORE = '_'
+    K_C_CEDILLE = 'ç'
+    K_A_GRAVE = 'à'

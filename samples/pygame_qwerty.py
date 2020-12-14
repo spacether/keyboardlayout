@@ -5,8 +5,6 @@ import pygame
 def get_keyboard(layout_name: kl.LayoutName) -> klp.KeyboardLayout:
     key_size = 60
     grey = pygame.Color('grey')
-    print('#{:02x}{:02x}{:02x}'.format(*grey))
-    print('#{:02x}{:02x}{:02x}'.format(*~grey))
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,

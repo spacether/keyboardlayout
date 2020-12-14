@@ -10,51 +10,51 @@ rows:
   - name: '<'
     txt_info:
       bc: '2'
-  - name: '1'
+  - name: '&'
     txt_info:
       tc: '1'
       bc: '&'
-  - name: '2'
+  - name: 'é'
     txt_info:
       tl: '2'
       bl: é
       br: '~'
-  - name: '3'
+  - name: '"'
     txt_info:
       tl: '3'
       bl: '"'
       br: '#'
-  - name: '4'
+  - name: "'"
     txt_info:
       tl: '4'
-      bl: ''''
+      bl: "'"
       br: '{'
-  - name: '5'
+  - name: (
     txt_info:
       tl: '5'
       bl: (
       br: '['
-  - name: '6'
+  - name: '-'
     txt_info:
       tl: '6'
       bl: '-'
       br: '|'
-  - name: '7'
+  - name: è
     txt_info:
       tl: '7'
       bl: è
       br: '`'
-  - name: '8'
+  - name: _
     txt_info:
       tl: '8'
       bl: _
       br: \
-  - name: '9'
+  - name: ç
     txt_info:
       tl: '9'
       bl: ç
       br: ^
-  - name: '0'
+  - name: à
     txt_info:
       tl: '0'
       bl: à

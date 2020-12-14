@@ -1,6 +1,8 @@
-import keyboardlayout as kl
-import pygame
 import argparse
+
+import keyboardlayout as kl
+import keyboardlayout.pygame as klp
+import pygame
 
 grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
@@ -9,14 +11,14 @@ def get_keyboard(
     layout_name: kl.LayoutName,
     key_size: int,
     key_info: kl.KeyInfo
-) -> kl.KeyboardLayout:
+) -> klp.KeyboardLayout:
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
         color=~grey
     )
     letter_key_size = (key_size, key_size)  # width, height
-    keyboard_layout = kl.KeyboardLayout(
+    keyboard_layout = klp.KeyboardLayout(
         layout_name,
         keyboard_info,
         letter_key_size,
@@ -26,7 +28,7 @@ def get_keyboard(
 
 def run_until_user_closes_window(
     screen: pygame.Surface,
-    keyboard: kl.KeyboardLayout,
+    keyboard: klp.KeyboardLayout,
     key_size: int,
     released_key_info: kl.KeyInfo,
 ):
@@ -50,14 +52,14 @@ def run_until_user_closes_window(
 
             key_name = pygame.key.name(event.key)
             print(event.__dict__, 'key_name = ' + key_name)
-            if key_name not in keyboard._key_name_to_sprite_group:
+            key = klp.get_key(event.key)
+            if key not in keyboard._key_to_sprite_group:
                 continue
 
             if event.type == pygame.KEYDOWN:
-                keyboard.update_key(key_name, pressed_key_info)
+                keyboard.update_key(key, pressed_key_info)
             elif event.type == pygame.KEYUP:
-                keyboard.update_key(
-                    key_name, released_key_info)
+                keyboard.update_key(key, released_key_info)
             keyboard.draw(screen)
             pygame.display.update()
 

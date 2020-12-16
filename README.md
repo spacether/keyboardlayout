@@ -1,17 +1,20 @@
 # keyboardlayout
 A python library to display different keyboards.
-Works with pygame or tkinter
-PRs with additional layouts or graphics backends are welcome.
+Works with pygame or tkinter.
 
 If you need to show your users a graphic that shows a specific keyboard layout or a portion of a keyboard, this is the library for you.
 
 ## Features:
-- qwerty + azerty included
-- graphics backends: pygame + tkinter
-- pygame: dynamically generate a sprite group showing a keyboard
-- tkinter: dynamically generate a frmae containing frames and labels
+- shows a keyboard to the user
+- keyboard layouts
+  - qwerty
+  - azerty laptop
+- graphics backends
+  - pygame (uses sprite groups)
+  - tkinter (uses frames + labels)
 - customize the keyboard with sizes, colors, key margin, padding, font, location, etc
 - update a specific key with `update_key`
+- can update key images when keys are pressed
 
 ## Documentation
 https://spacether.github.io/keyboardlayout/
@@ -42,9 +45,10 @@ pip install keyboardlayout
 ### pygame example
 ```
 import keyboardlayout as kl
+import keyboardlayout.pygame as klp
 import pygame
 
-layout_name = 'qwerty'
+layout_name = kl.LayoutName.QWERTY
 pygame.init()
 
 key_size = 60
@@ -62,7 +66,7 @@ key_info = kl.KeyInfo(
     txt_padding=(key_size//6, key_size//10)
 )
 letter_key_size = (key_size, key_size)  # width, height
-keyboard_layout = kl.KeyboardLayout(
+keyboard_layout = klp.KeyboardLayout(
     layout_name,
     keyboard_info,
     letter_key_size,
@@ -105,6 +109,4 @@ make test
 ```
 
 ## TODO
-- change key for key_info in yaml file to keysym_number values (windows)
-- get pygame pressed keys working so red looks correct
-- get tkinter pressed keys working
+- get tkinter pressed keys working so red looks correct

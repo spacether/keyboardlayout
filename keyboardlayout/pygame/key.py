@@ -9,7 +9,6 @@ class PygameKey(int):
 
 __KEY_TO_KL_KEY = {
     pygame.K_BACKQUOTE: Key.K_BACKQUOTE,
-    pygame.K_BACKQUOTE: Key.K_BACKQUOTE,
     pygame.K_1: Key.K_1,
     pygame.K_2: Key.K_2,
     pygame.K_3: Key.K_3,

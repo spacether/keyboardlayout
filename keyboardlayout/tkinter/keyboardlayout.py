@@ -18,6 +18,7 @@ from keyboardlayout.common import (
     YAML_EXTENSION,
     LayoutYamlConstant
 )
+from keyboardlayout.key import Key
 from keyboardlayout import layouts
 
 
@@ -118,11 +119,11 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
     """
     def __get_key_widgets(
         self,
-        key_name: str,
+        key: Key,
         loc: Tuple[int],
         key_info: KeyInfo,
     ):
-        key_loc_to_rect = self._rect_by_key_name_and_loc[key_name]
+        key_loc_to_rect = self._rect_by_key_and_loc[key]
         rect = key_loc_to_rect[loc]
         x, y, width, height = rect.x, rect.y, rect.width, rect.height
         key_padding = key_info.margin//2
@@ -191,7 +192,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
         stream = resources.read_text(layouts, layout_file_name)
         layout = yaml.safe_load(stream)
 
-        self._key_name_to_widget_list = defaultdict(list)
+        self._key_to_widget_list = defaultdict(list)
 
         letter_key_width, letter_key_height = letter_key_size
 
@@ -223,34 +224,35 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
         for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
             for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
                 key_name = row_key[LayoutYamlConstant.NAME]
+                key = Key(key_name)
                 used_key_info = key_info
                 if overrides:
                     used_key_info = overrides.get(key_name, used_key_info)
                 loc = (row_ind, row_key_ind)
                 key_widgets = self.__get_key_widgets(
-                    key_name,
+                    key,
                     loc,
                     used_key_info,
                 )
                 self.widgets.extend(key_widgets)
-                self._key_name_to_widget_list[key_name].extend(key_widgets)
+                self._key_to_widget_list[key].extend(key_widgets)
         self.pack()
 
 
     def update_key(
         self,
-        key_name: str,
+        key: Key,
         key_info: KeyInfo,
     ):
         """Update key_name's image using key_info"""
-        key_widget_list = self._key_name_to_widget_list[key_name]
+        key_widget_list = self._key_to_widget_list[key]
         print(key_widget_list)
         for key_widget in key_widget_list:
             self.widgets.remove(key_widget)
         key_widget_list.clear()
-        for loc in self._rect_by_key_name_and_loc[key_name]:
+        for loc in self._rect_by_key_and_loc[key]:
             key_widgets = self.__get_key_widgets(
-                key_name,
+                key,
                 loc,
                 key_info,
             )

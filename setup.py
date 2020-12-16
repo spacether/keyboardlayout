@@ -11,7 +11,7 @@ with open(this_directory.joinpath('keyboardlayout', 'version.py')) as f:
 
 setup(
     name = 'keyboardlayout',
-    install_requires = ['PyYAML >= 5.3.1', 'pygame >= 2.0.0'],
+    install_requires = ['PyYAML >= 5.3.1'],
     python_requires='>=3.7',
     version = version['__version__'],
     description = 'A python library to display different keyboards',
@@ -19,13 +19,12 @@ setup(
     packages = find_packages(),
     package_data={'keyboardlayout': ['layouts/*.yaml']},
     url = "https://github.com/spacether/keyboardlayout",
-    keywords = ["keyboard", "qwerty", "layout", "azerty"],
+    keywords = ["keyboard", "qwerty", "layout", "azerty", "pygame", "tkinter"],
     setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pygame'],
     extras_require={
         'dev': [
             'sphinx',
-            'pytest',
             'setuptools',
             'wheel',
             'twine',

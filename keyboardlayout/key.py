@@ -3,7 +3,8 @@ from enum import Enum
 class Key(Enum):
     """
     These are generic platform independent key constants
-    Each graphics backens maps from its own specific key codes into this one
+    Each graphics backend maps from its own specific key codes to
+    these constants
     """
     K_BACKQUOTE = '`'
     K_1 = '1'

@@ -1,9 +1,12 @@
 # 2.0.0 - draft
-- KeyboardLayout layout_name input type changed from str to LayoutName enum
+- Breaking: KeyboardLayout layout_name input type changed from str to LayoutName enum
 - Fixed typo in readme code sample
 - Python samples renamed to include pygame_ or tkinter_ prefix
 - Adds init docstrings to KeyboardInfo, KeyInfo
 - Adds Rect class for keyboardlayout's tkinter implementation
+- Adds a Key enum to store all possible keys for each backend
+- Breaking: Changes update_key to ingest the Key enum
+- Add get_key method to get the key constant that is used to update keys
 
 # 1.0.0
 - qwerty + azerty included

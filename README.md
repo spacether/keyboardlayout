@@ -16,6 +16,9 @@ If you need to show your users a graphic that shows a specific keyboard layout o
 - update a specific key with `update_key`
 - can update key images when keys are pressed
 
+## Changelog
+https://github.com/spacether/keyboardlayout/tree/master/CHANGELOG.md
+
 ## Documentation
 https://spacether.github.io/keyboardlayout/
 

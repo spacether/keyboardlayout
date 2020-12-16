@@ -106,5 +106,5 @@ make test
 
 ## TODO
 - change key for key_info in yaml file to keysym_number values (windows)
-- get pygame pressed keys working
+- get pygame pressed keys working so red looks correct
 - get tkinter pressed keys working

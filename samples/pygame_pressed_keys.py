@@ -33,7 +33,7 @@ def run_until_user_closes_window(
     released_key_info: kl.KeyInfo,
 ):
     pressed_key_info = kl.KeyInfo(
-        margin=20,
+        margin=14,
         color=pygame.Color('red'),
         txt_color=pygame.Color('white'),
         txt_font=pygame.font.SysFont('Arial', key_size//4),

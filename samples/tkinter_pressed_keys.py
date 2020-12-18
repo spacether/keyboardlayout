@@ -36,7 +36,7 @@ def run_until_user_closes_window(
     released_key_info: kl.KeyInfo,
 ):
     pressed_key_info = kl.KeyInfo(
-        margin=20,
+        margin=14,
         color='red',
         txt_color='white',
         txt_font=tkf.Font(family='Arial', size=key_size//4),

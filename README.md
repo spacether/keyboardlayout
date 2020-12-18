@@ -112,4 +112,4 @@ make test
 ```
 
 ## TODO
-- get tkinter pressed keys working so red looks correct
+- add tkinter shift+key key codes

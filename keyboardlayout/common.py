@@ -155,7 +155,7 @@ class KeyboardLayoutBase:
         x: int,
         y: int,
         key_info: KeyInfo,
-        r: Union['pygame.Rect', Rect]
+        r: Rect
     ):
         key_padding = key_info.margin//2
         vertical_anchor = VerticalAnchor(txt_anchor[:1])
@@ -216,6 +216,11 @@ class KeyboardLayoutBase:
                 if key_ymax > max_height:
                     max_height = key_ymax
 
+                """
+                does not include key margins
+                drawn key rect will be smaller than this if mey_info.margin
+                is set
+                """
                 rect = Rect(key_x, key_y, key_width, key_height)
                 key_name = row_key[LayoutYamlConstant.NAME]
                 key = Key(key_name)

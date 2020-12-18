@@ -2,10 +2,6 @@ from keyboardlayout.key import Key
 
 import tkinter
 
-"""
-keysym_num is set on most keys and is platform independent
-If keysym_num is 0, we should use keycode which is platform-dependent
-"""
 __KEY_TO_KL_KEY = {
     96: Key.K_BACKQUOTE,
     49: Key.K_1,
@@ -81,6 +77,8 @@ __KEY_TO_KL_KEY = {
     65364: Key.K_DOWN_ARROW,
     65361: Key.K_LEFT_ARROW,
     65363: Key.K_RIGHT_ARROW,
+    # qwerty uppercase
+    # azerty
     58: Key.K_COLON,
     33: Key.K_EXCLAMATION,
     249: Key.K_U_GRAVE,
@@ -104,6 +102,10 @@ __KEY_TO_KL_KEY = {
 
 
 def get_key(event: tkinter.Event) -> Key:
+    """
+    keysym_num is set on most keys and is platform independent
+    If keysym_num is 0, we should use keycode which is platform-dependent
+    """
     number = event.keysym_num
     if number == 0:
         number = event.keycode

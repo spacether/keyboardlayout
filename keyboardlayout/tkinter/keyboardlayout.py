@@ -44,6 +44,7 @@ class TkTxt(TxtBase, tk.Label):
             pady=0,
             fg=txt_color,
             bg=color,
+            bd=0,
         )
 
         txt_width = font.measure(txt)
@@ -73,29 +74,6 @@ class TkRect(tk.Frame):
             bg=color,
             height=r.height,
             width=r.width,
-            padx=0,
-            pady=0,
-        )
-        # self.pack()
-        self.place(x=r.x, y=r.y)
-
-class TkButton(tk.Frame):
-    """
-    Contains a button image, button class not used because its background
-    cannot be colored on mac
-    """
-    def __init__(
-        self,
-        master: Union[tk.Frame, tk.Tk],
-        r: Rect,
-        color: str,
-    ):
-        super().__init__(
-            master,
-            bd=0,
-            bg=color,
-            height=int(r.height),
-            width=int(r.width),
             padx=0,
             pady=0,
         )
@@ -153,7 +131,7 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             height-2*key_padding + height_delta,
         )
         key_widgets = []
-        bg_frame = TkButton(self, r, key_info.color)
+        bg_frame = TkRect(self, r, key_info.color)
         key_widgets.append(bg_frame)
 
         txt_info = self._txt_info_by_loc[loc]
@@ -246,9 +224,9 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
     ):
         """Update key_name's image using key_info"""
         key_widget_list = self._key_to_widget_list[key]
-        print(key_widget_list)
         for key_widget in key_widget_list:
             self.widgets.remove(key_widget)
+            key_widget.destroy()
         key_widget_list.clear()
         for loc in self._rect_by_key_and_loc[key]:
             key_widgets = self.__get_key_widgets(

@@ -223,14 +223,15 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
         key_info: KeyInfo,
     ):
         """Update key_name's image using key_info"""
-        key_widget_list = self._key_to_widget_list[key]
+        actual_key = self._key_to_actual_key.get(key, key)
+        key_widget_list = self._key_to_widget_list[actual_key]
         for key_widget in key_widget_list:
             self.widgets.remove(key_widget)
             key_widget.destroy()
         key_widget_list.clear()
-        for loc in self._rect_by_key_and_loc[key]:
+        for loc in self._rect_by_key_and_loc[actual_key]:
             key_widgets = self.__get_key_widgets(
-                key,
+                actual_key,
                 loc,
                 key_info,
             )

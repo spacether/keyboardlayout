@@ -187,6 +187,8 @@ class KeyboardLayoutBase:
         key_size = layout[LayoutYamlConstant.KEY_SIZE]
         self._rect_by_key_and_loc = defaultdict(dict)
         self._txt_info_by_loc = {}
+        # Key('1') and Key('!') both point to Key('1')
+        self._key_to_actual_key = {}
         xanchor = keyboard_info.position[0] + keyboard_info.padding
         yanchor = keyboard_info.position[1] + keyboard_info.padding
         if key_info.margin:
@@ -226,11 +228,20 @@ class KeyboardLayoutBase:
                 key = Key(key_name)
                 loc = (row_ind, row_key_ind)
                 self._rect_by_key_and_loc[key][loc] = rect
-                self._txt_info_by_loc[loc] = (
-                    row_key[LayoutYamlConstant.TXT_INFO])
+                txt_info = row_key[LayoutYamlConstant.TXT_INFO]
+                self._txt_info_by_loc[loc] = txt_info
+                for txt_val in txt_info.values():
+                    if txt_val == key_name:
+                        continue
+                    try:
+                        shift_or_alt_key = Key(txt_val)
+                        self._key_to_actual_key[shift_or_alt_key] = key
+                    except ValueError:
+                        pass
                 key_x += key_width
 
             if row_max_width > max_width:
                 max_width = row_max_width
 
+        print(self._key_to_actual_key)
         return max_width, max_height

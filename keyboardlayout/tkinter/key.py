@@ -4,6 +4,7 @@ import tkinter
 
 __KEY_TO_KL_KEY = {
     96: Key.K_BACKQUOTE,
+    126: Key.K_ASCII_TILDE,
     49: Key.K_1,
     50: Key.K_2,
     51: Key.K_3,
@@ -32,6 +33,7 @@ __KEY_TO_KL_KEY = {
     93: Key.K_RIGHTBRACKET,
     92: Key.K_BACKSLASH,
     65509: Key.K_CAPSLOCK,
+    65792: Key.K_CAPSLOCK, # MACOS
     97: Key.K_A,
     115: Key.K_S,
     100: Key.K_D,
@@ -45,6 +47,7 @@ __KEY_TO_KL_KEY = {
     39: Key.K_SINGLEQUOTE,
     65293: Key.K_RETURN,
     131074: Key.K_LEFT_SHIFT, # macOs
+    131330: Key.K_LEFT_SHIFT, # macOs
     65505: Key.K_LEFT_SHIFT,
     122: Key.K_Z,
     120: Key.K_X,

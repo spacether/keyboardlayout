@@ -26,7 +26,8 @@ def __generate_keyboard_layout_enum():
 
     layout_name_enum = Enum(
         'LayoutName',
-        {layout_name.upper(): layout_name for layout_name in layout_names}
+        {layout_name.upper(): layout_name for layout_name in layout_names},
+        type=str
     )
     layout_name_enum.__doc__ = (
         "An enum that holds the allowed layout names")
@@ -149,6 +150,10 @@ class TxtBase:
 
 
 class KeyboardLayoutBase:
+    def __init__(self, layout_name: LayoutName, **kwargs):
+        self.layout_name = layout_name
+        super().__init__(**kwargs)
+
     @staticmethod
     def _get_txt_pos_info(
         txt_anchor: str,
@@ -243,5 +248,4 @@ class KeyboardLayoutBase:
             if row_max_width > max_width:
                 max_width = row_max_width
 
-        print(self._key_to_actual_key)
         return max_width, max_height

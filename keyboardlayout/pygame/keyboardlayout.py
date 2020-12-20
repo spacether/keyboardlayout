@@ -18,6 +18,11 @@ from keyboardlayout.common import (
 )
 from keyboardlayout.key import Key
 from keyboardlayout import layouts
+from keyboardlayout.pygame.key import KEY_MAP_BY_LAYOUT
+
+
+class PygameKey(int):
+    pass
 
 
 class PgTxt(TxtBase, pygame.sprite.Sprite):
@@ -142,7 +147,7 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         key_info: KeyInfo,
         overrides: typing.Optional[typing.Dict[str, KeyInfo]] = None
     ):
-        super().__init__()
+        super().__init__(layout_name=layout_name)
 
         if not isinstance(layout_name, LayoutName):
             raise ValueError(
@@ -206,3 +211,6 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
             )
             self.add(*key_sprites)
             key_sprite_group.add(*key_sprites)
+
+    def get_key(self, key: PygameKey) -> Key:
+        return KEY_MAP_BY_LAYOUT[self.layout_name][key]

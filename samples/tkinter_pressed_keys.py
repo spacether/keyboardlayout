@@ -44,11 +44,13 @@ def run_until_user_closes_window(
     )
 
     def keyup(e):
-        key = klt.get_key(e)
+        key = keyboard.get_key(e)
+        print(key)
         keyboard.update_key(
             key, released_key_info)
     def keydown(e):
-        key = klt.get_key(e)
+        key = keyboard.get_key(e)
+        print(key)
         keyboard.update_key(key, pressed_key_info)
 
     keyboard.bind("<KeyPress>", keydown)

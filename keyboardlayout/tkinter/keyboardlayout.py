@@ -20,6 +20,7 @@ from keyboardlayout.common import (
 )
 from keyboardlayout.key import Key
 from keyboardlayout import layouts
+from keyboardlayout.tkinter.key import KEY_MAP
 
 
 class TkTxt(TxtBase, tk.Label):
@@ -186,7 +187,8 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             padx=0,
             pady=0,
             width=max_width,
-            height=max_height
+            height=max_height,
+            layout_name=layout_name
         )
         self.rect = Rect(
             x,
@@ -237,3 +239,15 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             )
             self.widgets.extend(key_widgets)
             key_widget_list.extend(key_widgets)
+
+    @staticmethod
+    def get_key(event: tk.Event) -> Key:
+        """
+        keysym_num is set on most keys and is platform independent
+        If keysym_num is 0, we should use keycode which is platform-dependent
+        """
+        print(event, event.keysym_num, event.keycode)
+        number = event.keysym_num
+        if number == 0:
+            number = event.keycode
+        return KEY_MAP[number]

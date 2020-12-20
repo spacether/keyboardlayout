@@ -14,7 +14,7 @@ KEY_MAP = {
     53: Key.DIGIT_5,
     37: Key.PERCENT,
     54: Key.DIGIT_6,
-    94: Key.CARET,
+    94: Key.CIRCUMFLEX,
     55: Key.DIGIT_7,
     38: Key.AMPERSAND,
     56: Key.DIGIT_8,
@@ -133,4 +133,13 @@ KEY_MAP = {
     231: Key.C_CEDILLE,
     224: Key.A_GRAVE,
     61: Key.EQUALS,
+    176: Key.DEGREE,
+    168: Key.DIACRATICAL,
+    163: Key.POUND,
+    226: Key.A, # A_CIRCUMFLEX
+    234: Key.E, # E_CIRCUMFLEX
+    238: Key.I, # I_CIRCUMFLEX
+    244: Key.O, # O_CIRCUMFLEX
+    251: Key.U, # U_CIRCUMFLEX
+    167: Key.SECTION,
 }

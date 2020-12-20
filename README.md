@@ -112,4 +112,4 @@ make test
 ```
 
 ## TODO
-- add tkinter shift+key key codes
+- make new docs

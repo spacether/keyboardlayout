@@ -240,14 +240,18 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             self.widgets.extend(key_widgets)
             key_widget_list.extend(key_widgets)
 
-    @staticmethod
-    def get_key(event: tk.Event) -> Key:
+    def get_key(self, event: tk.Event) -> Optional[Key]:
         """
         keysym_num is set on most keys and is platform independent
         If keysym_num is 0, we should use keycode which is platform-dependent
         """
-        print(event, event.keysym_num, event.keycode)
         number = event.keysym_num
         if number == 0:
             number = event.keycode
-        return KEY_MAP[number]
+        try:
+            key = KEY_MAP[number]
+            actual_key = self._key_to_actual_key.get(key, key)
+            self._key_to_widget_list[actual_key]
+            return key
+        except KeyError:
+            return None

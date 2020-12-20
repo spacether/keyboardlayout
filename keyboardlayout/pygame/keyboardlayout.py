@@ -1,6 +1,6 @@
 from collections import defaultdict
 from importlib import resources
-import typing
+from typing import Tuple, Union, Optional, Dict
 
 import pygame
 import yaml
@@ -85,7 +85,7 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
     def __get_key_sprites(
         self,
         key: Key,
-        loc: typing.Tuple[int],
+        loc: Tuple[int],
         key_info: KeyInfo,
     ):
         key_loc_to_rect = self._rect_by_key_and_loc[key]
@@ -143,9 +143,9 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         self,
         layout_name: LayoutName,
         keyboard_info: KeyboardInfo,
-        letter_key_size: typing.Tuple[int],
+        letter_key_size: Tuple[int],
         key_info: KeyInfo,
-        overrides: typing.Optional[typing.Dict[str, KeyInfo]] = None
+        overrides: Optional[Dict[str, KeyInfo]] = None
     ):
         super().__init__(layout_name=layout_name)
 
@@ -200,10 +200,11 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         key_info: KeyInfo,
     ):
         """Update key's image using key_info"""
-        key_sprite_group = self._key_to_sprite_group[key]
+        actual_key = self._key_to_actual_key.get(key, key)
+        key_sprite_group = self._key_to_sprite_group[actual_key]
         self.remove(key_sprite_group.sprites())
         key_sprite_group.empty()
-        for loc in self._rect_by_key_and_loc[key]:
+        for loc in self._rect_by_key_and_loc[actual_key]:
             key_sprites = self.__get_key_sprites(
                 key,
                 loc,
@@ -212,5 +213,11 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
             self.add(*key_sprites)
             key_sprite_group.add(*key_sprites)
 
-    def get_key(self, key: PygameKey) -> Key:
-        return KEY_MAP_BY_LAYOUT[self.layout_name][key]
+    def get_key(self, key: PygameKey) -> Optional[Key]:
+        try:
+            key = KEY_MAP_BY_LAYOUT[self.layout_name][key]
+            actual_key = self._key_to_actual_key.get(key, key)
+            self._key_to_sprite_group[actual_key]
+            return key
+        except KeyError:
+            return None

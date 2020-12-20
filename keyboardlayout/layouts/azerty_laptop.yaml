@@ -120,7 +120,7 @@ rows:
   - name: ^
     txt_info:
       tc: ¨
-      bc: ^
+      bc: ˆ
   - name: $
     txt_info:
       tl: £

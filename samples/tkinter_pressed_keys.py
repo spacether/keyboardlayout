@@ -42,16 +42,29 @@ def run_until_user_closes_window(
         txt_font=tkf.Font(family='Arial', size=key_size//4),
         txt_padding=(key_size//6, key_size//10)
     )
+    dead_key_pressed = False
 
     def keyup(e):
         key = keyboard.get_key(e)
-        print(key)
+        if key is None:
+            return
         keyboard.update_key(
             key, released_key_info)
+        nonlocal dead_key_pressed
+        if dead_key_pressed and key not in {kl.Key.CIRCUMFLEX, kl.Key.DIACRATICAL}:
+            dead_key_pressed = False
+            keyboard.update_key(
+                kl.Key.CIRCUMFLEX, released_key_info)
+
     def keydown(e):
         key = keyboard.get_key(e)
-        print(key)
+        print(e, key)
+        if key is None:
+            return
         keyboard.update_key(key, pressed_key_info)
+        if key in {kl.Key.CIRCUMFLEX, kl.Key.DIACRATICAL}:
+            nonlocal dead_key_pressed
+            dead_key_pressed = True
 
     keyboard.bind("<KeyPress>", keydown)
     keyboard.bind("<KeyRelease>", keyup)

@@ -248,5 +248,4 @@ class KeyboardLayoutBase:
             if row_max_width > max_width:
                 max_width = row_max_width
 
-        print(self._key_to_actual_key)
         return max_width, max_height

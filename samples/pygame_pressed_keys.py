@@ -51,7 +51,7 @@ def run_until_user_closes_window(
                 break
 
             key_name = pygame.key.name(event.key)
-            key = keyboard.get_key(event.key)
+            key = keyboard.get_key(event)
             if key is None:
                 continue
 

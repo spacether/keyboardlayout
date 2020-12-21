@@ -1,18 +1,20 @@
 from collections import defaultdict
 from enum import Enum
 from importlib import resources
+from abc import abstractmethod, ABC
 import os
 from pathlib import Path
 from typing import (
     Tuple,
     Optional,
-    Union
+    Union,
+    Dict,
 )
 
 import yaml
 
-from . import layouts
-from .key import Key
+from keyboardlayout import layouts
+from keyboardlayout.key import Key
 YAML_EXTENSION = '.yaml'
 
 class TkinterColor(str):
@@ -149,10 +151,18 @@ class TxtBase:
         return xloc, yloc
 
 
-class KeyboardLayoutBase:
-    def __init__(self, layout_name: LayoutName, **kwargs):
-        self.layout_name = layout_name
-        super().__init__(**kwargs)
+class KeyboardLayoutInterface(ABC):
+
+    @staticmethod
+    def _get_layout(layout_name: LayoutName) -> Dict:
+        if not isinstance(layout_name, LayoutName):
+            raise ValueError(
+                'Invalid input type, layout_name must be type LayoutName')
+        layout_file_name = layout_name.value + YAML_EXTENSION
+        stream = resources.read_text(layouts, layout_file_name)
+        layout = yaml.safe_load(stream)
+        return layout
+
 
     @staticmethod
     def _get_txt_pos_info(
@@ -179,12 +189,13 @@ class KeyboardLayoutBase:
             xloc = x + r.width - key_padding - key_info.txt_padding[0]
         return horizontal_anchor, vertical_anchor, xloc, yloc
 
-    def _get_max_size_and_set_info_dicts(
+    def _get_max_size_and_set_instance_info(
         self,
         layout: dict,
         keyboard_info: KeyboardInfo,
         letter_key_size: Tuple[int],
         key_info: KeyInfo,
+        layout_name: LayoutName,
     ):
         letter_key_width, letter_key_height = letter_key_size
         max_width = 0
@@ -192,7 +203,8 @@ class KeyboardLayoutBase:
         key_size = layout[LayoutYamlConstant.KEY_SIZE]
         self._rect_by_key_and_loc = defaultdict(dict)
         self._txt_info_by_loc = {}
-        # Key('1') and Key('!') both point to Key('1')
+        self.layout_name = layout_name
+        # Key('!') maps to Key('1')
         self._key_to_actual_key = {}
         xanchor = keyboard_info.position[0] + keyboard_info.padding
         yanchor = keyboard_info.position[1] + keyboard_info.padding
@@ -225,7 +237,7 @@ class KeyboardLayoutBase:
 
                 """
                 does not include key margins
-                drawn key rect will be smaller than this if mey_info.margin
+                drawn key rect will be smaller than this if key_info.margin
                 is set
                 """
                 rect = Rect(key_x, key_y, key_width, key_height)
@@ -249,3 +261,30 @@ class KeyboardLayoutBase:
                 max_width = row_max_width
 
         return max_width, max_height
+
+    @abstractmethod
+    def update_key(
+        self,
+        key: Key,
+        key_info: KeyInfo,
+    ):
+        """Update key's image using key_info"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_key(self, event: Union['tk.Event', 'pygame.event.EventType']) -> Optional[Key]:
+        """
+        Gets the Key which was pressed from an event
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def __init__(
+        self,
+        layout_name: LayoutName,
+        keyboard_info: KeyboardInfo,
+        letter_key_size: Tuple[int],
+        key_info: KeyInfo,
+        overrides: Optional[Dict[str, KeyInfo]] = None
+    ):
+        raise NotImplementedError

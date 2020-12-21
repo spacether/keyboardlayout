@@ -1,13 +1,11 @@
 from collections import defaultdict
-from importlib import resources
 from typing import Tuple, Union, Optional, Dict
 
 import pygame
-import yaml
 
 from keyboardlayout.common import (
     TxtBase,
-    KeyboardLayoutBase,
+    KeyboardLayoutInterface,
     YAML_EXTENSION,
     LayoutName,
     HorizontalAnchor,
@@ -17,7 +15,6 @@ from keyboardlayout.common import (
     LayoutYamlConstant
 )
 from keyboardlayout.key import Key
-from keyboardlayout import layouts
 from keyboardlayout.pygame.key import KEY_MAP_BY_LAYOUT
 
 
@@ -66,7 +63,7 @@ class PgRect(pygame.sprite.Sprite):
         self.rect = pygame.Rect(r.x, r.y, r.width, r.height)
 
 
-class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
+class KeyboardLayout(pygame.sprite.Group, KeyboardLayoutInterface):
     """
     Makes a frame that stores a keyboard layout
 
@@ -82,6 +79,8 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         _key_to_sprite_group (dict): a dict that goes from
             Key to pygame.sprite.Group instances
     """
+    __allowed_key_events = {pygame.KEYDOWN, pygame.KEYUP}
+
     def __get_key_sprites(
         self,
         key: Key,
@@ -147,29 +146,22 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
         key_info: KeyInfo,
         overrides: Optional[Dict[str, KeyInfo]] = None
     ):
-        super().__init__(layout_name=layout_name)
+        super().__init__()
 
-        if not isinstance(layout_name, LayoutName):
-            raise ValueError(
-                'Invalid input type, layout_name must be type LayoutName')
-        layout_file_name = layout_name.value + YAML_EXTENSION
-        stream = resources.read_text(layouts, layout_file_name)
-        layout = yaml.safe_load(stream)
+        layout = self._get_layout(layout_name)
 
         self._key_to_sprite_group = defaultdict(pygame.sprite.Group)
 
-        letter_key_width, letter_key_height = letter_key_size
-
-        x, y = keyboard_info.position
-        max_width, max_height = self._get_max_size_and_set_info_dicts(
+        max_width, max_height = self._get_max_size_and_set_instance_info(
             layout,
             keyboard_info,
             letter_key_size,
-            key_info
+            key_info,
+            layout_name
         )
         self.rect = pygame.Rect(
-            x,
-            y,
+            keyboard_info.position[0],
+            keyboard_info.position[1],
             max_width - key_info.margin + 2*keyboard_info.padding,
             max_height - key_info.margin + 2*keyboard_info.padding,
         )
@@ -213,7 +205,10 @@ class KeyboardLayout(KeyboardLayoutBase, pygame.sprite.Group):
             self.add(*key_sprites)
             key_sprite_group.add(*key_sprites)
 
-    def get_key(self, key: PygameKey) -> Optional[Key]:
+    def get_key(self, event: pygame.event.EventType) -> Optional[Key]:
+        if event.type not in self.__allowed_key_events:
+            return None
+        key = event.key
         try:
             key = KEY_MAP_BY_LAYOUT[self.layout_name][key]
             actual_key = self._key_to_actual_key.get(key, key)

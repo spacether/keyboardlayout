@@ -1,10 +1,8 @@
 from collections import defaultdict
-from importlib import resources
 from typing import Tuple, Union, Optional, Dict
 
 import tkinter as tk
 import tkinter.font as tkf
-import yaml
 
 from keyboardlayout.common import (
     KeyboardInfo,
@@ -14,12 +12,11 @@ from keyboardlayout.common import (
     TxtBase,
     HorizontalAnchor,
     VerticalAnchor,
-    KeyboardLayoutBase,
+    KeyboardLayoutInterface,
     YAML_EXTENSION,
     LayoutYamlConstant
 )
 from keyboardlayout.key import Key
-from keyboardlayout import layouts
 from keyboardlayout.tkinter.key import KEY_MAP
 
 
@@ -81,7 +78,7 @@ class TkRect(tk.Frame):
         self.place(x=r.x, y=r.y)
 
 
-class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
+class KeyboardLayout(tk.Frame, KeyboardLayoutInterface):
     """
     Makes a sprite group that stores a keyboard layout image
 
@@ -157,30 +154,24 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
 
     def __init__(
         self,
-        master: Union[tk.Frame, tk.Tk],
         layout_name: LayoutName,
         keyboard_info: KeyboardInfo,
         letter_key_size: Tuple[int],
         key_info: KeyInfo,
+        *,
+        master: Union[tk.Frame, tk.Tk],
         overrides: Optional[Dict[str, KeyInfo]] = None
     ):
-        if not isinstance(layout_name, LayoutName):
-            raise ValueError(
-                'Invalid input type, layout_name must be type LayoutName')
-        layout_file_name = layout_name.value + YAML_EXTENSION
-        stream = resources.read_text(layouts, layout_file_name)
-        layout = yaml.safe_load(stream)
+        layout = self._get_layout(layout_name)
 
         self._key_to_widget_list = defaultdict(list)
 
-        letter_key_width, letter_key_height = letter_key_size
-
-        x, y = keyboard_info.position
-        max_width, max_height = self._get_max_size_and_set_info_dicts(
+        max_width, max_height = self._get_max_size_and_set_instance_info(
             layout,
             keyboard_info,
             letter_key_size,
-            key_info
+            key_info,
+            layout_name
         )
         super().__init__(
             master=master,
@@ -188,11 +179,10 @@ class KeyboardLayout(KeyboardLayoutBase, tk.Frame):
             pady=0,
             width=max_width,
             height=max_height,
-            layout_name=layout_name
         )
         self.rect = Rect(
-            x,
-            y,
+            keyboard_info.position[0],
+            keyboard_info.position[1],
             max_width - key_info.margin + 2*keyboard_info.padding,
             max_height - key_info.margin + 2*keyboard_info.padding,
         )

@@ -22,11 +22,11 @@ def get_keyboard(window: tk.Tk, layout_name: kl.LayoutName) -> klt.KeyboardLayou
     )
     letter_key_size = (key_size, key_size)  # width, height
     keyboard_layout = klt.KeyboardLayout(
-        window,
         layout_name,
         keyboard_info,
         letter_key_size,
-        key_info
+        key_info,
+        master=window
     )
     return keyboard_layout
 

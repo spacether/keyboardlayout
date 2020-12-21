@@ -22,11 +22,11 @@ def get_keyboard(
     )
     letter_key_size = (key_size, key_size)  # width, height
     keyboard_layout = klt.KeyboardLayout(
-        window,
         layout_name,
         keyboard_info,
         letter_key_size,
-        key_info
+        key_info,
+        master=window
     )
     return keyboard_layout
 
@@ -42,7 +42,13 @@ def run_until_user_closes_window(
         txt_font=tkf.Font(family='Arial', size=key_size//4),
         txt_padding=(key_size//6, key_size//10)
     )
+    """
+    in the azerty layout store the pressed state of the key ˆ (upper case ¨)
+    because tkinter does not register a key up event for that key
+    That key adds accents to the key pressed after this key
+    """
     dead_key_pressed = False
+    dead_key_keys = {kl.Key.CIRCUMFLEX, kl.Key.DIACRATICAL}
 
     def keyup(e):
         key = keyboard.get_key(e)
@@ -51,18 +57,17 @@ def run_until_user_closes_window(
         keyboard.update_key(
             key, released_key_info)
         nonlocal dead_key_pressed
-        if dead_key_pressed and key not in {kl.Key.CIRCUMFLEX, kl.Key.DIACRATICAL}:
+        if dead_key_pressed and key not in dead_key_keys:
             dead_key_pressed = False
             keyboard.update_key(
                 kl.Key.CIRCUMFLEX, released_key_info)
 
     def keydown(e):
         key = keyboard.get_key(e)
-        print(e, key)
         if key is None:
             return
         keyboard.update_key(key, pressed_key_info)
-        if key in {kl.Key.CIRCUMFLEX, kl.Key.DIACRATICAL}:
+        if key in dead_key_keys:
             nonlocal dead_key_pressed
             dead_key_pressed = True
 

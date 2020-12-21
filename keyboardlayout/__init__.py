@@ -1,7 +1,9 @@
-from .keyboardlayout import (
+from .common import (
     KeyInfo,
     KeyboardInfo,
-    KeyboardLayout,
     LayoutName,
+    VerticalAnchor,
+    HorizontalAnchor,
+    Key
 )
 from .version import __version__

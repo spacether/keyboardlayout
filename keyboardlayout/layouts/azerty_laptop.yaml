@@ -7,64 +7,64 @@ rows:
   - 0
   - 0
   keys:
-  - name: code not known
+  - name: '<'
     txt_info:
       bc: '2'
-  - name: '1'
+  - name: '&'
     txt_info:
       tc: '1'
       bc: '&'
-  - name: '2'
+  - name: 'é'
     txt_info:
       tl: '2'
       bl: é
       br: '~'
-  - name: '3'
+  - name: '"'
     txt_info:
       tl: '3'
       bl: '"'
       br: '#'
-  - name: '4'
+  - name: "'"
     txt_info:
       tl: '4'
-      bl: ''''
+      bl: "'"
       br: '{'
-  - name: '5'
+  - name: (
     txt_info:
       tl: '5'
       bl: (
       br: '['
-  - name: '6'
+  - name: '-'
     txt_info:
       tl: '6'
       bl: '-'
       br: '|'
-  - name: '7'
+  - name: è
     txt_info:
       tl: '7'
       bl: è
       br: '`'
-  - name: '8'
+  - name: _
     txt_info:
       tl: '8'
       bl: _
       br: \
-  - name: '9'
+  - name: ç
     txt_info:
       tl: '9'
       bl: ç
       br: ^
-  - name: '0'
+  - name: à
     txt_info:
       tl: '0'
       bl: à
       br: '@'
-  - name: °
+  - name: )
     txt_info:
       tl: °
       bl: )
       br: ']'
-  - name: +
+  - name: '='
     txt_info:
       tl: +
       bl: '='
@@ -120,7 +120,7 @@ rows:
   - name: ^
     txt_info:
       tc: ¨
-      bc: ^
+      bc: ˆ
   - name: $
     txt_info:
       tl: £
@@ -255,7 +255,7 @@ rows:
   - name: function
     txt_info:
       mc: Fn
-  - name: left windows
+  - name: left meta
     txt_info:
       mc: Win
   - name: left alt
@@ -280,13 +280,13 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: left
+  - name: left arrow
     txt_info:
       mc: ◄
-  - name: down
+  - name: down arrow
     txt_info:
       mc: ▼
-  - name: right
+  - name: right arrow
     txt_info:
       mc: ►
 - name: upper arrows
@@ -297,6 +297,6 @@ rows:
   - 1.1
   - 0.6
   keys:
-  - name: up
+  - name: up arrow
     txt_info:
       mc: ▲

@@ -1,21 +1,24 @@
+import argparse
+
 import keyboardlayout as kl
+import keyboardlayout.pygame as klp
 import pygame
 
 grey = pygame.Color('grey')
 dark_grey = ~pygame.Color('grey')
 
 def get_keyboard(
-    layout_name: str,
+    layout_name: kl.LayoutName,
     key_size: int,
     key_info: kl.KeyInfo
-) -> kl.KeyboardLayout:
+) -> klp.KeyboardLayout:
     keyboard_info = kl.KeyboardInfo(
         position=(0, 0),
         padding=2,
         color=~grey
     )
     letter_key_size = (key_size, key_size)  # width, height
-    keyboard_layout = kl.KeyboardLayout(
+    keyboard_layout = klp.KeyboardLayout(
         layout_name,
         keyboard_info,
         letter_key_size,
@@ -25,12 +28,12 @@ def get_keyboard(
 
 def run_until_user_closes_window(
     screen: pygame.Surface,
-    keyboard: kl.KeyboardLayout,
+    keyboard: klp.KeyboardLayout,
     key_size: int,
     released_key_info: kl.KeyInfo,
 ):
     pressed_key_info = kl.KeyInfo(
-        margin=20,
+        margin=14,
         color=pygame.Color('red'),
         txt_color=pygame.Color('white'),
         txt_font=pygame.font.SysFont('Arial', key_size//4),
@@ -48,21 +51,21 @@ def run_until_user_closes_window(
                 break
 
             key_name = pygame.key.name(event.key)
-            if key_name not in keyboard._key_name_to_sprite_group:
+            key = keyboard.get_key(event)
+            if key is None:
                 continue
 
             if event.type == pygame.KEYDOWN:
-                keyboard.update_key(key_name, pressed_key_info)
+                keyboard.update_key(key, pressed_key_info)
             elif event.type == pygame.KEYUP:
-                keyboard.update_key(
-                    key_name, released_key_info)
+                keyboard.update_key(key, released_key_info)
             keyboard.draw(screen)
             pygame.display.update()
 
     pygame.display.quit()
     pygame.quit()
 
-def keyboard_example(layout_name: str):
+def keyboard_example(layout_name: kl.LayoutName):
     pygame.init()
     # block events that we don't want
     pygame.event.set_blocked(None)
@@ -87,4 +90,13 @@ def keyboard_example(layout_name: str):
     run_until_user_closes_window(screen, keyboard, key_size, key_info)
 
 if __name__ == "__main__":
-    keyboard_example('qwerty')
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'layout_name',
+        nargs='?',
+        type=kl.LayoutName,
+        default=kl.LayoutName.QWERTY,
+        help='the layout_name to use'
+    )
+    args = parser.parse_args()
+    keyboard_example(args.layout_name)

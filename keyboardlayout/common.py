@@ -1,8 +1,6 @@
 from collections import defaultdict
 from enum import Enum
-from importlib import resources
 from abc import abstractmethod, ABC
-import os
 from pathlib import Path
 from typing import (
     Tuple,
@@ -13,51 +11,16 @@ from typing import (
 
 import yaml
 
-from keyboardlayout import layouts
+from keyboardlayout.layouts import (
+    LayoutName,
+    VerticalAnchor,
+    HorizontalAnchor,
+    LayoutConstant,
+)
 from keyboardlayout.key import Key
-YAML_EXTENSION = '.yaml'
 
 class TkinterColor(str):
     pass
-
-def __generate_keyboard_layout_enum():
-    layout_names = []
-    for file_name in resources.contents(layouts):
-        if file_name.endswith(YAML_EXTENSION):
-            layout_names.append(file_name[:-len(YAML_EXTENSION)])
-
-    layout_name_enum = Enum(
-        'LayoutName',
-        {layout_name.upper(): layout_name for layout_name in layout_names},
-        type=str
-    )
-    layout_name_enum.__doc__ = (
-        "An enum that holds the allowed layout names")
-    return layout_name_enum
-
-LayoutName = __generate_keyboard_layout_enum()
-
-class VerticalAnchor(Enum):
-    """Enums used to set vertical text location"""
-    TOP = 't'
-    MIDDLE = 'm'
-    BOTTOM = 'b'
-
-class HorizontalAnchor(Enum):
-    """Enums used to set horizontal text location"""
-    LEFT = 'l'
-    CENTER = 'c'
-    RIGHT = 'r'
-
-class LayoutYamlConstant:
-    """Constants used to acces data in keyboard layout yaml files"""
-    KEY_SIZE = 'key_size'
-    ROWS = 'rows'
-    NAME = 'name'
-    LOCATION = 'location'
-    SIZE = 'size'
-    TXT_INFO = 'txt_info'
-    KEYS = 'keys'
 
 
 class KeyInfo:
@@ -152,18 +115,6 @@ class TxtBase:
 
 
 class KeyboardLayoutInterface(ABC):
-
-    @staticmethod
-    def _get_layout(layout_name: LayoutName) -> Dict:
-        if not isinstance(layout_name, LayoutName):
-            raise ValueError(
-                'Invalid input type, layout_name must be type LayoutName')
-        layout_file_name = layout_name.value + YAML_EXTENSION
-        stream = resources.read_text(layouts, layout_file_name)
-        layout = yaml.safe_load(stream)
-        return layout
-
-
     @staticmethod
     def _get_txt_pos_info(
         txt_anchor: str,
@@ -200,7 +151,7 @@ class KeyboardLayoutInterface(ABC):
         letter_key_width, letter_key_height = letter_key_size
         max_width = 0
         max_height = 0
-        key_size = layout[LayoutYamlConstant.KEY_SIZE]
+        key_size = layout[LayoutConstant.KEY_SIZE]
         self._rect_by_key_and_loc = defaultdict(dict)
         self._txt_info_by_loc = {}
         self.layout_name = layout_name
@@ -212,16 +163,16 @@ class KeyboardLayoutInterface(ABC):
             xanchor += -key_info.margin//2
             yanchor += -key_info.margin//2
 
-        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
+        for row_ind, row in enumerate(layout[LayoutConstant.ROWS]):
             row_max_width = 0
-            row_x_keycoords, row_y_keycoords = row[LayoutYamlConstant.LOCATION]
+            row_x_keycoords, row_y_keycoords = row[LayoutConstant.LOCATION]
             key_x = xanchor + row_x_keycoords * letter_key_width
             key_y = yanchor + row_y_keycoords * letter_key_height
-            key_size = row.get(LayoutYamlConstant.KEY_SIZE, key_size)
+            key_size = row.get(LayoutConstant.KEY_SIZE, key_size)
 
-            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
+            for row_key_ind, row_key in enumerate(row[LayoutConstant.KEYS]):
                 key_xsize_keycoords, key_ysize_keycoords = row_key.get(
-                    LayoutYamlConstant.SIZE, key_size)
+                    LayoutConstant.SIZE, key_size)
 
                 key_width, key_height = (
                     letter_key_width*key_xsize_keycoords,
@@ -241,11 +192,11 @@ class KeyboardLayoutInterface(ABC):
                 is set
                 """
                 rect = Rect(key_x, key_y, key_width, key_height)
-                key_name = row_key[LayoutYamlConstant.NAME]
+                key_name = row_key[LayoutConstant.NAME]
                 key = Key(key_name)
                 loc = (row_ind, row_key_ind)
                 self._rect_by_key_and_loc[key][loc] = rect
-                txt_info = row_key[LayoutYamlConstant.TXT_INFO]
+                txt_info = row_key[LayoutConstant.TXT_INFO]
                 self._txt_info_by_loc[loc] = txt_info
                 for txt_val in txt_info.values():
                     if txt_val == key_name:

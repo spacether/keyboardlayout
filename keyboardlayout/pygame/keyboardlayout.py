@@ -6,14 +6,14 @@ import pygame
 from keyboardlayout.common import (
     TxtBase,
     KeyboardLayoutInterface,
-    YAML_EXTENSION,
     LayoutName,
     HorizontalAnchor,
     VerticalAnchor,
     KeyboardInfo,
     KeyInfo,
-    LayoutYamlConstant
+    LayoutConstant
 )
+from keyboardlayout import layouts
 from keyboardlayout.key import Key
 from keyboardlayout.pygame.key import KEY_MAP_BY_LAYOUT
 
@@ -148,7 +148,7 @@ class KeyboardLayout(pygame.sprite.Group, KeyboardLayoutInterface):
     ):
         super().__init__()
 
-        layout = self._get_layout(layout_name)
+        layout = layouts.get_layout(layout_name)
 
         self._key_to_sprite_group = defaultdict(pygame.sprite.Group)
 
@@ -169,9 +169,9 @@ class KeyboardLayout(pygame.sprite.Group, KeyboardLayoutInterface):
             bg_sprite = PgRect(self.rect, keyboard_info.color)
             self.add(bg_sprite)
 
-        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
-            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
-                key_name = row_key[LayoutYamlConstant.NAME]
+        for row_ind, row in enumerate(layout[LayoutConstant.ROWS]):
+            for row_key_ind, row_key in enumerate(row[LayoutConstant.KEYS]):
+                key_name = row_key[LayoutConstant.NAME]
                 key = Key(key_name)
                 used_key_info = key_info
                 if overrides:

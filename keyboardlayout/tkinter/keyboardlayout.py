@@ -13,9 +13,9 @@ from keyboardlayout.common import (
     HorizontalAnchor,
     VerticalAnchor,
     KeyboardLayoutInterface,
-    YAML_EXTENSION,
-    LayoutYamlConstant
+    LayoutConstant
 )
+from keyboardlayout import layouts
 from keyboardlayout.key import Key
 from keyboardlayout.tkinter.key import KEY_MAP
 
@@ -162,7 +162,7 @@ class KeyboardLayout(tk.Frame, KeyboardLayoutInterface):
         master: Union[tk.Frame, tk.Tk],
         overrides: Optional[Dict[str, KeyInfo]] = None
     ):
-        layout = self._get_layout(layout_name)
+        layout = layouts.get_layout(layout_name)
 
         self._key_to_widget_list = defaultdict(list)
 
@@ -191,9 +191,9 @@ class KeyboardLayout(tk.Frame, KeyboardLayoutInterface):
             bg_frame = TkRect(self, self.rect, keyboard_info.color)
             self.widgets.append(bg_frame)
 
-        for row_ind, row in enumerate(layout[LayoutYamlConstant.ROWS]):
-            for row_key_ind, row_key in enumerate(row[LayoutYamlConstant.KEYS]):
-                key_name = row_key[LayoutYamlConstant.NAME]
+        for row_ind, row in enumerate(layout[LayoutConstant.ROWS]):
+            for row_key_ind, row_key in enumerate(row[LayoutConstant.KEYS]):
+                key_name = row_key[LayoutConstant.NAME]
                 key = Key(key_name)
                 used_key_info = key_info
                 if overrides:

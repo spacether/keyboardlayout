@@ -19,7 +19,15 @@ setup(
     packages = find_packages(),
     package_data={'keyboardlayout': ['layouts/*.yaml']},
     url = "https://github.com/spacether/keyboardlayout",
-    keywords = ["keyboard", "qwerty", "layout", "azerty", "pygame", "tkinter"],
+    keywords = [
+        "keyboard",
+        "qwerty",
+        "layout",
+        "azerty",
+        "pygame",
+        "tkinter",
+        "accessibility"
+    ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'pygame'],
     extras_require={

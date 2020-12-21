@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>keyboardlayout.layouts &#8212; keyboardlayout 2.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for keyboardlayout.layouts</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="n">current_module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
+<span class="n">YAML_EXTENSION</span> <span class="o">=</span> <span class="s1">&#39;.yaml&#39;</span>
+<span class="c1"># the key names come from keyboardlayout.keyconstant</span>
+
+<span class="k">def</span> <span class="nf">__generate_keyboard_layout_enum</span><span class="p">():</span>
+    <span class="n">layout_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">contents</span><span class="p">(</span><span class="n">current_module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">YAML_EXTENSION</span><span class="p">):</span>
+            <span class="n">layout_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">YAML_EXTENSION</span><span class="p">)])</span>
+
+    <span class="n">layout_name_enum</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span>
+        <span class="s1">&#39;LayoutName&#39;</span><span class="p">,</span>
+        <span class="p">{</span><span class="n">layout_name</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span> <span class="n">layout_name</span> <span class="k">for</span> <span class="n">layout_name</span> <span class="ow">in</span> <span class="n">layout_names</span><span class="p">},</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span>
+    <span class="p">)</span>
+    <span class="n">layout_name_enum</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;An enum that holds the allowed layout names&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">layout_name_enum</span>
+
+<span class="n">LayoutName</span> <span class="o">=</span> <span class="n">__generate_keyboard_layout_enum</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_layout"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.layouts.get_layout">[docs]</a><span class="k">def</span> <span class="nf">get_layout</span><span class="p">(</span><span class="n">layout_name</span><span class="p">:</span> <span class="n">LayoutName</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layout_name</span><span class="p">,</span> <span class="n">LayoutName</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Invalid input type, layout_name must be type LayoutName&#39;</span><span class="p">)</span>
+    <span class="n">layout_file_name</span> <span class="o">=</span> <span class="n">layout_name</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">YAML_EXTENSION</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">current_module</span><span class="p">,</span> <span class="n">layout_file_name</span><span class="p">)</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">layout</span></div>
+
+
+<div class="viewcode-block" id="VerticalAnchor"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.layouts.VerticalAnchor">[docs]</a><span class="k">class</span> <span class="nc">VerticalAnchor</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enums used to set vertical text location&quot;&quot;&quot;</span>
+    <span class="n">TOP</span> <span class="o">=</span> <span class="s1">&#39;t&#39;</span>
+    <span class="n">MIDDLE</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span>
+    <span class="n">BOTTOM</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span></div>
+
+<div class="viewcode-block" id="HorizontalAnchor"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.layouts.HorizontalAnchor">[docs]</a><span class="k">class</span> <span class="nc">HorizontalAnchor</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enums used to set horizontal text location&quot;&quot;&quot;</span>
+    <span class="n">LEFT</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+    <span class="n">CENTER</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span>
+    <span class="n">RIGHT</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span></div>
+
+<div class="viewcode-block" id="LayoutConstant"><a class="viewcode-back" href="../../keyboardlayout.html#keyboardlayout.layouts.LayoutConstant">[docs]</a><span class="k">class</span> <span class="nc">LayoutConstant</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants used to acces data in keyboard layout yaml files&quot;&quot;&quot;</span>
+    <span class="n">KEY_SIZE</span> <span class="o">=</span> <span class="s1">&#39;key_size&#39;</span>
+    <span class="n">ROWS</span> <span class="o">=</span> <span class="s1">&#39;rows&#39;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+    <span class="n">LOCATION</span> <span class="o">=</span> <span class="s1">&#39;location&#39;</span>
+    <span class="n">SIZE</span> <span class="o">=</span> <span class="s1">&#39;size&#39;</span>
+    <span class="n">TXT_INFO</span> <span class="o">=</span> <span class="s1">&#39;txt_info&#39;</span>
+    <span class="n">KEYS</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">keyboardlayout</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../keyboardlayout.html">keyboardlayout package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Justin Black.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

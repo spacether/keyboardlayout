@@ -45,52 +45,41 @@ pip install keyboardlayout
 - [tkinter, pressed keys](https://github.com/spacether/keyboardlayout/tree/master/samples/tkinter_pressed_keys.py)
 
 ## Usage
-### pygame example
+### tkinter example
 ```
+import tkinter as tk
+import tkinter.font as tkf
+
 import keyboardlayout as kl
-import keyboardlayout.pygame as klp
-import pygame
+import keyboardlayout.tkinter as klt
 
 layout_name = kl.LayoutName.QWERTY
-pygame.init()
-
 key_size = 60
-grey = pygame.Color('grey')
+grey = '#bebebe'
+dark_grey = '#414141'
 keyboard_info = kl.KeyboardInfo(
     position=(0, 0),
     padding=2,
-    color=~grey
+    color=dark_grey
 )
+window = tk.Tk()
+window.resizable(False, False)
 key_info = kl.KeyInfo(
     margin=10,
     color=grey,
-    txt_color=~grey,  # invert grey
-    txt_font=pygame.font.SysFont('Arial', key_size//4),
+    txt_color=dark_grey,
+    txt_font=tkf.Font(family='Arial', size=key_size//4),
     txt_padding=(key_size//6, key_size//10)
 )
 letter_key_size = (key_size, key_size)  # width, height
-keyboard_layout = klp.KeyboardLayout(
+keyboard_layout = klt.KeyboardLayout(
     layout_name,
     keyboard_info,
     letter_key_size,
-    key_info
+    key_info,
+    master=window
 )
-
-screen = pygame.display.set_mode(
-    (keyboard_layout.rect.width, keyboard_layout.rect.height))
-screen.fill(pygame.Color('black'))
-
-keyboard_layout.draw(screen)
-pygame.display.update()
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.display.quit()
-            running = False
-
-pygame.quit()
+window.mainloop()
 ```
 
 ## Local Installation
@@ -110,6 +99,3 @@ make install
 ```
 make test
 ```
-
-## TODO
-- make new docs

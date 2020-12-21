@@ -16,6 +16,24 @@ keyboardlayout.pygame module
 ------------------------------------
 
 .. automodule:: keyboardlayout.pygame
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+keyboardlayout.tkinter module
+------------------------------------
+
+.. automodule:: keyboardlayout.tkinter
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+keyboardlayout.layouts module
+------------------------------------
+
+.. automodule:: keyboardlayout.layouts
    :members:
    :undoc-members:
    :show-inheritance:

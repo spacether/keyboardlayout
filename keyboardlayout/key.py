@@ -120,6 +120,7 @@ class Key(Enum):
     UP_ARROW = 'up arrow'
     DOWN_ARROW = 'down arrow'
     # azerty
+    TWO_SUPERIOR = '²'
     U_GRAVE = 'ù'
     E_ACUTE = 'é'
     E_GRAVE = 'è'

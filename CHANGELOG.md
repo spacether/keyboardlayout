@@ -1,3 +1,8 @@
+# 2.0.1
+- Fix: Key name for top left azerty key changed from 2 to ²
+  In tkinter and pygame I do not know its key code value because I have a qwerty keyboard
+  Any my virtual azerty mapping layout lacks this ² key
+
 # 2.0.0
 - Breaking: KeyboardLayout layout_name input type changed from str to LayoutName enum
 - Fixed typo in readme code sample

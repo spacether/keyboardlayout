@@ -7,9 +7,9 @@ rows:
   - 0
   - 0
   keys:
-  - name: '<'
+  - name: '²'
     txt_info:
-      bc: '2'
+      bc: '²'
   - name: '&'
     txt_info:
       tc: '1'
